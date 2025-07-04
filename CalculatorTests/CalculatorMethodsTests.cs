@@ -190,5 +190,20 @@ public class CalculatorTests {
         _calculator.MathLog.First().QuantityResult.Should()
             .Be(Ratio.FromDecimalFractions(expectedResult));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptionForInvalidOperator() {
+
+        // Arrange
+        CalculatorMethods _calculator = new CalculatorMethods();
+
+        string input = "5m = 5";
+
+        // Act
+        Action act = () => _calculator.Calculate(input);
+
+        // Assert
+        act.Should().Throw<IndexOutOfRangeException>().WithMessage("Operator not found!");
+    }
 }
 

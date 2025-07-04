@@ -14,6 +14,14 @@ namespace Program {
             var calc = new CalculatorMethods();
             var JsonClass = new JsonHistoryManager();
 
+            static void Local() {
+                var path = Path.GetFullPath("SaveMathlog.json");
+                Console.WriteLine($"Vou salvar em: {path}");
+            }
+
+            Local();
+
+
             ConsoleExecution(calc, JsonClass);
         }
 

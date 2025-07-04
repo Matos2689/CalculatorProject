@@ -23,19 +23,21 @@ namespace CalculatorClasses {
         }
 
         private IQuantity CalculateWithUnits(string input) {
-            // Only "m" or "mm"
-            var hasLengthUnit = Regex.IsMatch(input, @"\b\d+(\.\d+)?\s*(?:mm|m)\b");
-            if (!hasLengthUnit) {
-                throw new ArgumentException("Invalid Format.");
-            }
+
+            FoundUnits(input);            
 
             var parts = SplitBasedOnOperands(input).ToArray();
 
             int idxOp = Array
                 .FindIndex(parts, p => p == "+" || p == "-" || p == "*" || p == "/");
+            
+            if (idxOp == -1) {
+                throw new IndexOutOfRangeException("Operator not found!");
+            }
 
-            var number1 = Length.Parse(parts[idxOp - 1]);
-            var number2 = Length.Parse(parts[idxOp + 1]);
+            var number1 = ParseLengthWithDefaultUnit(parts[idxOp - 1].Trim());
+            var number2 = ParseLengthWithDefaultUnit(parts[idxOp + 1].Trim());
+
             char operand = parts[idxOp][0];
 
             IQuantity result = operand switch {
@@ -43,9 +45,21 @@ namespace CalculatorClasses {
                 '-' => number1 - number2,
                 '*' => number1 * number2,
                 '/' => Ratio.FromDecimalFractions(number1 / number2),
-                _ => throw new ArgumentException($"Operator '{operand}' not supported")
             };
             return result;
+        }
+
+        private static bool FoundUnits(string input) {
+            return Regex.IsMatch(input.Trim(), @"^\d+(\.\d+)?\s*(?:mm|m)$"
+            , RegexOptions.IgnoreCase);
+        }
+
+        private static Length ParseLengthWithDefaultUnit(string raw) {
+
+            var str = raw.Trim();
+            if (!FoundUnits(str)) str += "m";
+            
+            return Length.Parse(str);
         }
 
         private static IEnumerable<string> SplitBasedOnOperands(string input) {
