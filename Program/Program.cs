@@ -12,15 +12,7 @@ namespace Program {
         static void Main(string[] args) {
 
             var calc = new CalculatorMethods();
-            var JsonClass = new JsonHistoryManager();
-
-            static void Local() {
-                var path = Path.GetFullPath("SaveMathlog.json");
-                Console.WriteLine($"File saved in: {path}");
-            }
-
-            Local();
-
+            var JsonClass = new JsonHistoryManager();            
 
             ConsoleExecution(calc, JsonClass);
         }
