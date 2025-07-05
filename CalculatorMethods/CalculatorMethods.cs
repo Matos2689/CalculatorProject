@@ -11,9 +11,10 @@ namespace CalculatorClasses {
         // todo: don't return object, but a more specific type. 
         public MathLogItem Calculate(string input) {
 
-            bool HasUnit = Regex.IsMatch(input, @"[A-Za-z]");
+            bool hasUnit = input.Any(char.IsLetter);
+
             var mathLog = new MathLogItem(input);
-            if (HasUnit) {
+            if (hasUnit) {
                 mathLog.SetQuantityResult(CalculateWithUnits(input));
 
             } else {
