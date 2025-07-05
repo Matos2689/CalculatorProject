@@ -16,7 +16,7 @@ namespace Program {
 
             static void Local() {
                 var path = Path.GetFullPath("SaveMathlog.json");
-                Console.WriteLine($"Vou salvar em: {path}");
+                Console.WriteLine($"File saved in: {path}");
             }
 
             Local();
