@@ -119,6 +119,8 @@ public class CalculatorTests {
     [DataRow("10m + 5m", 15)]
     [DataRow("20m+5m", 25)]
     [DataRow("20m + 100mm", 20.1)]
+    [DataRow("1m + 1m", 2)]    
+    [DataRow("2m + 2m", 4)]    
     public void ShouldDoAddNumbersWithUnits(string input, double expectedResult) {
 
         // Arrange
@@ -139,6 +141,7 @@ public class CalculatorTests {
     [DataRow("10 m - 5 m", 5)]
     [DataRow("20m - 5m", 15)]
     [DataRow("8m - 2m", 6)]
+    [DataRow("2m - 1m", 1)]
     public void ShouldDoSubtractNumbersWithUnits(string input, double expectedResult) {
 
         // Arrange
@@ -157,7 +160,7 @@ public class CalculatorTests {
     [DataRow("5m * 5m", 25)]
     [DataRow("5 m * 5 m", 25)]
     [DataRow("5m * 25m", 125)]
-    [DataRow("5 m * 25 m", 125)]
+    [DataRow("5m * 25 m", 125)]
     public void ShouldDoMultiplyNumbersWithUnits(string input, double expectedResult) {
 
         // Arrange
@@ -192,6 +195,39 @@ public class CalculatorTests {
     }
 
     [TestMethod]
+    [DataRow("2km + 1km", 3)]
+    [DataRow("2km + 500m", 2.5)]
+    [DataRow("0.5km + 0.5km", 1)]
+    [DataRow("1km + 1000", 2)]
+    public void ShouldReturnKilometers(string input, double expectedResult) {
+
+        // Arrange
+        CalculatorMethods _calculator = new CalculatorMethods();
+
+        // Act
+        _calculator.Calculate(input);
+
+        // Assert
+        _calculator.MathLog.First().Expression.Should().Be(input);
+        _calculator.MathLog.First().QuantityResult.Should()
+            .Be(Length.FromKilometers(expectedResult));
+    }
+    
+    [TestMethod]
+    [DataRow("500mm + 1m", 1500)]
+    public void ShouldReturnMilimeters(string input, double expectedResult) {
+        // Arrange
+        CalculatorMethods _calculator = new CalculatorMethods();
+        
+        // Act
+        _calculator.Calculate(input);
+        // Assert
+        _calculator.MathLog.First().Expression.Should().Be(input);
+        _calculator.MathLog.First().QuantityResult.Should()
+            .Be(Length.FromMillimeters(expectedResult));
+    }
+
+    [TestMethod]
     public void ShouldThrowExceptionForInvalidOperator() {
 
         // Arrange
@@ -205,5 +241,47 @@ public class CalculatorTests {
         // Assert
         act.Should().Throw<IndexOutOfRangeException>().WithMessage("Operator not found!");
     }
+
+    [TestMethod]
+    [DataRow("1mmm + 5m +")]
+    [DataRow("2y + 1")]
+    [DataRow("x + y")]
+    public void ShouldThrowExceptionForInvalidFormat(string input) {
+
+        // Arrange
+        CalculatorMethods _calculator = new CalculatorMethods();
+        
+        // Act
+        Action act = () => _calculator.Calculate(input);
+
+        // Assert
+        act.Should().Throw<FormatException>();
+    }
+
+    [TestMethod]
+    [DataRow("2km + 1000", 3)]// return km
+    [DataRow("20m * 2", 40)]// return m
+    [DataRow("100cm + 100cm", 200)]// retun cm
+    [DataRow("2m + 1000mm", 3)]// return mm
+    
+    public void ShouldCalculateIQuantityAndDoubleCombined(string input, double expectedResult) {
+        // Arrange
+        CalculatorMethods _calculator = new CalculatorMethods();
+
+        // Act
+        _calculator.Calculate(input);
+
+        // Assert
+        var log = _calculator.MathLog.First();
+        log.Expression.Should().Be(input);
+        var qty = log.QuantityResult;
+
+        if (qty is Ratio rat) rat.DecimalFractions.Should().Be(expectedResult);
+
+        else if (qty is Length len) len.Value.Should().Be(expectedResult);
+
+        else if(qty is Area area) area.SquareMeters.Should().Be(expectedResult);
+    }
 }
+
 

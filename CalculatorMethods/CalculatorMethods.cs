@@ -1,5 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace CalculatorClasses {
     public class CalculatorMethods {
@@ -24,6 +26,7 @@ namespace CalculatorClasses {
 
         private IQuantity CalculateWithUnits(string input) {
 
+            // Only (km, m, cm, mm) pass
             FoundUnits(input);            
 
             var parts = SplitBasedOnOperands(input).ToArray();
@@ -50,19 +53,21 @@ namespace CalculatorClasses {
         }
 
         private static bool FoundUnits(string input) {
-            return Regex.IsMatch(input.Trim(), @"^\d+(\.\d+)?\s*(?:mm|m)$"
+            return Regex.IsMatch(input.Trim(), @"^\d+(\.\d+)?\s*(?:mm|m|cm|km)$"
             , RegexOptions.IgnoreCase);
         }
 
-        private static Length ParseLengthWithDefaultUnit(string raw) {
+        private static Length ParseLengthWithDefaultUnit(string input) {
 
-            var str = raw.Trim();
-            if (!FoundUnits(str)) str += "m";
-            
-            return Length.Parse(str);
+            bool hasUnit = input.Any(char.IsLetter);
+
+            return hasUnit
+                ? Length.Parse(input, CultureInfo.InvariantCulture)
+                : Length.FromMeters(double.Parse(input, CultureInfo.InvariantCulture));
         }
 
         private static IEnumerable<string> SplitBasedOnOperands(string input) {
+
             var result = Regex
                 .Split(input, @"(\+|\-|\*|/)")
                 .Where(p => !string.IsNullOrWhiteSpace(p));
