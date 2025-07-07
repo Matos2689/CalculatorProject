@@ -1,6 +1,6 @@
 ﻿using UnitsNet;
 
-namespace CalculatorClasses {
+namespace CalculatorMethods {
     public enum MathLogTypes {
         NotInitialized = 0,
         NumericBased = 1,
@@ -13,7 +13,7 @@ namespace CalculatorClasses {
         public IQuantity QuantityResult { get; private set; }
         public MathLogTypes Type { get; private set; }
 
-        public MathLogItem(string expression) {
+        public MathLogItem(string expression) { 
             Expression = expression;
         }
 

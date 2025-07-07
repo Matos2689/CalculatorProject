@@ -6,31 +6,24 @@ using System.Linq.Expressions;
 using System.Text.Json;
 using UnitsNet;
 
-namespace CalculatorClasses {
+namespace CalculatorMethods {
     public class JsonHistoryManager {
 
-        public void SaveHistoryJson(List<MathLogItem> logs) {
+        public void Save(List<MathLogItem> logs) {
 
-            var save = logs.Select(log => new {
-
-                log.Expression,
-                Type = log.Type.ToString(),
-                Result = log.Type == MathLogTypes.NumericBased 
-                ? (object)log.NumericResult
-                : log.QuantityResult.ToString()})
-                .ToList();
+            // Convert MathLogItem to MathLogEntity
+            var save = logs.ToEntities();
 
             var options = new JsonSerializerOptions {
                 WriteIndented = true,
-                Encoder = System.Text.Encodings.Web
-                .JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
 
             var json = JsonSerializer.Serialize(save, options);
             File.WriteAllText("SaveMathlog.json", json);
         }
 
-        public void LoadHistoryJson() {
+        public void Read() {
             if (File.Exists("SaveMathlog.json")) {
                 var json = File.ReadAllText("SaveMathlog.json");
                 Console.WriteLine(json);

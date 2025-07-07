@@ -1,23 +1,17 @@
-﻿using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using CalculatorClasses;
-using System.IO;
-using UnitsNet;
-using System.Security.Cryptography.X509Certificates;
+﻿using CalculatorMethods;
 
 namespace Program {
     public class Program {
 
         static void Main(string[] args) {
 
-            var calc = new CalculatorMethods();
-            var JsonClass = new JsonHistoryManager();            
+            var calc = new Calculator();
+            var JsonClass = new JsonHistoryManager();
 
             ConsoleExecution(calc, JsonClass);
         }
 
-        private static void ConsoleExecution(CalculatorMethods calc, JsonHistoryManager JsonClass) {
+        private static void ConsoleExecution(Calculator calc, JsonHistoryManager JsonClass) {
             while (true) {
 
                 Console.Write("=> ");
@@ -45,45 +39,42 @@ namespace Program {
                     EvaluateAndDisplayResult(input, calc);
 
                     ShowCalculationHistory(calc);
-                } 
-                catch (FormatException fx) {
+                } catch (FormatException fx) {
 
                     Console.WriteLine($"Invalid Format: {fx.Message}");
-                } 
-                catch (Exception ex) {
+                } catch (Exception ex) {
 
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
         }
 
-        private static void EvaluateAndDisplayResult(string input, CalculatorMethods calc) {
+        private static void EvaluateAndDisplayResult(string input, Calculator calc) {
             try {
                 var log = calc.Calculate(input);
 
                 if (log.Type == MathLogTypes.NumericBased) {
                     Console.WriteLine($"Result: {log.NumericResult}");
-                } 
-                else if (log.Type == MathLogTypes.UnitBased) {
+                } else if (log.Type == MathLogTypes.UnitBased) {
                     Console.WriteLine($"Result: {log.QuantityResult}");
-                } 
+                }
 
             } catch (Exception ex) {
                 Console.WriteLine($"Unexpected Error: {ex.Message}");
             }
         }
 
-        private static void SaveJSONFile(CalculatorMethods calc, JsonHistoryManager JsonClass) {
-            JsonClass.SaveHistoryJson(calc.MathLog);
+        private static void SaveJSONFile(Calculator calc, JsonHistoryManager JsonClass) {
+            JsonClass.Save(calc.MathLog);
             Console.WriteLine("History saved in SaveMathlog.json\n");
         }
 
         private static void LoadJSONFile(JsonHistoryManager JsonClass) {
-            JsonClass.LoadHistoryJson();
+            JsonClass.Read();
             Console.WriteLine("File Read Successfully!\n");
         }
 
-        private static void ShowCalculationHistory(CalculatorMethods calc) {
+        private static void ShowCalculationHistory(Calculator calc) {
             Console.WriteLine("\noperations:");
             foreach (var log in calc.MathLog) {
 

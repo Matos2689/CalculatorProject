@@ -1,12 +1,11 @@
 ﻿using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnitsNet;
+using CalculatorMethods;
+using System.Security.Cryptography.X509Certificates;
 
-namespace CalculatorClasses;
+namespace CalculatorTests;
 
 [TestClass]
 public class CalculatorTests {
@@ -17,7 +16,7 @@ public class CalculatorTests {
     public void ShouldAddNumbersBasedOnString(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -34,7 +33,7 @@ public class CalculatorTests {
     public void ShouldSubtractNumbersBasedOnStrings(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -52,7 +51,7 @@ public class CalculatorTests {
     public void ShouldMultiplyNumbersBasedOnStrings(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -70,7 +69,7 @@ public class CalculatorTests {
     public void ShouldDivideNumbersBasedOnStrings(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -103,7 +102,7 @@ public class CalculatorTests {
     public void ShouldDoCalculationsWithAnyOperator(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -121,12 +120,12 @@ public class CalculatorTests {
     [DataRow("10m + 5m", 15)]
     [DataRow("20m+5m", 25)]
     [DataRow("20m + 100mm", 20.1)]
-    [DataRow("1m + 1m", 2)]    
-    [DataRow("2m + 2m", 4)]    
+    [DataRow("1m + 1m", 2)]
+    [DataRow("2m + 2m", 4)]
     public void ShouldDoAddNumbersWithUnits(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -147,7 +146,7 @@ public class CalculatorTests {
     public void ShouldDoSubtractNumbersWithUnits(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -166,7 +165,7 @@ public class CalculatorTests {
     public void ShouldDoMultiplyNumbersWithUnits(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -185,7 +184,7 @@ public class CalculatorTests {
     public void ShouldDivideNumbersWithUnits(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -204,7 +203,7 @@ public class CalculatorTests {
     public void ShouldReturnKilometers(string input, double expectedResult) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -214,15 +213,20 @@ public class CalculatorTests {
         _calculator.MathLog.First().QuantityResult.Should()
             .Be(Length.FromKilometers(expectedResult));
     }
-    
+
     [TestMethod]
     [DataRow("500mm + 1m", 1500)]
     public void ShouldReturnMilimeters(string input, double expectedResult) {
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
-        
+        Calculator _calculator = new Calculator();
+
         // Act
         _calculator.Calculate(input);
+        var value = Length.FromMeters(20);
+
+        var unit = value.Unit;
+        var number = value.Value;
+
         // Assert
         _calculator.MathLog.First().Expression.Should().Be(input);
         _calculator.MathLog.First().QuantityResult.Should()
@@ -233,7 +237,7 @@ public class CalculatorTests {
     public void ShouldThrowExceptionForInvalidOperator() {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         string input = "5m = 5";
 
@@ -251,8 +255,8 @@ public class CalculatorTests {
     public void ShouldThrowExceptionForInvalidFormat(string input) {
 
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
-        
+        Calculator _calculator = new Calculator();
+
         // Act
         Action act = () => _calculator.Calculate(input);
 
@@ -265,10 +269,10 @@ public class CalculatorTests {
     [DataRow("20m * 2", 40)]// return m
     [DataRow("100cm + 100cm", 200)]// retun cm
     [DataRow("2m + 1000mm", 3)]// return mm
-    
+
     public void ShouldCalculateIQuantityAndDoubleCombined(string input, double expectedResult) {
         // Arrange
-        CalculatorMethods _calculator = new CalculatorMethods();
+        Calculator _calculator = new Calculator();
 
         // Act
         _calculator.Calculate(input);
@@ -282,7 +286,7 @@ public class CalculatorTests {
 
         else if (qty is Length len) len.Value.Should().Be(expectedResult);
 
-        else if(qty is Area area) area.SquareMeters.Should().Be(expectedResult);
+        else if (qty is Area area) area.SquareMeters.Should().Be(expectedResult);
     }
 
     [TestMethod]
@@ -308,7 +312,7 @@ public class CalculatorTests {
         try {
             // Act Save JSON
             var sut = new JsonHistoryManager();
-            sut.SaveHistoryJson(logs);
+            sut.Save(logs);
 
             // Assert
             const string fileName = "SaveMathlog.json";
@@ -338,6 +342,44 @@ public class CalculatorTests {
             Directory.SetCurrentDirectory(originalDir);
             Directory.Delete(tempDir, recursive: true);
         }
+    }
+
+    [TestMethod]
+    public void ShouldReturnAMathLogEntityWithDoubleResult() {
+        // Arrange
+        var input = "2+2";
+        var calculator = new Calculator();
+        calculator.Calculate(input);
+        var mathLog = calculator.MathLog.First();
+
+        // Act
+        var mathLogEntity = mathLog.ToEntity();
+
+        // Assert
+        mathLogEntity.Expression.Should().Be(input);
+        mathLogEntity.Result.Should().Be(4);
+        mathLogEntity.Unit.Should().BeNull();
+    }
+
+    [TestMethod]    
+    public void ShouldVerifyContentMathLogsEntitiesOnList() {
+        // Arrange
+        var logs = new List<MathLogItem> {
+            new MathLogItem("2+2") { },
+            new MathLogItem("3+3") { },
+            new MathLogItem("5+2") { },
+            new MathLogItem("5m+2m") { },
+        };
+        logs[0].SetNumericResult(4);
+        logs[1].SetNumericResult(6);
+        logs[2].SetNumericResult(7);
+        logs[3].SetQuantityResult(Length.FromMeters(7));
+
+        // Act        
+        var result = logs.ToEntities().ToList();
+
+        // Assert
+        result.Should().HaveCount(4);
     }
 }
 

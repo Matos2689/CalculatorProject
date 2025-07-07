@@ -3,8 +3,8 @@ using System.Text.RegularExpressions;
 using UnitsNet;
 using UnitsNet.Units;
 
-namespace CalculatorClasses {
-    public class CalculatorMethods {
+namespace CalculatorMethods {
+    public class Calculator {
 
         public List<MathLogItem> MathLog { get; private set; } = new();
 
