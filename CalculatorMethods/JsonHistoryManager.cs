@@ -11,7 +11,7 @@ namespace CalculatorClasses {
 
         public void SaveHistoryJson(List<MathLogItem> logs) {
 
-            var toSave = logs.Select(log => new {
+            var save = logs.Select(log => new {
 
                 log.Expression,
                 Type = log.Type.ToString(),
@@ -26,7 +26,7 @@ namespace CalculatorClasses {
                 .JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
 
-            var json = JsonSerializer.Serialize(toSave, options);
+            var json = JsonSerializer.Serialize(save, options);
             File.WriteAllText("SaveMathlog.json", json);
         }
 

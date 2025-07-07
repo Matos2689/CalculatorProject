@@ -45,9 +45,13 @@ namespace Program {
                     EvaluateAndDisplayResult(input, calc);
 
                     ShowCalculationHistory(calc);
-                } catch (FormatException fx) {
+                } 
+                catch (FormatException fx) {
+
                     Console.WriteLine($"Invalid Format: {fx.Message}");
-                } catch (Exception ex) {
+                } 
+                catch (Exception ex) {
+
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
@@ -55,9 +59,14 @@ namespace Program {
 
         private static void EvaluateAndDisplayResult(string input, CalculatorMethods calc) {
             try {
-                var result = calc.Calculate(input);
+                var log = calc.Calculate(input);
 
-                Console.WriteLine($"\nResult: {result}");
+                if (log.Type == MathLogTypes.NumericBased) {
+                    Console.WriteLine($"Result: {log.NumericResult}");
+                } 
+                else if (log.Type == MathLogTypes.UnitBased) {
+                    Console.WriteLine($"Result: {log.QuantityResult}");
+                } 
 
             } catch (Exception ex) {
                 Console.WriteLine($"Unexpected Error: {ex.Message}");

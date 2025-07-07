@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -281,6 +283,61 @@ public class CalculatorTests {
         else if (qty is Length len) len.Value.Should().Be(expectedResult);
 
         else if(qty is Area area) area.SquareMeters.Should().Be(expectedResult);
+    }
+
+    [TestMethod]
+    public void SholdSaveHistoryJsonCreateJsonFileWithExpectedContent() {
+
+        // Arrange
+        var logs = new List<MathLogItem>();
+
+        var numeric = new MathLogItem("2+2");
+        numeric.SetNumericResult(4);
+        logs.Add(numeric);
+
+        var unit = new MathLogItem("1m+1m");
+        unit.SetQuantityResult(Length.Parse("2 m", CultureInfo.InvariantCulture));
+        logs.Add(unit);
+
+        // Change to temporary directory
+        var originalDir = Directory.GetCurrentDirectory();
+        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(tempDir);
+        Directory.SetCurrentDirectory(tempDir);
+
+        try {
+            // Act Save JSON
+            var sut = new JsonHistoryManager();
+            sut.SaveHistoryJson(logs);
+
+            // Assert
+            const string fileName = "SaveMathlog.json";
+            File.Exists(fileName).Should().BeTrue();
+
+            // Reads and parses content
+            var jsonContent = File.ReadAllText(fileName);
+            using var doc = JsonDocument.Parse(jsonContent);
+            var root = doc.RootElement;
+            root.ValueKind.Should().Be(JsonValueKind.Array);
+            root.GetArrayLength().Should().Be(2);
+
+            // Verify first item (NumericBased)
+            var first = root[0];
+            first.GetProperty("Expression").GetString().Should().Be("2+2");
+            first.GetProperty("Type").GetString().Should().Be("NumericBased");
+            first.GetProperty("Result").GetDouble().Should().Be(4);
+
+            // Verify second item (UnitBased)
+            var second = root[1];
+            second.GetProperty("Expression").GetString().Should().Be("1m+1m");
+            second.GetProperty("Type").GetString().Should().Be("UnitBased");
+            second.GetProperty("Result").GetString().Should().Be("2 m");
+
+        } finally {
+            // Cleanup
+            Directory.SetCurrentDirectory(originalDir);
+            Directory.Delete(tempDir, recursive: true);
+        }
     }
 }
 
