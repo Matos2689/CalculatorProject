@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace CalculatorMethods {
     public class MathLogEntity {
@@ -10,10 +12,16 @@ namespace CalculatorMethods {
         public double Result { get; private set; }
         public string? Unit { get; private set; }
 
-        public MathLogEntity(string expression, double result, string? resultUnit = null) {
+        public MathLogEntity(
+
+            string expression, 
+            double result, 
+            string? resultUnit = null)             
+        {
+
             Expression = expression;
-            Result = result;
-            Unit = resultUnit;
+            Result     = result;
+            Unit       = resultUnit;
         }
     }
 }

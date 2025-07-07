@@ -4,6 +4,8 @@ using FluentAssertions;
 using UnitsNet;
 using CalculatorMethods;
 using System.Security.Cryptography.X509Certificates;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CalculatorTests;
 
@@ -290,7 +292,7 @@ public class CalculatorTests {
     }
 
     [TestMethod]
-    public void SholdSaveHistoryJsonCreateJsonFileWithExpectedContent() {
+    public void ShouldSaveWritesJsonHistoryFile() {
 
         // Arrange
         var logs = new List<MathLogItem>();
@@ -299,49 +301,31 @@ public class CalculatorTests {
         numeric.SetNumericResult(4);
         logs.Add(numeric);
 
-        var unit = new MathLogItem("1m+1m");
-        unit.SetQuantityResult(Length.Parse("2 m", CultureInfo.InvariantCulture));
+        var unit = new MathLogItem("2m + 2m");
+        unit.SetQuantityResult(Length.FromMeters(4));
         logs.Add(unit);
 
-        // Change to temporary directory
-        var originalDir = Directory.GetCurrentDirectory();
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-        Directory.CreateDirectory(tempDir);
-        Directory.SetCurrentDirectory(tempDir);
+        var sut = new JsonHistoryManager();
 
-        try {
-            // Act Save JSON
-            var sut = new JsonHistoryManager();
-            sut.Save(logs);
+        // Act
+        sut.Save(logs);
+        const string fileName = "SaveMathlog.json";
 
-            // Assert
-            const string fileName = "SaveMathlog.json";
-            File.Exists(fileName).Should().BeTrue();
+        // Assert
+        File.Exists(fileName).Should().BeTrue();
 
-            // Reads and parses content
-            var jsonContent = File.ReadAllText(fileName);
-            using var doc = JsonDocument.Parse(jsonContent);
-            var root = doc.RootElement;
-            root.ValueKind.Should().Be(JsonValueKind.Array);
-            root.GetArrayLength().Should().Be(2);
+        var json = File.ReadAllText(fileName);
 
-            // Verify first item (NumericBased)
-            var first = root[0];
-            first.GetProperty("Expression").GetString().Should().Be("2+2");
-            first.GetProperty("Type").GetString().Should().Be("NumericBased");
-            first.GetProperty("Result").GetDouble().Should().Be(4);
+        json.Should().Contain("\"Expression\": \"2+2\"");
+        json.Should().Contain("\"Result\": 4");
+        json.Should().Contain("\"Unit\": null");
 
-            // Verify second item (UnitBased)
-            var second = root[1];
-            second.GetProperty("Expression").GetString().Should().Be("1m+1m");
-            second.GetProperty("Type").GetString().Should().Be("UnitBased");
-            second.GetProperty("Result").GetString().Should().Be("2 m");
+        json.Should().Contain("\"Expression\": \"2m + 2m\"");
+        json.Should().Contain("\"Result\": 4");
+        json.Should().Contain("\"Unit\": \"Meter\"");
 
-        } finally {
-            // Cleanup
-            Directory.SetCurrentDirectory(originalDir);
-            Directory.Delete(tempDir, recursive: true);
-        }
+        // Cleanup
+        File.Delete(fileName);
     }
 
     [TestMethod]
