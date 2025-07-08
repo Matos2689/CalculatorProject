@@ -49,10 +49,9 @@ namespace CalculatorMethods {
         }
 
         public void Read() {
-            if (File.Exists("SaveMathlog.json")) {
-                var json = File.ReadAllText("SaveMathlog.json");
-                Console.WriteLine(json);
-            }
+            Console.WriteLine(File.Exists("SaveMathlog.json") 
+                ? File.ReadAllText("SaveMathlog.json")
+                : "There is no file named SaveMathlog.json");
         }
     }
 }
