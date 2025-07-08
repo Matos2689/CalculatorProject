@@ -305,7 +305,7 @@ public class CalculatorTests {
         unit.SetQuantityResult(Length.FromMeters(4));
         logs.Add(unit);
 
-        var sut = new JsonHistoryManager();
+        var sut = new JsonRepositoryManager();
 
         // Act
         sut.Save(logs);
@@ -317,12 +317,12 @@ public class CalculatorTests {
         var json = File.ReadAllText(fileName);
 
         json.Should().Contain("\"Expression\": \"2+2\"");
-        json.Should().Contain("\"Result\": 4");
-        json.Should().Contain("\"Unit\": null");
+        json.Should().Contain("\"ResultValue\": 4");
+        json.Should().Contain("\"ResultUnit\": null");
 
         json.Should().Contain("\"Expression\": \"2m + 2m\"");
-        json.Should().Contain("\"Result\": 4");
-        json.Should().Contain("\"Unit\": \"Meter\"");
+        json.Should().Contain("\"ResultValue\": 4");
+        json.Should().Contain("\"ResultUnit\": \"Meter\"");
 
         // Cleanup
         File.Delete(fileName);
@@ -341,11 +341,11 @@ public class CalculatorTests {
 
         // Assert
         mathLogEntity.Expression.Should().Be(input);
-        mathLogEntity.Result.Should().Be(4);
-        mathLogEntity.Unit.Should().BeNull();
+        mathLogEntity.ResultValue.Should().Be(4);
+        mathLogEntity.ResultUnit.Should().BeNull();
     }
 
-    [TestMethod]    
+    [TestMethod]
     public void ShouldVerifyContentMathLogsEntitiesOnList() {
         // Arrange
         var logs = new List<MathLogItem> {
@@ -364,6 +364,65 @@ public class CalculatorTests {
 
         // Assert
         result.Should().HaveCount(4);
+    }
+
+    [TestMethod]
+    public void ShouldCreateNumericMathLogItem() {
+
+        // Arrange
+        string expression = "2+2";
+        double result = 4;
+
+        var entity = new MathLogEntity(expression, result);
+
+        // Act
+        var item = entity.FromEntity();
+
+        // Assert
+        item.Expression.Should().Be(expression);
+        item.NumericResult.Should().Be(result);
+        item.Type.Should().Be(MathLogTypes.NumericBased);
+        item.QuantityResult.Should().BeNull();
+    }
+
+    [TestMethod]
+    [DataRow("2m+2m", 4, "Meter")]
+    public void ShouldCreateUnitMathLogItem(string expression, double numericResult, string unit) {
+
+        // Arrange 
+        var entity = new MathLogEntity(expression, numericResult, unit);
+
+        // Act
+        var item = entity.FromEntity();
+
+        // Assert
+        item.Expression.Should().Be(expression);
+        item.Type.Should().Be(MathLogTypes.UnitBased);
+        item.QuantityResult.Should().Be(Length.FromMeters(4));//"4 m"
+    }
+
+    [TestMethod]
+    public void Should()
+    {
+        // Arrange
+        var logs = new List<MathLogEntity> {
+            new MathLogEntity("2+2", 4),
+            new MathLogEntity("3m+3m", 6, "Meter"),
+        };
+
+        // Act
+        var entities = logs.FromEntities();
+
+        // Assert
+        entities.Should().HaveCount(2);
+        entities.First().Expression.Should().Be("2+2");
+        entities.First().NumericResult.Should().Be(4);
+        entities.First().Type.Should().Be(MathLogTypes.NumericBased);
+
+        entities.Last().Expression.Should().Be("3m+3m");
+        entities.Last().Type.Should().Be(MathLogTypes.UnitBased);
+        entities.Last().QuantityResult.Should().Be(Length.FromMeters(6));
+        entities.Last().QuantityResult.ToString().Should().Be("6 m");
     }
 }
 

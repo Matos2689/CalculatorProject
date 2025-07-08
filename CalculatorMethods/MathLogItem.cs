@@ -14,15 +14,18 @@ namespace CalculatorMethods {
         public MathLogTypes Type { get; private set; }
 
         public MathLogItem(string expression) { 
+
             Expression = expression;
         }
 
         public void SetNumericResult(double numericResult) {
+
             NumericResult = numericResult;
             Type = MathLogTypes.NumericBased;
         }
 
         public void SetQuantityResult(IQuantity quantityResult) {
+
             QuantityResult = quantityResult;
             Type = MathLogTypes.UnitBased;
         }

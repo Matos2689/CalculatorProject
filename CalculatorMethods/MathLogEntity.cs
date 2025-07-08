@@ -9,19 +9,17 @@ using System.Text.Json.Serialization;
 namespace CalculatorMethods {
     public class MathLogEntity {
         public string Expression { get; private set; }
-        public double Result { get; private set; }
-        public string? Unit { get; private set; }
+        public double ResultValue { get; private set; }
+        public string? ResultUnit { get; private set; }
 
         public MathLogEntity(
-
             string expression, 
             double result, 
             string? resultUnit = null)             
         {
-
             Expression = expression;
-            Result     = result;
-            Unit       = resultUnit;
+            ResultValue     = result;
+            ResultUnit       = resultUnit;
         }
     }
 }

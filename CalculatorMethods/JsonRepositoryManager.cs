@@ -7,7 +7,7 @@ using System.Text.Json;
 using UnitsNet;
 
 namespace CalculatorMethods {
-    public class JsonHistoryManager {
+    public class JsonRepositoryManager {
 
         public void Save(List<MathLogItem> logs) {
 

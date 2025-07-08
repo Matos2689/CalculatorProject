@@ -6,12 +6,12 @@ namespace Program {
         static void Main(string[] args) {
 
             var calc = new Calculator();
-            var JsonClass = new JsonHistoryManager();
+            var JsonClass = new JsonRepositoryManager();
 
             ConsoleExecution(calc, JsonClass);
         }
 
-        private static void ConsoleExecution(Calculator calc, JsonHistoryManager JsonClass) {
+        private static void ConsoleExecution(Calculator calc, JsonRepositoryManager JsonClass) {
             while (true) {
 
                 Console.Write("=> ");
@@ -64,12 +64,12 @@ namespace Program {
             }
         }
 
-        private static void SaveJSONFile(Calculator calc, JsonHistoryManager JsonClass) {
+        private static void SaveJSONFile(Calculator calc, JsonRepositoryManager JsonClass) {
             JsonClass.Save(calc.MathLog);
             Console.WriteLine("History saved in SaveMathlog.json\n");
         }
 
-        private static void LoadJSONFile(JsonHistoryManager JsonClass) {
+        private static void LoadJSONFile(JsonRepositoryManager JsonClass) {
             JsonClass.Read();
             Console.WriteLine("File Read Successfully!\n");
         }

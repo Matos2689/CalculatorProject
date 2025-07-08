@@ -48,7 +48,7 @@ namespace CalculatorMethods {
                 '+' => number1 + number2,
                 '-' => number1 - number2,
                 '*' => number1 * number2,
-                '/' => Ratio.FromDecimalFractions(number1 / number2),
+                 _ => Ratio.FromDecimalFractions(number1 / number2),
             };
             return result;
         }
