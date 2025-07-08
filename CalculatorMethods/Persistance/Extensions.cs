@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
+using CalculatorMethods.Contracts;
 using UnitsNet;
 
-namespace CalculatorMethods
+namespace CalculatorMethods.Persistance
 {
     public static class Extensions
     {
-
         private static readonly Dictionary<string, Func<double, IQuantity>> _unitFactory = new()
         {
             { "Meter", value => Length.FromMeters(value) },

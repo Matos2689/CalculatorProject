@@ -1,6 +1,6 @@
 ﻿using UnitsNet;
 
-namespace CalculatorMethods {
+namespace CalculatorMethods.Contracts {
     public enum MathLogTypes {
         NotInitialized = 0,
         NumericBased = 1,

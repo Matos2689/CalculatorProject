@@ -4,9 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Json;
+using CalculatorMethods.Contracts;
 using UnitsNet;
 
-namespace CalculatorMethods {
+namespace CalculatorMethods.Persistance {
     public class JsonRepositoryManager {
 
         public void Save(List<MathLogItem> logs) {
@@ -45,11 +46,13 @@ namespace CalculatorMethods {
             }
 
             // Convert MathLogEntity to MathLogItem
-            return entities.Select(e => e.FromEntity()).ToList();
+            var result = entities.Select(e => e.FromEntity()).ToList();
+
+            return result;
         }
 
         public void Read() {
-            Console.WriteLine(File.Exists("SaveMathlog.json") 
+            Console.WriteLine(File.Exists("SaveMathlog.json")
                 ? File.ReadAllText("SaveMathlog.json")
                 : "There is no file named SaveMathlog.json");
         }

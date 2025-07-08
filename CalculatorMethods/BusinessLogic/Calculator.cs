@@ -1,23 +1,29 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using CalculatorMethods.Contracts;
 using UnitsNet;
-using UnitsNet.Units;
 
-namespace CalculatorMethods {
-    public class Calculator {
+namespace CalculatorMethods.BusinessLogic
+{
+    public class Calculator
+    {
 
         public List<MathLogItem> MathLog { get; private set; } = new();
 
         // todo: don't return object, but a more specific type. 
-        public MathLogItem Calculate(string input) {
+        public MathLogItem Calculate(string input)
+        {
 
             bool hasUnit = input.Any(char.IsLetter);
 
             var mathLog = new MathLogItem(input);
-            if (hasUnit) {
+            if (hasUnit)
+            {
                 mathLog.SetQuantityResult(CalculateWithUnits(input));
 
-            } else {
+            }
+            else
+            {
                 mathLog.SetNumericResult(CalculateWithoutUnits(input));
             }
 
@@ -25,17 +31,19 @@ namespace CalculatorMethods {
             return mathLog;
         }
 
-        private IQuantity CalculateWithUnits(string input) {
+        private IQuantity CalculateWithUnits(string input)
+        {
 
             // Only (km, m, cm, mm) pass
-            FoundUnits(input);            
+            FoundUnits(input);
 
             var parts = SplitBasedOnOperands(input).ToArray();
 
             int idxOp = Array
                 .FindIndex(parts, p => p == "+" || p == "-" || p == "*" || p == "/");
-            
-            if (idxOp == -1) {
+
+            if (idxOp == -1)
+            {
                 throw new IndexOutOfRangeException("Operator not found!");
             }
 
@@ -44,21 +52,24 @@ namespace CalculatorMethods {
 
             char operand = parts[idxOp][0];
 
-            IQuantity result = operand switch {
+            IQuantity result = operand switch
+            {
                 '+' => number1 + number2,
                 '-' => number1 - number2,
                 '*' => number1 * number2,
-                 _ => Ratio.FromDecimalFractions(number1 / number2),
+                _ => Ratio.FromDecimalFractions(number1 / number2),
             };
             return result;
         }
 
-        private static bool FoundUnits(string input) {
+        private static bool FoundUnits(string input)
+        {
             return Regex.IsMatch(input.Trim(), @"^\d+(\.\d+)?\s*(?:mm|m|cm|km)$"
             , RegexOptions.IgnoreCase);
         }
 
-        private static Length ParseLengthWithDefaultUnit(string input) {
+        private static Length ParseLengthWithDefaultUnit(string input)
+        {
 
             bool hasUnit = input.Any(char.IsLetter);
 
@@ -67,7 +78,8 @@ namespace CalculatorMethods {
                 : Length.FromMeters(double.Parse(input, CultureInfo.InvariantCulture));
         }
 
-        private static IEnumerable<string> SplitBasedOnOperands(string input) {
+        private static IEnumerable<string> SplitBasedOnOperands(string input)
+        {
 
             var result = Regex
                 .Split(input, @"(\+|\-|\*|/)")
@@ -75,7 +87,8 @@ namespace CalculatorMethods {
             return result;
         }
 
-        private double CalculateWithoutUnits(string input) {
+        private double CalculateWithoutUnits(string input)
+        {
             //I receive any expression
             var parts = SplitBasedOnOperands(input).ToList();
 
@@ -85,7 +98,8 @@ namespace CalculatorMethods {
             int index;
 
             // Multiplication and Division first
-            while ((index = GetIndexOfMultiplyOrDivision(parts)) != -1) {
+            while ((index = GetIndexOfMultiplyOrDivision(parts)) != -1)
+            {
 
                 var left = double.Parse(parts[index - 1]);
                 var right = double.Parse(parts[index + 1]);
@@ -99,7 +113,8 @@ namespace CalculatorMethods {
             }
 
             // Sum and Subtract last
-            while ((index = GetIndexOfAdditionOrSubtraction(parts)) != -1) {
+            while ((index = GetIndexOfAdditionOrSubtraction(parts)) != -1)
+            {
 
                 var left = double.Parse(parts[index - 1]);
                 var right = double.Parse(parts[index + 1]);
@@ -118,11 +133,13 @@ namespace CalculatorMethods {
             return result;
         }
 
-        private static int GetIndexOfAdditionOrSubtraction(List<string> parts) {
+        private static int GetIndexOfAdditionOrSubtraction(List<string> parts)
+        {
             return parts.FindIndex(p => p == "+" || p == "-");
         }
 
-        private static int GetIndexOfMultiplyOrDivision(List<string> parts) {
+        private static int GetIndexOfMultiplyOrDivision(List<string> parts)
+        {
             return parts.FindIndex(p => p == "*" || p == "/");
         }
 

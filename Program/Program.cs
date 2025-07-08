@@ -1,4 +1,6 @@
-﻿using CalculatorMethods;
+﻿using CalculatorMethods.BusinessLogic;
+using CalculatorMethods.Contracts;
+using CalculatorMethods.Persistance;
 
 namespace Program {
     public class Program {
