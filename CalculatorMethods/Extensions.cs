@@ -17,63 +17,47 @@ namespace CalculatorMethods
             { "CubicMeter", value => Volume.FromCubicMeters(value) }
         };
 
-        public static MathLogEntity ToEntity(this MathLogItem mathLogItem)
+        public static MathLogEntity ToEntity(this MathLogItem item) 
+            
+            => item.Type switch
         {
+             MathLogTypes.NumericBased
+                 => new MathLogEntity(item.Expression, item.NumericResult),
 
-            var expression = mathLogItem.Expression;
-            double value;
-            string? unit = null;
+             MathLogTypes.UnitBased
+                 => new MathLogEntity(
+                        item.Expression,
+                        (double)item.QuantityResult.Value,
+                        item.QuantityResult.Unit.ToString()),
 
-            if (mathLogItem.Type == MathLogTypes.NumericBased)
-            {
-                value = mathLogItem.NumericResult;
+             _ => throw new InvalidOperationException(
+                      "MathLogItem type is not initialized or invalid.")
+         };
 
-                return new MathLogEntity(expression, value);
-            }
-
-            if (mathLogItem.Type == MathLogTypes.UnitBased)
-            {
-                value = (double)mathLogItem.QuantityResult.Value;
-                unit = mathLogItem.QuantityResult.Unit.ToString();
-
-                return new MathLogEntity(expression, value, unit);
-            }
-
-            throw new InvalidOperationException("MathLogItem type is not initialized or invalid.");
-        }
 
         public static IEnumerable<MathLogEntity> ToEntities(this List<MathLogItem> Items)
-        {
-            foreach (var item in Items)
-            {
-                yield return item.ToEntity();
-            }
-        }
+
+            // For each MathLogItem, convert it to MathLogEntity
+            => Items.Select(item => item.ToEntity());
+
 
         public static MathLogItem FromEntity(this MathLogEntity entity)
         {
             var item = new MathLogItem(entity.Expression);
 
-            if (!string.IsNullOrWhiteSpace(entity.ResultUnit)
-                && _unitFactory.TryGetValue(entity.ResultUnit, out var factory))
-            {
-                var quantity = factory(entity.ResultValue);
-                item.SetQuantityResult(quantity);
-            }
+            if (_unitFactory.TryGetValue(entity.ResultUnit ?? "", out var factory))
+                item.SetQuantityResult(factory(entity.ResultValue));
             else
-            {
                 item.SetNumericResult(entity.ResultValue);
-            }
 
             return item;
         }
 
+
         public static IEnumerable<MathLogItem> FromEntities(this List<MathLogEntity> entities)
-        {
-            foreach (var entity in entities)
-            {
-                yield return entity.FromEntity();
-            }
-        }
+
+            // For each entity, convert it to MathLogItem
+            => entities.Select(element => element.FromEntity());
+        
     }
 }

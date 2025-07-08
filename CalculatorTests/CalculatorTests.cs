@@ -398,11 +398,12 @@ public class CalculatorTests {
         // Assert
         item.Expression.Should().Be(expression);
         item.Type.Should().Be(MathLogTypes.UnitBased);
-        item.QuantityResult.Should().Be(Length.FromMeters(4));//"4 m"
+        item.QuantityResult.Should().Be(Length.FromMeters(4));
+        item.QuantityResult.ToString().Should().Be("4 m");
     }
 
     [TestMethod]
-    public void Should()
+    public void Should_CreateMathLogItems_WithCorrectNumericAndUnitBasedResults()
     {
         // Arrange
         var logs = new List<MathLogEntity> {

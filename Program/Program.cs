@@ -5,13 +5,13 @@ namespace Program {
 
         static void Main(string[] args) {
 
-            var calc = new Calculator();
-            var JsonClass = new JsonRepositoryManager();
+            var calculator = new Calculator();
+            var jsonRepoManager = new JsonRepositoryManager();
 
-            ConsoleExecution(calc, JsonClass);
+            ConsoleExecution(calculator, jsonRepoManager);
         }
 
-        private static void ConsoleExecution(Calculator calc, JsonRepositoryManager JsonClass) {
+        private static void ConsoleExecution(Calculator calc, JsonRepositoryManager JsonRepo) {
             while (true) {
 
                 Console.Write("=> ");
@@ -20,29 +20,40 @@ namespace Program {
 
                     string? input = Console.ReadLine();
 
-                    if (input == null) break;
+                    if (input == null || input.Equals("exit", StringComparison.OrdinalIgnoreCase))
+                        break;
 
                     if (input.Length == 0) continue;
 
-                    if (string.Equals(input, "save", StringComparison.OrdinalIgnoreCase)) {
-                        SaveJSONFile(calc, JsonClass);
+                    if (string.Equals(input, "save", StringComparison.OrdinalIgnoreCase)) 
+                    {
+                        SaveJSONFile(calc, JsonRepo);
                         continue;
                     }
 
-                    if (string.Equals(input, "load", StringComparison.OrdinalIgnoreCase)) {
-                        LoadJSONFile(JsonClass);
+                    if (string.Equals(input, "read", StringComparison.OrdinalIgnoreCase)) 
+                    {
+                        ReadJSONFile(JsonRepo);
                         continue;
                     }
 
-                    if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase)) break;
+                    if (string.Equals(input, "load", StringComparison.OrdinalIgnoreCase))
+                    {
+                        LoadJSONFile(calc, JsonRepo);
+                        continue;
+                    }
 
                     EvaluateAndDisplayResult(input, calc);
 
                     ShowCalculationHistory(calc);
-                } catch (FormatException fx) {
+                } 
+                catch (FormatException fx) 
+                {
 
                     Console.WriteLine($"Invalid Format: {fx.Message}");
-                } catch (Exception ex) {
+                } 
+                catch (Exception ex) 
+                {
 
                     Console.WriteLine($"Error: {ex.Message}");
                 }
@@ -69,7 +80,15 @@ namespace Program {
             Console.WriteLine("History saved in SaveMathlog.json\n");
         }
 
-        private static void LoadJSONFile(JsonRepositoryManager JsonClass) {
+        private static void LoadJSONFile(Calculator calc, JsonRepositoryManager jsonRepo)
+        {
+            var loadItems = jsonRepo.Load();
+            calc.MathLog.Clear();
+            calc.MathLog.AddRange(loadItems);
+            Console.WriteLine("History loaded from SaveMathlog.json\n");
+        }
+
+        private static void ReadJSONFile(JsonRepositoryManager JsonClass) {
             JsonClass.Read();
             Console.WriteLine("File Read Successfully!\n");
         }
