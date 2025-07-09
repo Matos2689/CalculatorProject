@@ -15,7 +15,6 @@ namespace CalculatorMethods.BusinessLogic
         // todo: don't return object, but a more specific type. 
         public MathLogItem Calculate(string input)
         {
-
             bool hasUnit = input.Any(char.IsLetter);
 
             var mathLog = new MathLogItem(input);
@@ -34,11 +33,8 @@ namespace CalculatorMethods.BusinessLogic
             return mathLog;
         }
 
-        public IQuantity CalculateWithUnits(string input)
+        private IQuantity CalculateWithUnits(string input)
         {
-            // Only (km,m,cm,mm) pass
-            FoundUnits(input);
-
             var parts = SplitBasedOnOperands(input)
                               .Select(t => t.Trim())
                               .Where(t => t.Length > 0)
@@ -46,10 +42,14 @@ namespace CalculatorMethods.BusinessLogic
 
             var operators = new HashSet<string> { "+", "-", "*", "/" };
 
-            ValidateOperators(parts, operators);
+            var firstInvalidPart = GetFirstInvalidPart(parts, operators);
 
-            // List containing IQuantity (values) and string (ops)
-            List<object> itemsList = BuildMixedList(parts);
+            if (firstInvalidPart != null)
+                throw new InvalidOperationException(
+                    $"Invalid operator or unit:'{firstInvalidPart}'");
+
+            // List containing IQuantity (values) and string (operators)
+            List<object> itemsList = BuildMixedList(parts, operators);
 
             int index;
 
@@ -94,57 +94,9 @@ namespace CalculatorMethods.BusinessLogic
             return (IQuantity)itemsList[0];
         }
 
-        private static int GetIndexOfAddOrSubForUnits(List<object> itemsList)
+        private string? GetFirstInvalidPart(List<string> parts, HashSet<string> operators)
         {
-            return itemsList.FindIndex(x => x is string op && (op == "+" || op == "-"));
-        }
-
-        private static int GetIndexOfMultOrDivForUnits(List<object> items)
-        {
-            return items.FindIndex(x => x is string op && (op == "*" || op == "/"));
-        }
-
-        private static List<object> BuildMixedList(List<string> parts)
-        {
-            return parts.Select(t => (object)(t is "+" or "-" or "*" or "/"
-                        ? t
-                        : ParseLengthWithDefaultUnit(t)))
-                        .ToList();
-        }
-
-        private void ValidateOperators(List<string> rawTokens, HashSet<string> ops)
-        {
-            var invalid = rawTokens
-                            .FirstOrDefault(t => !ops.Contains(t) && !TryParseQuantity(t));
-
-            if (invalid != null)
-                throw new InvalidOperationException(
-                    $"Operator not found!: '{invalid}'");
-        }
-
-        private static bool FoundUnits(string input)
-        {
-            return Regex.IsMatch(input.Trim(), @"^\d+(\.\d+)?\s*(?:mm|m|cm|km)$"
-            , RegexOptions.IgnoreCase);
-        }
-
-        private static Length ParseLengthWithDefaultUnit(string input)
-        {
-
-            bool hasUnit = input.Any(char.IsLetter);
-
-            return hasUnit
-                ? Length.Parse(input, CultureInfo.InvariantCulture)
-                : Length.FromMeters(double.Parse(input, CultureInfo.InvariantCulture));
-        }
-
-        private static IEnumerable<string> SplitBasedOnOperands(string input)
-        {
-
-            var result = Regex
-                .Split(input, @"(\+|\-|\*|/)")
-                .Where(p => !string.IsNullOrWhiteSpace(p));
-            return result;
+            return parts.FirstOrDefault(t => !operators.Contains(t) && !TryParseQuantity(t));
         }
 
         private double CalculateWithoutUnits(string input)
@@ -193,6 +145,83 @@ namespace CalculatorMethods.BusinessLogic
             return result;
         }
 
+        private static int GetIndexOfAddOrSubForUnits(List<object> itemsList)
+        {
+            return itemsList.FindIndex(x => x is string op && (op == "+" || op == "-"));
+        }
+
+        private static int GetIndexOfMultOrDivForUnits(List<object> items)
+        {
+            return items.FindIndex(x => x is string op && (op == "*" || op == "/"));
+        }
+
+        private static List<object> BuildMixedList(List<string> parts, HashSet<string> operators)
+        {
+            return parts
+                .Select(t => operators.Contains(t)? (object) t
+                : ParseQuantityWithDefaultUnit(t))
+                .ToList();
+        }
+
+        private static IQuantity ParseQuantityWithDefaultUnit(string input)
+        {
+            var txt = input.Replace(" ", "");
+
+            // isolates only the “unit”
+            var unit = new string(txt.SkipWhile(c => char.IsDigit(c) || c == '.').ToArray())
+                                .ToLowerInvariant();
+
+            var lengthUnits = new HashSet<string> { "mm","cm","m","km","dm","hm","dam" };
+            var volumeUnits = new HashSet<string> { "ml","cl","l","kl","dl","dal","hl" };
+            var MassUnits = new HashSet<string> { "mg","cg","dg","g","dag","hg","kg" };
+
+            if (unit == "" || lengthUnits.Contains(unit))
+            {
+                // Empty unit assumes meter
+                return ParseLengthWithDefaultUnit(txt);
+            }
+            else if (volumeUnits.Contains(unit))
+            {
+                return ParseVolumeWithDefaultUnit(txt);
+            }
+            else if (MassUnits.Contains(unit))
+            {
+                return ParseMassWithDefaultUnit(txt);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unit not supported: '{unit}' in '{input}'");
+            }
+        }
+
+        private static Length ParseLengthWithDefaultUnit(string input)
+        {
+            bool hasUnit = input.Any(char.IsLetter);
+            
+            return hasUnit
+                ? Length.Parse(input, CultureInfo.InvariantCulture)
+                : Length.FromMeters(double.Parse(input, CultureInfo.InvariantCulture));
+        }
+
+        private static Volume ParseVolumeWithDefaultUnit(string input)
+        {
+            return Volume.Parse(input, CultureInfo.InvariantCulture);                
+        }
+
+        private static Mass ParseMassWithDefaultUnit(string input)
+        {
+            return Mass.Parse(input, CultureInfo.InvariantCulture);                
+        }
+
+        private static IEnumerable<string> SplitBasedOnOperands(string input)
+        {
+
+            var result = Regex
+                .Split(input, @"(\+|\-|\*|/)")
+                .Where(p => !string.IsNullOrWhiteSpace(p));
+            return result;
+        }      
+
         private static int GetIndexOfAdditionOrSubtraction(List<string> parts)
         {
             return parts.FindIndex(p => p == "+" || p == "-");
@@ -203,11 +232,17 @@ namespace CalculatorMethods.BusinessLogic
             return parts.FindIndex(p => p == "*" || p == "/");
         }
 
-        private bool TryParseQuantity(string token)
+        private static bool TryParseQuantity(string input)
         {
+            input = input.Trim();
+
+            var units = new string
+                (input.SkipWhile(c => char.IsDigit(c) || c == '.').ToArray())
+                .ToLowerInvariant();
             try
             {
-                ParseLengthWithDefaultUnit(token);
+                ParseQuantityWithDefaultUnit(input);
+
                 return true;
             }
             catch
@@ -216,9 +251,12 @@ namespace CalculatorMethods.BusinessLogic
             }
         }
 
-        public double Add(double[] input) => input.Aggregate((a, b) => a + b);
-        public double Subtract(double[] input) => input.Aggregate((a, b) => a - b);
-        public double Multiply(double[] input) => input.Aggregate((a, b) => a * b);
-        public double Divide(double[] input) => input.Aggregate((a, b) => a / b);
+        private double Add(double[] input) => input.Aggregate((a, b) => a + b);
+
+        private double Subtract(double[] input) => input.Aggregate((a, b) => a - b);
+
+        private double Multiply(double[] input) => input.Aggregate((a, b) => a * b);
+
+        private double Divide(double[] input) => input.Aggregate((a, b) => a / b);
     }
 }

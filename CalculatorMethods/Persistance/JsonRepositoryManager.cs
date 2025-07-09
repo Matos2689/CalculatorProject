@@ -7,15 +7,16 @@ using System.Text.Json;
 using CalculatorMethods.Contracts;
 using UnitsNet;
 
-namespace CalculatorMethods.Persistance {
-    public class JsonRepositoryManager {
-
-        public void Save(List<MathLogItem> logs) {
-
+namespace CalculatorMethods.Persistance
+{
+    public class JsonRepositoryManager : IRepository
+    {
+        public void Save(List<MathLogItem> logs)
+        {
             // Convert MathLogItem to MathLogEntity
             var save = logs.ToEntities();
 
-            var options = new JsonSerializerOptions 
+            var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
@@ -27,7 +28,7 @@ namespace CalculatorMethods.Persistance {
 
         public List<MathLogItem> Load()
         {
-            if (!File.Exists("SaveMathlog.json")) 
+            if (!File.Exists("SaveMathlog.json"))
                 return new List<MathLogItem>();
 
             var json = File.ReadAllText("SaveMathlog.json");
@@ -51,7 +52,8 @@ namespace CalculatorMethods.Persistance {
             return result;
         }
 
-        public void Read() {
+        public void Read()
+        {
             Console.WriteLine(File.Exists("SaveMathlog.json")
                 ? File.ReadAllText("SaveMathlog.json")
                 : "There is no file named SaveMathlog.json");

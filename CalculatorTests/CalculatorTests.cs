@@ -336,7 +336,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
-    [DataRow("5m * 10m * 20m", 1000)]
+    [DataRow("5dm * 10hm * 20dam", 100000)]
     public void ShouldMultiplyThreeUnitValues(string input, double expectedResult)
     {
         // Arrange
@@ -348,6 +348,37 @@ public class CalculatorTests
 
         // Assert
         result.QuantityResult.Should().Be(Volume.FromCubicMeters(expectedResult));
+    }
+
+    [TestMethod]
+    public void ShouldAddLitersAndMilliliters()
+    {
+        // Arrange
+        var calculator = new Calculator();
+        
+        string input = "1L + 1l";
+
+        // Act
+        calculator.Calculate(input);
+        var result = calculator.MathLog.First();
+
+        // Assert
+        result.QuantityResult.Should().Be(Volume.FromLiters(2));
+    }
+    
+    [TestMethod]
+    [DataRow("1kg + 1000g", 2)]
+    public void ShouldCalculateUnitsMass(string input, double expectedResult)
+    {
+        // Arrange
+        var calculator = new Calculator();        
+
+        // Act
+        calculator.Calculate(input);
+        var result = calculator.MathLog.First();
+
+        // Assert
+        result.QuantityResult.Should().Be(Mass.FromKilograms(2));
     }
 }
 
