@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.IO;
 using System.Text.RegularExpressions;
 using CalculatorMethods.Contracts;
 using UnitsNet;
@@ -17,10 +19,10 @@ namespace CalculatorMethods.BusinessLogic
             bool hasUnit = input.Any(char.IsLetter);
 
             var mathLog = new MathLogItem(input);
+
             if (hasUnit)
             {
                 mathLog.SetQuantityResult(CalculateWithUnits(input));
-
             }
             else
             {
@@ -28,38 +30,96 @@ namespace CalculatorMethods.BusinessLogic
             }
 
             MathLog.Add(mathLog);
+
             return mathLog;
         }
 
-        private IQuantity CalculateWithUnits(string input)
+        public IQuantity CalculateWithUnits(string input)
         {
-
-            // Only (km, m, cm, mm) pass
+            // Only (km,m,cm,mm) pass
             FoundUnits(input);
 
-            var parts = SplitBasedOnOperands(input).ToArray();
+            var parts = SplitBasedOnOperands(input)
+                              .Select(t => t.Trim())
+                              .Where(t => t.Length > 0)
+                              .ToList();
 
-            int idxOp = Array
-                .FindIndex(parts, p => p == "+" || p == "-" || p == "*" || p == "/");
+            var operators = new HashSet<string> { "+", "-", "*", "/" };
 
-            if (idxOp == -1)
+            ValidateOperators(parts, operators);
+
+            // List containing IQuantity (values) and string (ops)
+            List<object> itemsList = BuildMixedList(parts);
+
+            int index;
+
+            // 1) Multiplication / Division
+            while ((index = GetIndexOfMultOrDivForUnits(itemsList)) != -1)
             {
-                throw new IndexOutOfRangeException("Operator not found!");
+                var op = (string)itemsList[index];
+                dynamic left = itemsList[index - 1];
+                dynamic right = itemsList[index + 1];
+                IQuantity res;
+
+                if (op == "*")
+                {
+                    // Call Length*Length → Area, or Volume*Length→ etc.
+                    res = (IQuantity)(left * right);
+                }
+                else
+                {
+                    double ratio = (double)(left / right);
+                    res = Ratio.FromDecimalFractions(ratio);
+                }
+
+                itemsList[index - 1] = res;
+                itemsList.RemoveRange(index, 2);
             }
 
-            var number1 = ParseLengthWithDefaultUnit(parts[idxOp - 1].Trim());
-            var number2 = ParseLengthWithDefaultUnit(parts[idxOp + 1].Trim());
-
-            char operand = parts[idxOp][0];
-
-            IQuantity result = operand switch
+            // 2) Addition / Subtraction
+            while ((index = GetIndexOfAddOrSubForUnits(itemsList)) != -1)
             {
-                '+' => number1 + number2,
-                '-' => number1 - number2,
-                '*' => number1 * number2,
-                _ => Ratio.FromDecimalFractions(number1 / number2),
-            };
-            return result;
+                var op = (string)itemsList[index];
+                dynamic left = (IQuantity)itemsList[index - 1];
+                dynamic right = (IQuantity)itemsList[index + 1];
+
+                IQuantity res = op == "+"
+                    ? left + right
+                    : left - right;
+
+                itemsList[index - 1] = res;
+                itemsList.RemoveRange(index, 2);
+            }
+
+            return (IQuantity)itemsList[0];
+        }
+
+        private static int GetIndexOfAddOrSubForUnits(List<object> itemsList)
+        {
+            return itemsList.FindIndex(x => x is string op && (op == "+" || op == "-"));
+        }
+
+        private static int GetIndexOfMultOrDivForUnits(List<object> items)
+        {
+            return items.FindIndex(x => x is string op && (op == "*" || op == "/"));
+        }
+
+        private static List<object> BuildMixedList(List<string> parts)
+        {
+            return parts.Select(t => (object)(t is "+" or "-" or "*" or "/"
+                        ? t
+                        : ParseLengthWithDefaultUnit(t)))
+                        .ToList();
+        }
+
+        private void ValidateOperators(List<string> rawTokens, HashSet<string> ops)
+        {
+            var invalid = rawTokens
+                            .FirstOrDefault(t => !ops.Contains(t) && !TryParseQuantity(t));
+
+            if (invalid != null)
+                throw new InvalidOperationException(
+                    $"Operator not found!: '{invalid}'");
         }
 
         private static bool FoundUnits(string input)
@@ -141,6 +201,19 @@ namespace CalculatorMethods.BusinessLogic
         private static int GetIndexOfMultiplyOrDivision(List<string> parts)
         {
             return parts.FindIndex(p => p == "*" || p == "/");
+        }
+
+        private bool TryParseQuantity(string token)
+        {
+            try
+            {
+                ParseLengthWithDefaultUnit(token);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public double Add(double[] input) => input.Aggregate((a, b) => a + b);

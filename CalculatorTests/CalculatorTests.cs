@@ -119,7 +119,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
-    [DataRow("2m + 2m", 4)]
+    [DataRow("2m+2m+2m+2m+2m", 10)]
     [DataRow("15m + 15m", 30)]
     [DataRow("5 m + 5 m", 10)]
     [DataRow("10m + 5m", 15)]
@@ -143,7 +143,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
-    [DataRow("15m - 5m", 10)]
+    [DataRow("15m-5m-5m", 5)]
     [DataRow("50m - 20m", 30)]
     [DataRow("10 m - 5 m", 5)]
     [DataRow("20m - 5m", 15)]
@@ -257,7 +257,7 @@ public class CalculatorTests
         Action act = () => _calculator.Calculate(input);
 
         // Assert
-        act.Should().Throw<IndexOutOfRangeException>().WithMessage("Operator not found!");
+        act.Should().Throw<InvalidOperationException>();
     }
 
     [TestMethod]
@@ -274,7 +274,7 @@ public class CalculatorTests
         Action act = () => _calculator.Calculate(input);
 
         // Assert
-        act.Should().Throw<FormatException>();
+        act.Should().Throw<InvalidOperationException>();
     }
 
     [TestMethod]
@@ -318,37 +318,37 @@ public class CalculatorTests
 
         // Assert
         result.QuantityResult.Should().Be(Length.FromMeters(expectedResult));
+    }    
+
+    [TestMethod]
+    [DataRow("10m + 20m + 30m", 60)]
+    public void ShouldAddThreeUnitValues(string input, double expectedResult)
+    {
+        // Arrange
+        var calculator = new Calculator();
+        calculator.Calculate(input);
+
+        // Act
+        var result = calculator.MathLog.First();
+
+        // Assert
+        result.QuantityResult.Should().Be(Length.FromMeters(expectedResult));
     }
 
-    //[TestMethod]
-    //[DataRow("10m + 20m + 30m", 60)]
-    //public void ShouldAddThreeUnitValues(string input, double expectedResult)
-    //{
-    //    // Arrange
-    //    var calculator = new Calculator();
-    //    calculator.Calculate(input);
+    [TestMethod]
+    [DataRow("5m * 10m * 20m", 1000)]
+    public void ShouldMultiplyThreeUnitValues(string input, double expectedResult)
+    {
+        // Arrange
+        var calculator = new Calculator();
+        calculator.Calculate(input);
 
-    //    // Act
-    //    var result = calculator.MathLog.First();
+        // Act
+        var result = calculator.MathLog.First();
 
-    //    // Assert
-    //    result.QuantityResult.Should().Be(Length.FromMeters(expectedResult));
-    //}
-
-    //[TestMethod]
-    //[DataRow("5m * 10m * 20m", 1000)]
-    //public void ShouldMultiplyThreeUnitValues(string input, double expectedResult)
-    //{
-    //    // Arrange
-    //    var calculator = new Calculator();
-    //    calculator.Calculate(input);
-
-    //    // Act
-    //    var result = calculator.MathLog.First();
-
-    //    // Assert
-    //    result.QuantityResult.Should().Be(Volume.FromCubicMeters(expectedResult));
-    //}
+        // Assert
+        result.QuantityResult.Should().Be(Volume.FromCubicMeters(expectedResult));
+    }
 }
 
 
