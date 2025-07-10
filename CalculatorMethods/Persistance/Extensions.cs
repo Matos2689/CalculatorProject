@@ -14,7 +14,8 @@ namespace CalculatorMethods.Persistance
             { "Millimeter", value => Length.FromMillimeters(value) },
             { "CubicCentimeter", value => Volume.FromCubicCentimeters(value) },
             { "SquareMeter", value => Area.FromSquareMeters(value) },
-            { "CubicMeter", value => Volume.FromCubicMeters(value) }
+            { "CubicMeter", value => Volume.FromCubicMeters(value) },
+            { "DecimalFraction", value => Ratio.FromDecimalFractions(value) }
         };
 
         public static MathLogEntity ToEntity(this MathLogItem item) 
@@ -34,12 +35,10 @@ namespace CalculatorMethods.Persistance
                       "MathLogItem type is not initialized or invalid.")
          };
 
-
         public static IEnumerable<MathLogEntity> ToEntities(this List<MathLogItem> Items)
 
             // For each MathLogItem, convert it to MathLogEntity
             => Items.Select(item => item.ToEntity());
-
 
         public static MathLogItem FromEntity(this MathLogEntity entity)
         {
@@ -53,11 +52,9 @@ namespace CalculatorMethods.Persistance
             return item;
         }
 
-
         public static IEnumerable<MathLogItem> FromEntities(this List<MathLogEntity> entities)
 
             // For each entity, convert it to MathLogItem
-            => entities.Select(element => element.FromEntity());
-        
+            => entities.Select(element => element.FromEntity());        
     }
 }

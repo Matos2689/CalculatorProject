@@ -4,9 +4,12 @@ namespace CalculatorMethods.Persistance
 {
     public class MathLogEntity
     {
-        public string Expression { get; private set; }
-        public double ResultValue { get; private set; }
-        public string? ResultUnit { get; private set; }
+        public string Expression { get; set; }
+        public double ResultValue { get; set; }
+        public string? ResultUnit { get; set; }
+
+        /// Parameterless constructor for deserialization
+        public MathLogEntity() { }
 
         [JsonConstructor]
         public MathLogEntity(

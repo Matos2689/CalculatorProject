@@ -11,6 +11,11 @@ namespace CalculatorMethods.Persistance
 {
     public class JsonRepositoryManager : IRepository
     {
+        private readonly string FilePath;
+        public JsonRepositoryManager(string filePath = "SaveMathlog.json")
+        {
+            FilePath = filePath;
+        }
         public void Save(List<MathLogItem> logs)
         {
             // Convert MathLogItem to MathLogEntity
@@ -23,15 +28,15 @@ namespace CalculatorMethods.Persistance
             };
 
             var json = JsonSerializer.Serialize(save, options);
-            File.WriteAllText("SaveMathlog.json", json);
+            File.WriteAllText(FilePath, json);
         }
 
         public List<MathLogItem> Load()
         {
-            if (!File.Exists("SaveMathlog.json"))
+            if (!File.Exists(FilePath))
                 return new List<MathLogItem>();
 
-            var json = File.ReadAllText("SaveMathlog.json");
+            var json = File.ReadAllText(FilePath);
 
             var option = new JsonSerializerOptions
             {
@@ -54,8 +59,8 @@ namespace CalculatorMethods.Persistance
 
         public void Read()
         {
-            Console.WriteLine(File.Exists("SaveMathlog.json")
-                ? File.ReadAllText("SaveMathlog.json")
+            Console.WriteLine(File.Exists(FilePath)
+                ? File.ReadAllText(FilePath)
                 : "There is no file named SaveMathlog.json");
         }
     }

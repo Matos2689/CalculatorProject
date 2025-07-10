@@ -9,7 +9,7 @@ namespace Program {
 
             var calculator = new Calculator();
             var jsonRepoManager = new JsonRepositoryManager();
-
+           
             ConsoleExecution(calculator, jsonRepoManager);
         }
 
