@@ -14,6 +14,7 @@ namespace CalculatorMethods.Persistance
         public void Save(List<MathLogItem> logs, string filePath)
         {
             var directory = Path.GetDirectoryName(filePath);
+
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
