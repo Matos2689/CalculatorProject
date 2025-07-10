@@ -112,7 +112,6 @@ namespace CalculatorMethods.BusinessLogic
             // Multiplication and Division first
             while ((index = GetIndexOfMultiplyOrDivision(parts)) != -1)
             {
-
                 var left = double.Parse(parts[index - 1]);
                 var right = double.Parse(parts[index + 1]);
 
@@ -127,7 +126,6 @@ namespace CalculatorMethods.BusinessLogic
             // Sum and Subtract last
             while ((index = GetIndexOfAdditionOrSubtraction(parts)) != -1)
             {
-
                 var left = double.Parse(parts[index - 1]);
                 var right = double.Parse(parts[index + 1]);
 
@@ -215,10 +213,9 @@ namespace CalculatorMethods.BusinessLogic
 
         private static IEnumerable<string> SplitBasedOnOperands(string input)
         {
-
-            var result = Regex
-                .Split(input, @"(\+|\-|\*|/)")
+            var result = Regex.Split(input, @"(\+|\-|\*|/)")
                 .Where(p => !string.IsNullOrWhiteSpace(p));
+
             return result;
         }      
 
@@ -234,7 +231,7 @@ namespace CalculatorMethods.BusinessLogic
 
         private static bool TryParseQuantity(string input)
         {
-            input = input.Trim();
+            input = input.Replace(" ", "");
 
             var units = new string
                 (input.SkipWhile(c => char.IsDigit(c) || c == '.').ToArray())
