@@ -8,8 +8,8 @@ namespace CalculatorMethods.Persistance
     {
         private static readonly Dictionary<string, Func<double, IQuantity>> _unitFactory = new()
         {
-            { "Meter", value => Length.FromMeters(value) },
             { "Kilometer", value => Length.FromKilometers(value) },
+            { "Meter", value => Length.FromMeters(value) },            
             { "Centimeter", value => Length.FromCentimeters(value) },
             { "Millimeter", value => Length.FromMillimeters(value) },
             { "CubicCentimeter", value => Volume.FromCubicCentimeters(value) },

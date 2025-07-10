@@ -15,7 +15,6 @@ public class CalculatorTests
     [DataRow("50 + 50", 100)]
     public void ShouldAddNumbersBasedOnString(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -33,7 +32,6 @@ public class CalculatorTests
     [DataRow("20-5-5-5", 5)]
     public void ShouldSubtractNumbersBasedOnStrings(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -52,7 +50,6 @@ public class CalculatorTests
     [DataRow("10*10*10*10", 10000)]
     public void ShouldMultiplyNumbersBasedOnStrings(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -71,7 +68,6 @@ public class CalculatorTests
     [DataRow("40/2/2/2", 5)]
     public void ShouldDivideNumbersBasedOnStrings(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -105,7 +101,6 @@ public class CalculatorTests
     [DataRow("-10 * 2", -20)]
     public void ShouldDoCalculationsWithAnyOperator(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -129,7 +124,6 @@ public class CalculatorTests
     [DataRow("2m + 2m", 4)]
     public void ShouldDoAddNumbersWithUnits(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -151,7 +145,6 @@ public class CalculatorTests
     [DataRow("2m - 1m", 1)]
     public void ShouldDoSubtractNumbersWithUnits(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -171,7 +164,6 @@ public class CalculatorTests
     [DataRow("5m * 25 m", 125)]
     public void ShouldDoMultiplyNumbersWithUnits(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -191,7 +183,6 @@ public class CalculatorTests
     [DataRow("5m / 2m", 2.5)]
     public void ShouldDivideNumbersWithUnits(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -211,7 +202,6 @@ public class CalculatorTests
     [DataRow("1km + 1000", 2)]
     public void ShouldReturnKilometers(string input, double expectedResult)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -231,12 +221,12 @@ public class CalculatorTests
         // Arrange
         Calculator _calculator = new Calculator();
 
-        // Act
-        _calculator.Calculate(input);
         var value = Length.FromMeters(20);
-
         var unit = value.Unit;
         var number = value.Value;
+
+        // Act
+        _calculator.Calculate(input);       
 
         // Assert
         _calculator.MathLog.First().Expression.Should().Be(input);
@@ -247,7 +237,6 @@ public class CalculatorTests
     [TestMethod]
     public void ShouldThrowExceptionForInvalidOperator()
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -266,7 +255,6 @@ public class CalculatorTests
     [DataRow("x + y")]
     public void ShouldThrowExceptionForInvalidFormat(string input)
     {
-
         // Arrange
         Calculator _calculator = new Calculator();
 
@@ -379,7 +367,7 @@ public class CalculatorTests
 
         // Assert
         result.QuantityResult.Should().Be(Mass.FromKilograms(2));
-    }
+    }    
 }
 
 

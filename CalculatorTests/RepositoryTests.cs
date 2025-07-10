@@ -222,39 +222,6 @@ namespace CalculatorTests
 
             // Cleanup
             File.Delete(fileName);
-        }
-
-        //[TestMethod]
-        //public void ShoulDeserializeJsonFileContent()
-        //{
-        //    // Arrange
-        //    var mathLog1 = new MathLogItem("2+2");
-        //    mathLog1.SetNumericResult(4);
-
-        //    var mathLog2 = new MathLogItem("3m+3m");
-        //    mathLog2.SetQuantityResult(Length.FromMeters(6));
-
-        //    var mathLog3 = new MathLogItem("10m/2");
-        //    mathLog3.SetQuantityResult(Ratio.FromDecimalFractions(5));
-
-        //    var logs = new List<MathLogItem> { mathLog1, mathLog2, mathLog3 };
-        //    var manager = new JsonRepositoryManager();
-        //    manager.Save(logs);
-
-        //    // Act
-        //    var loadedLogs = manager.Load();
-
-        //    // Assert
-        //    loadedLogs.Should().HaveCount(3);
-        //    loadedLogs[0].Expression.Should().Be("2+2");
-        //    loadedLogs[0].NumericResult.Should().Be(4);
-        //    loadedLogs[0].Type.Should().Be(MathLogTypes.NumericBased);
-        //    loadedLogs[1].Expression.Should().Be("3m+3m");
-        //    loadedLogs[1].QuantityResult.Should().Be(Length.FromMeters(6));
-        //    loadedLogs[1].Type.Should().Be(MathLogTypes.UnitBased);
-        //    loadedLogs[2].Expression.Should().Be("10m/2");
-        //    loadedLogs[2].QuantityResult.Should().Be(Ratio.FromDecimalFractions(5));
-        //    loadedLogs[2].Type.Should().Be(MathLogTypes.UnitBased);
-        //}
+        }        
     }
 }
