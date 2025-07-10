@@ -10,4 +10,8 @@
     <PackageReference Include="UnitsNet" Version="5.74.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistance\Database\" />
+  </ItemGroup>
+
 </Project>

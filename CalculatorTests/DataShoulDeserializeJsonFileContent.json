@@ -1,0 +1,17 @@
+[
+  {
+    "Expression": "2+2",
+    "ResultValue": 4,
+    "ResultUnit": null
+  },
+  {
+    "Expression": "3m+3m",
+    "ResultValue": 6,
+    "ResultUnit": "Meter"
+  },
+  {
+    "Expression": "10m/2",
+    "ResultValue": 5,
+    "ResultUnit": "DecimalFraction"
+  }
+]

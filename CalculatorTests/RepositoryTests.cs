@@ -9,10 +9,11 @@ namespace CalculatorTests
     [TestClass]
     public class RepositoryTests
     {
+        const string _directory = "C:\\Users\\danie\\source\\repos\\CalculatorProject\\CalculatorTests\\Data\\";
+
         [TestMethod]
         public void ShouldSaveWritesJsonHistoryFile()
         {
-
             // Arrange
             var logs = new List<MathLogItem>();
 
@@ -27,13 +28,13 @@ namespace CalculatorTests
             var sut = new JsonRepositoryManager();
 
             // Act
-            sut.Save(logs);
-            const string fileName = "SaveMathlog.json";
+            string filePath = $"{_directory}ShouldSaveWritesJsonHistoryFile.json";
+            sut.Save(logs, filePath);
 
             // Assert
-            File.Exists(fileName).Should().BeTrue();
+            File.Exists(filePath).Should().BeTrue();
 
-            var json = File.ReadAllText(fileName);
+            var json = File.ReadAllText(filePath);
 
             json.Should().Contain("\"Expression\": \"2+2\"");
             json.Should().Contain("\"ResultValue\": 4");
@@ -42,9 +43,6 @@ namespace CalculatorTests
             json.Should().Contain("\"Expression\": \"2m + 2m\"");
             json.Should().Contain("\"ResultValue\": 4");
             json.Should().Contain("\"ResultUnit\": \"Meter\"");
-
-            // Cleanup
-            File.Delete(fileName);
         }
 
         [TestMethod]
@@ -155,19 +153,16 @@ namespace CalculatorTests
         {
             // Arrange
             var jsonFile = new JsonRepositoryManager();
-            const string fileName = "SaveMathlog.json";
+            string filePath = $"{_directory}ShouldLoadJsonFile.json";
 
             // Act
-            jsonFile.Save(new List<MathLogItem>());
+            jsonFile.Save(new List<MathLogItem>(), filePath);
 
             // Assert
-            File.Exists(fileName).Should().BeTrue();
-            var logs = jsonFile.Load();
+            File.Exists(filePath).Should().BeTrue();
+            var logs = jsonFile.Load(filePath);
             logs.Should().NotBeNull();
             logs.Should().BeEmpty();
-
-            // Cleanup
-            File.Delete(fileName);
         }
 
         [TestMethod]
@@ -175,15 +170,13 @@ namespace CalculatorTests
         {
             // Arrange
             var manager = new JsonRepositoryManager();
-            var filePath = "SaveMathlog.json";
-            if (File.Exists(filePath)) File.Delete(filePath);
+            var filePath = $"{_directory}ShouldReturnEmptyListWhenJsonFileIsMissing.json";
 
             // Act
-            var result = manager.Load();
+            var result = manager.Load(filePath);
 
             // Assert
             result.Should().BeEmpty();
-            File.Exists(filePath).Should().BeFalse();
         }
 
         [TestMethod]
@@ -191,17 +184,14 @@ namespace CalculatorTests
         {
             // Arrange
             var manager = new JsonRepositoryManager();
-            var filePath = "SaveMathlog.json";
+            var filePath = $"{_directory}ShouldReturnEmptyListWhenJsonFileContainsNull.json";
             File.WriteAllText(filePath, "null");
 
             // Act
-            var result = manager.Load();
+            var result = manager.Load(filePath);
 
             // Assert
             result.Should().BeEmpty();
-
-            // Cleanup
-            if (File.Exists(filePath)) File.Delete(filePath);
         }
 
         [TestMethod]
@@ -209,19 +199,16 @@ namespace CalculatorTests
         {
             // Arrange
             var manager = new JsonRepositoryManager();
-            const string fileName = "SaveMathlog.json";
+            string filePath = $"{_directory}ShouldReadJsonFileContent.json";
 
             // Act
-            manager.Save(new List<MathLogItem>());
-            manager.Read();
+            manager.Save(new List<MathLogItem>(), filePath);
+            manager.Read(filePath);
 
             // Assert
-            File.Exists(fileName).Should().BeTrue();
-            var content = File.ReadAllText(fileName);
+            File.Exists(filePath).Should().BeTrue();
+            var content = File.ReadAllText(filePath);
             content.Should().NotBeNullOrEmpty();
-
-            // Cleanup
-            File.Delete(fileName);
         }
 
         [TestMethod]
@@ -238,11 +225,15 @@ namespace CalculatorTests
             mathLog3.SetQuantityResult(Ratio.FromDecimalFractions(5));
 
             var logs = new List<MathLogItem> { mathLog1, mathLog2, mathLog3 };
+
+            var filePath = $"{_directory}ShoulDeserializeJsonFileContent.json";
+
             var manager = new JsonRepositoryManager();
-            manager.Save(logs);
+            manager.Save(logs, filePath);
+            logs.Clear();
 
             // Act
-            var loadedLogs = manager.Load();
+            var loadedLogs = manager.Load(filePath);
 
             // Assert
             loadedLogs.Should().HaveCount(3);
@@ -260,20 +251,27 @@ namespace CalculatorTests
         [TestMethod]
         public void ShouldCreateAndLoadXmlFile()
         {
-            const string FileName = "SaveMathlog.xml";
-
             // Arrange
+            var mathLog1 = new MathLogItem("2+2");
+            mathLog1.SetNumericResult(4);
+
+            var mathLog2 = new MathLogItem("3m+3m");
+            mathLog2.SetQuantityResult(Length.FromMeters(6));
+
+            var mathLog3 = new MathLogItem("10m/2");
+            mathLog3.SetQuantityResult(Ratio.FromDecimalFractions(5));
+
+            var logs = new List<MathLogItem> { mathLog1, mathLog2, mathLog3 };
+
+            string filePath = $"{_directory}ShouldCreateAndLoadXmlFile.xml";
+
             IRepository repo = new XmlRepositoryManager();
 
             // Act
-            repo.Save(new List<MathLogItem>());
+            repo.Save(logs, filePath);
 
             // Assert
-            File.Exists(FileName).Should().BeTrue();
-            repo.Load().Should().BeEmpty();            
-
-            // Cleanup
-            if (File.Exists(FileName)) File.Delete(FileName);
+            File.Exists(filePath).Should().BeTrue();
         }
 
         [TestMethod]
@@ -281,11 +279,10 @@ namespace CalculatorTests
         {
             // Arrange
             var manager = new XmlRepositoryManager();
-            var filePath = "SaveMathlog.xml";
-            if (File.Exists(filePath)) File.Delete(filePath);
+            var filePath = $"{_directory}ShouldLoadReturnEmptyListWhenXmlFileIsMissing.xml";
 
             // Act
-            var result = manager.Load();
+            var result = manager.Load(filePath);
 
             // Assert
             result.Should().BeEmpty();

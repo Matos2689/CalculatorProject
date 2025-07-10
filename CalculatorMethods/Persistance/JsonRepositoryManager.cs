@@ -11,15 +11,16 @@ namespace CalculatorMethods.Persistance
 {
     public class JsonRepositoryManager : IRepository
     {
-        private readonly string FilePath;
-        public JsonRepositoryManager(string filePath = "SaveMathlog.json")
+        public void Save(List<MathLogItem> logs, string filePath)
         {
-            FilePath = filePath;
-        }
-        public void Save(List<MathLogItem> logs)
-        {
+            var directory = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
             // Convert MathLogItem to MathLogEntity
-            var save = logs.ToEntities();
+            var entities = logs.ToEntities();
 
             var options = new JsonSerializerOptions
             {
@@ -27,16 +28,16 @@ namespace CalculatorMethods.Persistance
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
 
-            var json = JsonSerializer.Serialize(save, options);
-            File.WriteAllText(FilePath, json);
+            var json = JsonSerializer.Serialize(entities, options);
+            File.WriteAllText(filePath, json);
         }
 
-        public List<MathLogItem> Load()
+        public List<MathLogItem> Load(string filePath)
         {
-            if (!File.Exists(FilePath))
+            if (!File.Exists(filePath))
                 return new List<MathLogItem>();
 
-            var json = File.ReadAllText(FilePath);
+            var json = File.ReadAllText(filePath);
 
             var option = new JsonSerializerOptions
             {
@@ -57,10 +58,10 @@ namespace CalculatorMethods.Persistance
             return result;
         }
 
-        public void Read()
+        public void Read(string filePath)
         {
-            Console.WriteLine(File.Exists(FilePath)
-                ? File.ReadAllText(FilePath)
+            Console.WriteLine(File.Exists(filePath)
+                ? File.ReadAllText(filePath)
                 : "There is no file named SaveMathlog.json");
         }
     }
