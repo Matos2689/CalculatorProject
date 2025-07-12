@@ -9,7 +9,6 @@ namespace CalculatorMethods.BusinessLogic
 {
     public class Calculator
     {
-
         public List<MathLogItem> MathLog { get; private set; } = [];
         public QuantityParser QuantityParser = new();
         public NumericParser NumericParser = new();
