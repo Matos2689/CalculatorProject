@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfMathLogEntity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MathLogEntity>
+    <Expression>2+2</Expression>
+    <ResultValue>4</ResultValue>
+  </MathLogEntity>
+  <MathLogEntity>
+    <Expression>3m+3m</Expression>
+    <ResultValue>6</ResultValue>
+    <ResultUnit>Meter</ResultUnit>
+  </MathLogEntity>
+  <MathLogEntity>
+    <Expression>10m/2</Expression>
+    <ResultValue>5</ResultValue>
+    <ResultUnit>DecimalFraction</ResultUnit>
+  </MathLogEntity>
+</ArrayOfMathLogEntity>

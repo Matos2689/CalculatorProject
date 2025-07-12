@@ -9,7 +9,8 @@ namespace CalculatorTests
     [TestClass]
     public class RepositoryTests
     {
-        const string _directory = "C:\\Users\\danie\\source\\repos\\CalculatorProject\\CalculatorTests\\Data\\";
+        const string _directory = 
+            "C:\\Users\\danie\\source\\repos\\CalculatorProject\\CalculatorTests\\Data\\";
 
         [TestMethod]
         public void ShouldSaveWritesJsonHistoryFile()
@@ -287,6 +288,34 @@ namespace CalculatorTests
             // Assert
             result.Should().BeEmpty();
             File.Exists(filePath).Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void ShouldLoadXmlFile() 
+        {
+            // Arrange
+            var mathLog1 = new MathLogItem("2+2");
+            mathLog1.SetNumericResult(4);
+
+            var mathLog2 = new MathLogItem("3m+3m");
+            mathLog2.SetQuantityResult(Length.FromMeters(6));
+
+            var mathLog3 = new MathLogItem("10m/2");
+            mathLog3.SetQuantityResult(Ratio.FromDecimalFractions(5));
+
+            var logs = new List<MathLogItem> { mathLog1, mathLog2, mathLog3 };
+
+            string filePath = $"{_directory}ShouldLoadXmlFile.xml";
+
+            IRepository repo = new XmlRepositoryManager();
+
+            repo.Save(logs, filePath); // Save xml
+
+            // Act
+            var loadedLogs = repo.Load(filePath); // Load xml
+
+            // Assert
+            loadedLogs.Should().HaveCount(3);
         }
     }
 }

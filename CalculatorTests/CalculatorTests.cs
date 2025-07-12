@@ -344,7 +344,7 @@ public class CalculatorTests
         // Arrange
         var calculator = new Calculator();
         
-        string input = "1L + 1l";
+        string input = "1 + 1l";
 
         // Act
         calculator.Calculate(input);

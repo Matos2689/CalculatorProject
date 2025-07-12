@@ -20,12 +20,8 @@
     <ProjectReference Include="..\CalculatorMethods\CalculatorMethods.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
 	<ItemGroup>
-		<None Include="Data\**\*.*">
+		<None Update="\CalculatorProject\CalculatorTests\Data\**\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

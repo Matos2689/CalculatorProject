@@ -1,96 +1,78 @@
 ﻿using CalculatorMethods.BusinessLogic;
 using CalculatorMethods.Contracts;
 using CalculatorMethods.Persistance;
+using UnitsNet;
 
 namespace Program {
     public class Program 
     {
-        private const string filePath =
-            @"C:\Users\danie\source\repos\CalculatorProject\CalculatorTests\Data\SaveMathlog.json";
+        // Você pode jogar esse filePath pra dentro da pasta Data, por exemplo
+        private static readonly string filePath =
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.json");
 
         static void Main(string[] args) {
 
-            var dir = Path.GetDirectoryName(filePath)!;
-
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
             var calculator = new Calculator();
-            var jsonRepoManager = new JsonRepositoryManager();            
+            var jsonRepoManager = new JsonRepositoryManager();
+
+            var dataDir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dataDir)) Directory.CreateDirectory(dataDir);
 
             ConsoleExecution(calculator, jsonRepoManager);
         }
         private static void ConsoleExecution(Calculator calc, JsonRepositoryManager JsonRepo)
         {
+            double? lastNumeric = null;
+            IQuantity? lastQuantity = null;
+
             while (true)
             {
                 Console.Write("=> ");
+                if (lastNumeric.HasValue)
+                    Console.Write($"{lastNumeric} ");
+
+                var strInput = Console.ReadLine()?.Trim();
+                if (string.IsNullOrEmpty(strInput) || strInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
+                    break;
+
+                // Special Commands...
+                if (strInput.Equals("save", StringComparison.OrdinalIgnoreCase)) { SaveJSONFile(calc, JsonRepo); continue; }
+                if (strInput.Equals("read", StringComparison.OrdinalIgnoreCase)) { ReadJSONFile(JsonRepo); continue; }
+                if (strInput.Equals("load", StringComparison.OrdinalIgnoreCase)) { LoadJSONFile(calc, JsonRepo); continue; }
+
+                // 2) If only digited a operator
+                string input = strInput;
+                if (lastNumeric.HasValue && strInput.Length > 0 && "+-*/".Contains(strInput[0]))
+                    input = $"{lastNumeric}{strInput}";
 
                 try
                 {
-
-                    string? input = Console.ReadLine();
-
-                    if (input == null || input.Equals("exit", StringComparison.OrdinalIgnoreCase))
-                        break;
-
-                    if (input.Length == 0) continue;
-
-                    if (string.Equals(input, "save", StringComparison.OrdinalIgnoreCase))
+                    // Calculate and show
+                    var log = calc.Calculate(input);
+                    if (log.Type == MathLogTypes.NumericBased)
                     {
-                        SaveJSONFile(calc, JsonRepo);
-                        continue;
+                        Console.WriteLine($"Result: {log.NumericResult}");
+                        lastNumeric = log.NumericResult;           // Update numeric
                     }
-
-                    if (string.Equals(input, "read", StringComparison.OrdinalIgnoreCase))
+                    else // UnitBased
                     {
-                        ReadJSONFile(JsonRepo);
-                        continue;
+                        Console.WriteLine($"Result: {log.QuantityResult}");
+                        lastQuantity = log.QuantityResult;         // Update quantity
+                        lastNumeric = null;
                     }
-
-                    if (string.Equals(input, "load", StringComparison.OrdinalIgnoreCase))
-                    {
-                        LoadJSONFile(calc, JsonRepo);
-                        continue;
-                    }
-
-                    EvaluateAndDisplayResult(input, calc);
 
                     ShowCalculationHistory(calc);
                 }
                 catch (FormatException fx)
                 {
-
                     Console.WriteLine($"Invalid Format: {fx.Message}");
                 }
                 catch (Exception ex)
                 {
-
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
-        }
-
-        private static void EvaluateAndDisplayResult(string input, Calculator calc)
-        {
-            try
-            {
-                var log = calc.Calculate(input);
-
-                if (log.Type == MathLogTypes.NumericBased)
-                {
-                    Console.WriteLine($"Result: {log.NumericResult}");
-                }
-                else if (log.Type == MathLogTypes.UnitBased)
-                {
-                    Console.WriteLine($"Result: {log.QuantityResult}");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Unexpected Error: {ex.Message}");
-            }
-        }
+        }        
 
         private static void SaveJSONFile(Calculator calc, JsonRepositoryManager JsonClass)
         {
