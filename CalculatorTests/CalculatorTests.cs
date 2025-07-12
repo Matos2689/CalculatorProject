@@ -9,7 +9,6 @@ namespace CalculatorTests;
 [TestClass]
 public class CalculatorTests
 {
-
     [TestMethod]
     [DataRow("2+2+2+2", 8)]
     [DataRow("50 + 50", 100)]
