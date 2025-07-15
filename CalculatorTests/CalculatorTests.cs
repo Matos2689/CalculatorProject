@@ -366,7 +366,22 @@ public class CalculatorTests
 
         // Assert
         result.QuantityResult.Should().Be(Mass.FromKilograms(2));
-    }    
+    }
+
+    [TestMethod]
+    public void ShouldMakeTreatmentOfPontuation()
+    {
+        // Arrange
+        var calculator = new Calculator();
+        string input = "1,5m + 2,5m";
+
+        // Act
+        calculator.Calculate(input);
+        var result = calculator.MathLog.First();
+
+        // Assert
+        result.QuantityResult.Should().Be(Length.FromMeters(4));
+    }
 }
 
 

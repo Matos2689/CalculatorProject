@@ -99,14 +99,15 @@ namespace CalculatorMethods.BusinessLogic
                     continue;
                 }
 
-                var numberPart = new string(txt.TakeWhile(c => char.IsDigit(c) || c == '.').ToArray());
-                var unitPart = new string(txt.SkipWhile(c => char.IsDigit(c) || c == '.').ToArray());
+                var numberPart = new string(txt.TakeWhile(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
+                var unitPart = new string(txt.SkipWhile(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
 
                 // if empty unitPart, use default unit
                 if (string.IsNullOrEmpty(unitPart))
                     unitPart = defaultUnit;
 
                 var txtForParser = numberPart + unitPart;
+                txtForParser = txtForParser.Replace(",", ".");
 
                 // calls the correct parser
                 object parsed = unitPart switch

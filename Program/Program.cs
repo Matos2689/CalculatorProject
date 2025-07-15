@@ -41,9 +41,16 @@ namespace Program {
             {
                 Console.Write("\n=> ");                
 
-                var strInput = Console.ReadLine()?.Trim();
-                if (string.IsNullOrEmpty(strInput) || strInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
+                var strInput = Console.ReadLine().Trim();
+
+                if (strInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
                     break;
+
+                if (string.IsNullOrEmpty(strInput))
+                {
+                    Console.WriteLine("Please enter a valid expression or command.");
+                    continue;
+                }
 
                 // Special Commands...
                 if (strInput.Equals("savejson", StringComparison.OrdinalIgnoreCase)) 
@@ -57,12 +64,14 @@ namespace Program {
                 { 
                     xmlRepo.Save(calc.MathLog, XmlPath); 
                     Console.WriteLine("History saved to SaveMathlog.xml\n");
-                    continue; }
+                    continue; 
+                }
 
                 if (strInput.Equals("savesql", StringComparison.OrdinalIgnoreCase))
                 { sqlRepo.Save(calc.MathLog, null!); 
                     Console.WriteLine("History saved to SQL Database\n");
-                    continue; }
+                    continue; 
+                }
 
                 if (strInput.Equals("loadjson", StringComparison.OrdinalIgnoreCase)) 
                 { 
