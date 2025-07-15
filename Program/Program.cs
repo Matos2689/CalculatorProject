@@ -35,9 +35,7 @@ namespace Program {
             XmlRepositoryManager xmlRepo,
             AdoNetRepositoryManager sqlRepo
             )
-        {
-            double? lastNumeric = null;
-            IQuantity? lastQuantity = null;
+        {            
 
             while (true)
             {
@@ -72,7 +70,7 @@ namespace Program {
                     calc.MathLog.Clear();
                     calc.MathLog.AddRange(jsonRepo.Load(JsonPath));
                     ShowCalculationHistory(calc);
-                    Console.WriteLine("History loaded from SaveMathlog.json\n");
+                    Console.WriteLine("\nHistory loaded from SaveMathlog.json\n");
                     continue;
                 }
 
@@ -81,7 +79,7 @@ namespace Program {
                     calc.MathLog.Clear();
                     calc.MathLog.AddRange(xmlRepo.Load(XmlPath));
                     ShowCalculationHistory(calc);
-                    Console.WriteLine("History loaded from SaveMathlog.xml\n");
+                    Console.WriteLine("\nHistory loaded from SaveMathlog.xml\n");
                     continue;
                 }
 
@@ -90,14 +88,17 @@ namespace Program {
                     calc.MathLog.Clear();
                     calc.MathLog.AddRange(sqlRepo.Load(null!));
                     ShowCalculationHistory(calc);
-                    Console.WriteLine("History loaded from SQL Database\n");
+                    Console.WriteLine("\nHistory loaded from SQL Database\n");
                     continue;
                 }                
             
-                if (strInput.Equals("clean", StringComparison.OrdinalIgnoreCase))
-                { 
-                    lastNumeric = null; 
-                    continue; 
+                if (strInput.Equals("clear", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.Clear();
+                    calc.MathLog.Clear();
+                    ShowCalculationHistory(calc);
+                    Console.WriteLine("\nHistory cleared\n");
+                    continue;
                 }  
 
                 try
