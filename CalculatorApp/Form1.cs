@@ -259,5 +259,10 @@ namespace CalculatorApp
                 MessageBox.Show($"Error saving to SQL: {ex.Message}");
             }
         }
+
+        private void ButtonPercentage_Click(object sender, EventArgs e)
+        {
+            textBoxExpression.AppendText("%");
+        }
     }
 }

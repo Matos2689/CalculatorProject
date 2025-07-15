@@ -382,6 +382,24 @@ public class CalculatorTests
         // Assert
         result.QuantityResult.Should().Be(Length.FromMeters(4));
     }
+
+    [TestMethod]
+    [DataRow("50% + 50%", 1)]
+    [DataRow("50% * 10", 5)]
+    [DataRow("50% 40", 20)]
+
+    public void ShouldCalculatePercentage(string input, double expectedResul)
+    {
+        // Arrange
+        var calculator = new Calculator();        
+
+        // Act
+        calculator.Calculate(input);
+        var result = calculator.MathLog.First();
+
+        // Assert
+        result.NumericResult.Should().Be(expectedResul);
+    }
 }
 
 

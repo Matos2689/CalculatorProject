@@ -62,13 +62,14 @@
             ButtonSaveJson = new Button();
             ButtonSaveXml = new Button();
             ButtonSaveSQL = new Button();
+            ButtonPercentage = new Button();
             SuspendLayout();
             // 
             // ButtomAdd
             // 
             ButtomAdd.Cursor = Cursors.Hand;
             ButtomAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtomAdd.Location = new Point(428, 254);
+            ButtomAdd.Location = new Point(428, 413);
             ButtomAdd.Name = "ButtomAdd";
             ButtomAdd.Size = new Size(94, 29);
             ButtomAdd.TabIndex = 1;
@@ -79,7 +80,7 @@
             // ButtomSubtract
             // 
             ButtomSubtract.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtomSubtract.Location = new Point(428, 304);
+            ButtomSubtract.Location = new Point(428, 363);
             ButtomSubtract.Name = "ButtomSubtract";
             ButtomSubtract.Size = new Size(94, 29);
             ButtomSubtract.TabIndex = 2;
@@ -90,7 +91,7 @@
             // ButtonMultiply
             // 
             ButtonMultiply.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonMultiply.Location = new Point(428, 405);
+            ButtonMultiply.Location = new Point(428, 312);
             ButtonMultiply.Name = "ButtonMultiply";
             ButtonMultiply.Size = new Size(94, 29);
             ButtonMultiply.TabIndex = 3;
@@ -101,7 +102,7 @@
             // ButtonDivide
             // 
             ButtonDivide.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonDivide.Location = new Point(428, 355);
+            ButtonDivide.Location = new Point(428, 263);
             ButtonDivide.Name = "ButtonDivide";
             ButtonDivide.Size = new Size(94, 29);
             ButtonDivide.TabIndex = 4;
@@ -113,7 +114,7 @@
             // 
             ButtonClear.BackColor = Color.Silver;
             ButtonClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonClear.Location = new Point(305, 449);
+            ButtonClear.Location = new Point(71, 229);
             ButtonClear.Name = "ButtonClear";
             ButtonClear.Size = new Size(94, 29);
             ButtonClear.TabIndex = 5;
@@ -125,7 +126,7 @@
             // 
             buttonCalculate.BackColor = SystemColors.InactiveCaption;
             buttonCalculate.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            buttonCalculate.Location = new Point(305, 405);
+            buttonCalculate.Location = new Point(428, 458);
             buttonCalculate.Name = "buttonCalculate";
             buttonCalculate.Size = new Size(94, 29);
             buttonCalculate.TabIndex = 6;
@@ -136,7 +137,7 @@
             // ButtonNumber1
             // 
             ButtonNumber1.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonNumber1.Location = new Point(71, 254);
+            ButtonNumber1.Location = new Point(71, 365);
             ButtonNumber1.Name = "ButtonNumber1";
             ButtonNumber1.Size = new Size(94, 29);
             ButtonNumber1.TabIndex = 7;
@@ -149,7 +150,7 @@
             textBoxExpression.BackColor = SystemColors.InactiveCaptionText;
             textBoxExpression.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             textBoxExpression.ForeColor = Color.FromArgb(255, 255, 128);
-            textBoxExpression.Location = new Point(71, 44);
+            textBoxExpression.Location = new Point(71, 58);
             textBoxExpression.Name = "textBoxExpression";
             textBoxExpression.Size = new Size(429, 34);
             textBoxExpression.TabIndex = 9;
@@ -158,7 +159,7 @@
             // ButtonNumber2
             // 
             ButtonNumber2.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonNumber2.Location = new Point(188, 254);
+            ButtonNumber2.Location = new Point(188, 363);
             ButtonNumber2.Name = "ButtonNumber2";
             ButtonNumber2.Size = new Size(94, 29);
             ButtonNumber2.TabIndex = 10;
@@ -169,7 +170,7 @@
             // ButtonNumber4
             // 
             ButtonNumber4.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonNumber4.Location = new Point(71, 304);
+            ButtonNumber4.Location = new Point(71, 313);
             ButtonNumber4.Name = "ButtonNumber4";
             ButtonNumber4.Size = new Size(94, 29);
             ButtonNumber4.TabIndex = 12;
@@ -180,7 +181,7 @@
             // ButtonNumber3
             // 
             ButtonNumber3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonNumber3.Location = new Point(305, 254);
+            ButtonNumber3.Location = new Point(305, 362);
             ButtonNumber3.Name = "ButtonNumber3";
             ButtonNumber3.Size = new Size(94, 29);
             ButtonNumber3.TabIndex = 20;
@@ -191,7 +192,7 @@
             // ButtonNumber5
             // 
             ButtonNumber5.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonNumber5.Location = new Point(188, 304);
+            ButtonNumber5.Location = new Point(188, 313);
             ButtonNumber5.Name = "ButtonNumber5";
             ButtonNumber5.Size = new Size(94, 29);
             ButtonNumber5.TabIndex = 21;
@@ -202,7 +203,7 @@
             // ButtonNumber6
             // 
             ButtonNumber6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonNumber6.Location = new Point(305, 304);
+            ButtonNumber6.Location = new Point(305, 313);
             ButtonNumber6.Name = "ButtonNumber6";
             ButtonNumber6.Size = new Size(94, 29);
             ButtonNumber6.TabIndex = 22;
@@ -213,7 +214,7 @@
             // ButtonNumber7
             // 
             ButtonNumber7.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonNumber7.Location = new Point(71, 355);
+            ButtonNumber7.Location = new Point(71, 264);
             ButtonNumber7.Name = "ButtonNumber7";
             ButtonNumber7.Size = new Size(94, 29);
             ButtonNumber7.TabIndex = 23;
@@ -224,7 +225,7 @@
             // ButtonNumber8
             // 
             ButtonNumber8.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonNumber8.Location = new Point(188, 355);
+            ButtonNumber8.Location = new Point(188, 264);
             ButtonNumber8.Name = "ButtonNumber8";
             ButtonNumber8.Size = new Size(94, 29);
             ButtonNumber8.TabIndex = 24;
@@ -235,7 +236,7 @@
             // ButtonNumber9
             // 
             ButtonNumber9.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonNumber9.Location = new Point(305, 355);
+            ButtonNumber9.Location = new Point(305, 263);
             ButtonNumber9.Name = "ButtonNumber9";
             ButtonNumber9.Size = new Size(94, 29);
             ButtonNumber9.TabIndex = 25;
@@ -246,7 +247,7 @@
             // ButtonNumber0
             // 
             ButtonNumber0.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonNumber0.Location = new Point(188, 405);
+            ButtonNumber0.Location = new Point(188, 414);
             ButtonNumber0.Name = "ButtonNumber0";
             ButtonNumber0.Size = new Size(94, 29);
             ButtonNumber0.TabIndex = 26;
@@ -257,7 +258,7 @@
             // ButtonPoint
             // 
             ButtonPoint.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
-            ButtonPoint.Location = new Point(71, 405);
+            ButtonPoint.Location = new Point(305, 413);
             ButtonPoint.Name = "ButtonPoint";
             ButtonPoint.Size = new Size(94, 29);
             ButtonPoint.TabIndex = 27;
@@ -269,7 +270,7 @@
             // 
             ButtonMeter.BackColor = Color.LightSteelBlue;
             ButtonMeter.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonMeter.Location = new Point(71, 141);
+            ButtonMeter.Location = new Point(75, 98);
             ButtonMeter.Name = "ButtonMeter";
             ButtonMeter.Size = new Size(54, 29);
             ButtonMeter.TabIndex = 28;
@@ -281,7 +282,7 @@
             // 
             ButtonMillimeter.BackColor = Color.LightSteelBlue;
             ButtonMillimeter.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonMillimeter.Location = new Point(131, 141);
+            ButtonMillimeter.Location = new Point(135, 98);
             ButtonMillimeter.Name = "ButtonMillimeter";
             ButtonMillimeter.Size = new Size(56, 29);
             ButtonMillimeter.TabIndex = 29;
@@ -293,7 +294,7 @@
             // 
             ButtonCentimeters.BackColor = Color.LightSteelBlue;
             ButtonCentimeters.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonCentimeters.Location = new Point(193, 141);
+            ButtonCentimeters.Location = new Point(197, 98);
             ButtonCentimeters.Name = "ButtonCentimeters";
             ButtonCentimeters.Size = new Size(54, 29);
             ButtonCentimeters.TabIndex = 30;
@@ -305,7 +306,7 @@
             // 
             ButtonKilometers.BackColor = Color.LightSteelBlue;
             ButtonKilometers.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonKilometers.Location = new Point(253, 141);
+            ButtonKilometers.Location = new Point(257, 98);
             ButtonKilometers.Name = "ButtonKilometers";
             ButtonKilometers.Size = new Size(54, 29);
             ButtonKilometers.TabIndex = 31;
@@ -317,7 +318,7 @@
             // 
             ButtonExit.BackColor = Color.DarkOrange;
             ButtonExit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonExit.Location = new Point(429, 449);
+            ButtonExit.Location = new Point(493, 12);
             ButtonExit.Name = "ButtonExit";
             ButtonExit.Size = new Size(97, 29);
             ButtonExit.TabIndex = 32;
@@ -329,7 +330,7 @@
             // 
             ButtonLiter.BackColor = Color.LightSteelBlue;
             ButtonLiter.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonLiter.Location = new Point(71, 211);
+            ButtonLiter.Location = new Point(75, 168);
             ButtonLiter.Name = "ButtonLiter";
             ButtonLiter.Size = new Size(54, 29);
             ButtonLiter.TabIndex = 33;
@@ -341,7 +342,7 @@
             // 
             ButtonMilliLiters.BackColor = Color.LightSteelBlue;
             ButtonMilliLiters.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonMilliLiters.Location = new Point(131, 211);
+            ButtonMilliLiters.Location = new Point(135, 168);
             ButtonMilliLiters.Name = "ButtonMilliLiters";
             ButtonMilliLiters.Size = new Size(56, 29);
             ButtonMilliLiters.TabIndex = 34;
@@ -353,7 +354,7 @@
             // 
             ButtonCentiliter.BackColor = Color.LightSteelBlue;
             ButtonCentiliter.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonCentiliter.Location = new Point(193, 211);
+            ButtonCentiliter.Location = new Point(197, 168);
             ButtonCentiliter.Name = "ButtonCentiliter";
             ButtonCentiliter.Size = new Size(54, 29);
             ButtonCentiliter.TabIndex = 35;
@@ -365,7 +366,7 @@
             // 
             ButtonKiloliter.BackColor = Color.LightSteelBlue;
             ButtonKiloliter.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonKiloliter.Location = new Point(253, 211);
+            ButtonKiloliter.Location = new Point(257, 168);
             ButtonKiloliter.Name = "ButtonKiloliter";
             ButtonKiloliter.Size = new Size(54, 29);
             ButtonKiloliter.TabIndex = 36;
@@ -377,7 +378,7 @@
             // 
             ButtonGram.BackColor = Color.LightSteelBlue;
             ButtonGram.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonGram.Location = new Point(71, 176);
+            ButtonGram.Location = new Point(75, 133);
             ButtonGram.Name = "ButtonGram";
             ButtonGram.Size = new Size(54, 29);
             ButtonGram.TabIndex = 37;
@@ -389,7 +390,7 @@
             // 
             ButtonMilligram.BackColor = Color.LightSteelBlue;
             ButtonMilligram.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonMilligram.Location = new Point(131, 176);
+            ButtonMilligram.Location = new Point(135, 133);
             ButtonMilligram.Name = "ButtonMilligram";
             ButtonMilligram.Size = new Size(56, 29);
             ButtonMilligram.TabIndex = 38;
@@ -401,7 +402,7 @@
             // 
             ButtonCentigram.BackColor = Color.LightSteelBlue;
             ButtonCentigram.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonCentigram.Location = new Point(193, 176);
+            ButtonCentigram.Location = new Point(197, 133);
             ButtonCentigram.Name = "ButtonCentigram";
             ButtonCentigram.Size = new Size(54, 29);
             ButtonCentigram.TabIndex = 39;
@@ -413,7 +414,7 @@
             // 
             ButtonKilogram.BackColor = Color.LightSteelBlue;
             ButtonKilogram.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            ButtonKilogram.Location = new Point(253, 176);
+            ButtonKilogram.Location = new Point(257, 133);
             ButtonKilogram.Name = "ButtonKilogram";
             ButtonKilogram.Size = new Size(54, 29);
             ButtonKilogram.TabIndex = 40;
@@ -423,7 +424,7 @@
             // 
             // ButtonSaveJson
             // 
-            ButtonSaveJson.Location = new Point(313, 141);
+            ButtonSaveJson.Location = new Point(317, 98);
             ButtonSaveJson.Name = "ButtonSaveJson";
             ButtonSaveJson.Size = new Size(129, 29);
             ButtonSaveJson.TabIndex = 41;
@@ -433,7 +434,7 @@
             // 
             // ButtonSaveXml
             // 
-            ButtonSaveXml.Location = new Point(313, 176);
+            ButtonSaveXml.Location = new Point(317, 133);
             ButtonSaveXml.Name = "ButtonSaveXml";
             ButtonSaveXml.Size = new Size(129, 29);
             ButtonSaveXml.TabIndex = 42;
@@ -443,7 +444,7 @@
             // 
             // ButtonSaveSQL
             // 
-            ButtonSaveSQL.Location = new Point(313, 211);
+            ButtonSaveSQL.Location = new Point(317, 168);
             ButtonSaveSQL.Name = "ButtonSaveSQL";
             ButtonSaveSQL.Size = new Size(129, 29);
             ButtonSaveSQL.TabIndex = 43;
@@ -451,11 +452,23 @@
             ButtonSaveSQL.UseVisualStyleBackColor = true;
             ButtonSaveSQL.Click += ButtonSaveSQL_Click;
             // 
+            // ButtonPercentage
+            // 
+            ButtonPercentage.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            ButtonPercentage.Location = new Point(71, 414);
+            ButtonPercentage.Name = "ButtonPercentage";
+            ButtonPercentage.Size = new Size(94, 29);
+            ButtonPercentage.TabIndex = 44;
+            ButtonPercentage.Text = "%";
+            ButtonPercentage.UseVisualStyleBackColor = true;
+            ButtonPercentage.Click += ButtonPercentage_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(602, 514);
+            Controls.Add(ButtonPercentage);
             Controls.Add(ButtonSaveSQL);
             Controls.Add(ButtonSaveXml);
             Controls.Add(ButtonSaveJson);
@@ -534,5 +547,6 @@
         private Button ButtonSaveJson;
         private Button ButtonSaveXml;
         private Button ButtonSaveSQL;
+        private Button ButtonPercentage;
     }
 }
