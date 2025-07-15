@@ -6,59 +6,112 @@ using UnitsNet;
 namespace Program {
     public class Program 
     {
-        // Você pode jogar esse filePath pra dentro da pasta Data, por exemplo
-        private static readonly string filePath =
+        private static readonly string JsonPath =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.json");
+
+        private static readonly string XmlPath =
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.xml");
+
+        // Connection string to SQL
+        private const string ConnStr =
+            "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
 
         static void Main(string[] args) {
 
             var calculator = new Calculator();
-            var jsonRepoManager = new JsonRepositoryManager();
 
-            var dataDir = Path.GetDirectoryName(filePath);
+            var jsonRepo = new JsonRepositoryManager();
+            var xmlRepo = new XmlRepositoryManager();
+            var sqlRepo = new AdoNetRepositoryManager(ConnStr);
+
+            var dataDir = Path.GetDirectoryName(JsonPath);
             if (!Directory.Exists(dataDir)) Directory.CreateDirectory(dataDir);
 
-            ConsoleExecution(calculator, jsonRepoManager);
+            ConsoleExecution(calculator, jsonRepo, xmlRepo, sqlRepo);
         }
-        private static void ConsoleExecution(Calculator calc, JsonRepositoryManager JsonRepo)
+        private static void ConsoleExecution(
+            Calculator calc, 
+            JsonRepositoryManager jsonRepo,
+            XmlRepositoryManager xmlRepo,
+            AdoNetRepositoryManager sqlRepo
+            )
         {
             double? lastNumeric = null;
             IQuantity? lastQuantity = null;
 
             while (true)
             {
-                Console.Write("=> ");
-                if (lastNumeric.HasValue)
-                    Console.Write($"{lastNumeric} ");
+                Console.Write("\n=> ");                
 
                 var strInput = Console.ReadLine()?.Trim();
                 if (string.IsNullOrEmpty(strInput) || strInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
                     break;
 
                 // Special Commands...
-                if (strInput.Equals("save", StringComparison.OrdinalIgnoreCase)) { SaveJSONFile(calc, JsonRepo); continue; }
-                if (strInput.Equals("read", StringComparison.OrdinalIgnoreCase)) { ReadJSONFile(JsonRepo); continue; }
-                if (strInput.Equals("load", StringComparison.OrdinalIgnoreCase)) { LoadJSONFile(calc, JsonRepo); continue; }
+                if (strInput.Equals("savejson", StringComparison.OrdinalIgnoreCase)) 
+                { 
+                    jsonRepo.Save(calc.MathLog, JsonPath); 
+                    Console.WriteLine("History saved to SaveMathlog.json\n");
+                    continue; 
+                }
 
-                // 2) If only digited a operator
-                string input = strInput;
-                if (lastNumeric.HasValue && strInput.Length > 0 && "+-*/".Contains(strInput[0]))
-                    input = $"{lastNumeric}{strInput}";
+                if (strInput.Equals("savexml", StringComparison.OrdinalIgnoreCase))
+                { 
+                    xmlRepo.Save(calc.MathLog, XmlPath); 
+                    Console.WriteLine("History saved to SaveMathlog.xml\n");
+                    continue; }
+
+                if (strInput.Equals("savesql", StringComparison.OrdinalIgnoreCase))
+                { sqlRepo.Save(calc.MathLog, null!); 
+                    Console.WriteLine("History saved to SQL Database\n");
+                    continue; }
+
+                if (strInput.Equals("loadjson", StringComparison.OrdinalIgnoreCase)) 
+                { 
+                    jsonRepo.Load(JsonPath);
+                    calc.MathLog.Clear();
+                    calc.MathLog.AddRange(jsonRepo.Load(JsonPath));
+                    ShowCalculationHistory(calc);
+                    Console.WriteLine("History loaded from SaveMathlog.json\n");
+                    continue;
+                }
+
+                if(strInput.Equals("loadxml", StringComparison.OrdinalIgnoreCase)) 
+                { 
+                    calc.MathLog.Clear();
+                    calc.MathLog.AddRange(xmlRepo.Load(XmlPath));
+                    ShowCalculationHistory(calc);
+                    Console.WriteLine("History loaded from SaveMathlog.xml\n");
+                    continue;
+                }
+
+                if(strInput.Equals("loadsql", StringComparison.OrdinalIgnoreCase)) 
+                { 
+                    calc.MathLog.Clear();
+                    calc.MathLog.AddRange(sqlRepo.Load(null!));
+                    ShowCalculationHistory(calc);
+                    Console.WriteLine("History loaded from SQL Database\n");
+                    continue;
+                }                
+            
+                if (strInput.Equals("clean", StringComparison.OrdinalIgnoreCase))
+                { 
+                    lastNumeric = null; 
+                    continue; 
+                }  
 
                 try
                 {
                     // Calculate and show
-                    var log = calc.Calculate(input);
+                    var log = calc.Calculate(strInput);
+
                     if (log.Type == MathLogTypes.NumericBased)
                     {
                         Console.WriteLine($"Result: {log.NumericResult}");
-                        lastNumeric = log.NumericResult;           // Update numeric
                     }
-                    else // UnitBased
+                    else 
                     {
                         Console.WriteLine($"Result: {log.QuantityResult}");
-                        lastQuantity = log.QuantityResult;         // Update quantity
-                        lastNumeric = null;
                     }
 
                     ShowCalculationHistory(calc);
@@ -72,26 +125,6 @@ namespace Program {
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
-        }        
-
-        private static void SaveJSONFile(Calculator calc, JsonRepositoryManager JsonClass)
-        {
-            JsonClass.Save(calc.MathLog, filePath);
-            Console.WriteLine("History saved in SaveMathlog.json\n");
-        }
-
-        private static void LoadJSONFile(Calculator calc, JsonRepositoryManager jsonRepo)
-        {
-            var loadItems = jsonRepo.Load( filePath);
-            calc.MathLog.Clear();
-            calc.MathLog.AddRange(loadItems);
-            Console.WriteLine("History loaded from SaveMathlog.json\n");
-        }
-
-        private static void ReadJSONFile(JsonRepositoryManager JsonClass)
-        {
-            JsonClass.Read( filePath);
-            Console.WriteLine("File Read Successfully!\n");
         }
 
         private static void ShowCalculationHistory(Calculator calc)
