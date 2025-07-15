@@ -63,6 +63,7 @@
             ButtonSaveXml = new Button();
             ButtonSaveSQL = new Button();
             ButtonPercentage = new Button();
+            ButtonBackSpaces = new Button();
             SuspendLayout();
             // 
             // ButtomAdd
@@ -118,7 +119,7 @@
             ButtonClear.Name = "ButtonClear";
             ButtonClear.Size = new Size(94, 29);
             ButtonClear.TabIndex = 5;
-            ButtonClear.Text = "Clear";
+            ButtonClear.Text = "C";
             ButtonClear.UseVisualStyleBackColor = false;
             ButtonClear.Click += ButtonClear_Click;
             // 
@@ -152,7 +153,7 @@
             textBoxExpression.ForeColor = Color.FromArgb(255, 255, 128);
             textBoxExpression.Location = new Point(71, 58);
             textBoxExpression.Name = "textBoxExpression";
-            textBoxExpression.Size = new Size(429, 34);
+            textBoxExpression.Size = new Size(375, 34);
             textBoxExpression.TabIndex = 9;
             textBoxExpression.TextChanged += textBoxExpression_TextChanged;
             // 
@@ -424,32 +425,38 @@
             // 
             // ButtonSaveJson
             // 
+            ButtonSaveJson.BackColor = Color.Gold;
+            ButtonSaveJson.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Italic);
             ButtonSaveJson.Location = new Point(317, 98);
             ButtonSaveJson.Name = "ButtonSaveJson";
             ButtonSaveJson.Size = new Size(129, 29);
             ButtonSaveJson.TabIndex = 41;
             ButtonSaveJson.Text = "Save to JSON";
-            ButtonSaveJson.UseVisualStyleBackColor = true;
+            ButtonSaveJson.UseVisualStyleBackColor = false;
             ButtonSaveJson.Click += ButtonSaveJson_Click;
             // 
             // ButtonSaveXml
             // 
+            ButtonSaveXml.BackColor = Color.Gold;
+            ButtonSaveXml.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Italic);
             ButtonSaveXml.Location = new Point(317, 133);
             ButtonSaveXml.Name = "ButtonSaveXml";
             ButtonSaveXml.Size = new Size(129, 29);
             ButtonSaveXml.TabIndex = 42;
             ButtonSaveXml.Text = "Save to XML";
-            ButtonSaveXml.UseVisualStyleBackColor = true;
+            ButtonSaveXml.UseVisualStyleBackColor = false;
             ButtonSaveXml.Click += ButtonSaveXml_Click;
             // 
             // ButtonSaveSQL
             // 
+            ButtonSaveSQL.BackColor = Color.Gold;
+            ButtonSaveSQL.Font = new Font("Segoe UI", 9F, FontStyle.Bold | FontStyle.Italic);
             ButtonSaveSQL.Location = new Point(317, 168);
             ButtonSaveSQL.Name = "ButtonSaveSQL";
             ButtonSaveSQL.Size = new Size(129, 29);
             ButtonSaveSQL.TabIndex = 43;
             ButtonSaveSQL.Text = "Save to SQL";
-            ButtonSaveSQL.UseVisualStyleBackColor = true;
+            ButtonSaveSQL.UseVisualStyleBackColor = false;
             ButtonSaveSQL.Click += ButtonSaveSQL_Click;
             // 
             // ButtonPercentage
@@ -463,11 +470,24 @@
             ButtonPercentage.UseVisualStyleBackColor = true;
             ButtonPercentage.Click += ButtonPercentage_Click;
             // 
+            // ButtonBackSpaces
+            // 
+            ButtonBackSpaces.BackColor = Color.Silver;
+            ButtonBackSpaces.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            ButtonBackSpaces.Location = new Point(188, 229);
+            ButtonBackSpaces.Name = "ButtonBackSpaces";
+            ButtonBackSpaces.Size = new Size(94, 29);
+            ButtonBackSpaces.TabIndex = 45;
+            ButtonBackSpaces.Text = "BackSpaces";
+            ButtonBackSpaces.UseVisualStyleBackColor = false;
+            ButtonBackSpaces.Click += ButtonBackSpaces_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(602, 514);
+            Controls.Add(ButtonBackSpaces);
             Controls.Add(ButtonPercentage);
             Controls.Add(ButtonSaveSQL);
             Controls.Add(ButtonSaveXml);
@@ -548,5 +568,6 @@
         private Button ButtonSaveXml;
         private Button ButtonSaveSQL;
         private Button ButtonPercentage;
+        private Button ButtonBackSpaces;
     }
 }

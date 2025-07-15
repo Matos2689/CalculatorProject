@@ -387,7 +387,6 @@ public class CalculatorTests
     [DataRow("50% + 50%", 1)]
     [DataRow("50% * 10", 5)]
     [DataRow("50% 40", 20)]
-
     public void ShouldCalculatePercentage(string input, double expectedResul)
     {
         // Arrange

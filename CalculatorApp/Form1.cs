@@ -262,7 +262,21 @@ namespace CalculatorApp
 
         private void ButtonPercentage_Click(object sender, EventArgs e)
         {
-            textBoxExpression.AppendText("%");
+            textBoxExpression.AppendText("% ");
+        }
+
+        private void ButtonBackSpaces_Click(object sender, EventArgs e)
+        {
+            var tb = textBoxExpression;
+            if (tb.TextLength == 0) return;
+
+            // remove o último char
+            tb.Text = tb.Text.Substring(0, tb.TextLength - 1);
+
+            // reposiciona o caret no fim
+            tb.SelectionStart = tb.Text.Length;
+            tb.SelectionLength = 0;
+            tb.Focus();
         }
     }
 }
