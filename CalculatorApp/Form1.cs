@@ -22,6 +22,7 @@ namespace CalculatorApp
             "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
 
         private readonly Calculator _calculator = new();
+
         public Form1()
         {
             InitializeComponent();

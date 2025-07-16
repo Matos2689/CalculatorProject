@@ -225,7 +225,7 @@ public class CalculatorTests
         var number = value.Value;
 
         // Act
-        _calculator.Calculate(input);       
+        _calculator.Calculate(input);
 
         // Assert
         _calculator.MathLog.First().Expression.Should().Be(input);
@@ -305,7 +305,7 @@ public class CalculatorTests
 
         // Assert
         result.QuantityResult.Should().Be(Length.FromMeters(expectedResult));
-    }    
+    }
 
     [TestMethod]
     [DataRow("10m + 20m + 30m", 60)]
@@ -342,7 +342,7 @@ public class CalculatorTests
     {
         // Arrange
         var calculator = new Calculator();
-        
+
         string input = "1 + 1l";
 
         // Act
@@ -352,13 +352,13 @@ public class CalculatorTests
         // Assert
         result.QuantityResult.Should().Be(Volume.FromLiters(2));
     }
-    
+
     [TestMethod]
     [DataRow("1kg + 1000g", 2)]
     public void ShouldCalculateUnitsMass(string input, double expectedResult)
     {
         // Arrange
-        var calculator = new Calculator();        
+        var calculator = new Calculator();
 
         // Act
         calculator.Calculate(input);
@@ -390,7 +390,7 @@ public class CalculatorTests
     public void ShouldCalculatePercentage(string input, double expectedResul)
     {
         // Arrange
-        var calculator = new Calculator();        
+        var calculator = new Calculator();
 
         // Act
         calculator.Calculate(input);
@@ -398,7 +398,12 @@ public class CalculatorTests
 
         // Assert
         result.NumericResult.Should().Be(expectedResul);
-    }
+    }    
 }
+
+
+
+
+    
 
 
