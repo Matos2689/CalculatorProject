@@ -11,8 +11,8 @@ namespace CalculatorTests
     [TestClass]
     public class RepositoryTests
     {
-        const string _directory = 
-            "C:\\Users\\danie\\source\\repos\\CalculatorProject\\CalculatorTests\\Data\\";
+        private static readonly string _directory =
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data");
 
         [TestMethod]
         public void ShouldSaveWritesJsonHistoryFile()
@@ -27,12 +27,13 @@ namespace CalculatorTests
             var unit = new MathLogItem("2m + 2m");
             unit.SetQuantityResult(Length.FromMeters(4));
             logs.Add(unit);
-
+            
             var sut = new JsonRepositoryManager();
 
             // Act
-            string filePath = $"{_directory}ShouldSaveWritesJsonHistoryFile.json";
+            string filePath = Path.Combine(_directory, "ShouldSaveWritesJsonHistoryFile.json");
             sut.Save(logs, filePath);
+            Console.WriteLine($"File saved at: {filePath}");
 
             // Assert
             File.Exists(filePath).Should().BeTrue();
@@ -293,7 +294,7 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void ShouldLoadXmlFile() 
+        public void ShouldLoadXmlFile()
         {
             // Arrange
             var mathLog1 = new MathLogItem("2+2");
