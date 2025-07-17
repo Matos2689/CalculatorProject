@@ -19,11 +19,8 @@ namespace CalculatorApp
 
         private readonly IRepository _repository;
         private readonly Calculator _calculator;
-
-        private const string ConnStr =
-            "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
-        public SQLRepositoryManager SqlRepository { get; } =
-            new();
+        
+        public SQLRepositoryManager SqlRepository { get; } = new();
 
         public Form1()
         {
