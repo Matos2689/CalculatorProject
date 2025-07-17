@@ -5,7 +5,8 @@ namespace CalculatorProject.Persistance
 {
     public class XmlRepositoryManager : IRepository
     {
-        public void Save(List<MathLogItem> logs, string filePath)
+        public List<MathLogItem> Memory { get; } = new List<MathLogItem>();
+        public void Save(string filePath)
         {
             var directory = Path.GetDirectoryName(filePath);
 
@@ -14,7 +15,7 @@ namespace CalculatorProject.Persistance
                 Directory.CreateDirectory(directory);
             }
 
-            var entities = logs.Select(logs => logs.ToEntity()).ToList();
+            var entities = Memory.Select(logs => logs.ToEntity()).ToList();
 
             // Create an XmlSerializer for the MathLogEntity type
             var serializer = new XmlSerializer (typeof(List<MathLogEntity>));
@@ -25,10 +26,10 @@ namespace CalculatorProject.Persistance
                 serializer.Serialize(stream, entities);
             }
         }
-        public List<MathLogItem> Load(string filePath)
+        public void Load(string filePath)
         {
             if (!File.Exists(filePath))
-                return new List<MathLogItem>();
+                Memory.AddRange(new List<MathLogItem>());
 
             var serializer = new XmlSerializer(typeof(List<MathLogEntity>));
 
@@ -38,7 +39,7 @@ namespace CalculatorProject.Persistance
                 var entities = (serializer.Deserialize(stream) as List<MathLogEntity>)
                ?? new List<MathLogEntity>();
 
-                return entities.Select(entity => entity.FromEntity()).ToList();
+                Memory.AddRange(entities.Select(entity => entity.FromEntity()).ToList());
             }
         }
     }

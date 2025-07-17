@@ -7,63 +7,58 @@ using System.Text.Json;
 using CalculatorProject.Contracts;
 using UnitsNet;
 
-namespace CalculatorProject.Persistance
+namespace CalculatorProject.Persistance;
+
+public class JsonRepositoryManager : IRepository
 {
-    public class JsonRepositoryManager : IRepository
+    public List<MathLogItem> Memory { get; } = new List<MathLogItem>();
+    public void Save(string filePath)
     {
-        public void Save(List<MathLogItem> logs, string filePath)
+        var directory = Path.GetDirectoryName(filePath);
+
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
         {
-            var directory = Path.GetDirectoryName(filePath);
-
-            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            // Convert MathLogItem to MathLogEntity
-            var entities = logs.ToEntities();
-
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            };
-
-            var json = JsonSerializer.Serialize(entities, options);
-            File.WriteAllText(filePath, json);
+            Directory.CreateDirectory(directory);
         }
 
-        public List<MathLogItem> Load(string filePath)
+        // Convert MathLogItem to MathLogEntity
+        var entities = Memory.ToEntities();
+
+        var options = new JsonSerializerOptions
         {
-            if (!File.Exists(filePath))
-                return new List<MathLogItem>();
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
 
-            var json = File.ReadAllText(filePath);
+        var json = JsonSerializer.Serialize(entities, options);
+        File.WriteAllText(filePath, json);
+    }
 
-            var option = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            };
+    public void Load(string filePath)
+    {
+        if (!File.Exists(filePath))
+            Memory.AddRange(new List<MathLogItem>());
 
-            var entities = JsonSerializer.Deserialize<List<MathLogEntity>>(json);
+        var json = File.ReadAllText(filePath);
 
-            if (entities == null)
-            {
-                return new List<MathLogItem>();
-            }
+        var option = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
 
+        var entities = JsonSerializer.Deserialize<List<MathLogEntity>>(json);
+
+        if (entities == null)
+        {
+            Memory.AddRange(new List<MathLogItem>());
+        }
+        else
+        {
             // Convert MathLogEntity to MathLogItem
             var result = entities.Select(e => e.FromEntity()).ToList();
 
-            return result;
-        }
-
-        public void Read(string filePath)
-        {
-            Console.WriteLine(File.Exists(filePath)
-                ? File.ReadAllText(filePath)
-                : "There is no file named SaveMathlog.json");
+            Memory.AddRange(result);
         }
     }
 }

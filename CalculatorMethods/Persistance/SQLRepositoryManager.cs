@@ -9,16 +9,17 @@ namespace CalculatorProject.Persistance
 {
     public class SQLRepositoryManager : IRepository
     {
+        public List<MathLogItem> Memory { get; }
         private readonly string _connStr;
         public SQLRepositoryManager(string connStr) => _connStr = connStr;
 
-        public void Save(List<MathLogItem> logs, string _)
+        public void Save(string _)
         {
-            var entities = logs.Select(l => l.ToEntity());
+            var entities = Memory.Select(l => l.ToEntity());
 
             using var conn = new SqlConnection(_connStr);
             conn.Open();
-            // Copia e manda
+
             // Prepare the command SQL to insert data
             using var cmd = conn.CreateCommand();
             cmd.CommandText = @"
@@ -42,7 +43,7 @@ namespace CalculatorProject.Persistance
             }
         }
 
-        public List<MathLogItem> Load(string _)
+        public void Load(string _)
         {
             var result = new List<MathLogItem>();
 
@@ -70,7 +71,7 @@ namespace CalculatorProject.Persistance
                 result.Add(entity.FromEntity());
             }
 
-            return result;
+            Memory.AddRange(result);
         }
     }
 }

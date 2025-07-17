@@ -1,4 +1,5 @@
-﻿using CalculatorProject.BusinessLogic;
+﻿using System.Collections.Generic;
+using CalculatorProject.BusinessLogic;
 using CalculatorProject.Contracts;
 using CalculatorProject.Persistance;
 using UnitsNet;
@@ -55,20 +56,20 @@ namespace Program {
                 // Special Commands...
                 if (strInput.Equals("savejson", StringComparison.OrdinalIgnoreCase)) 
                 { 
-                    jsonRepo.Save(calc.Memory, JsonPath); 
+                    jsonRepo.Save(JsonPath); 
                     Console.WriteLine("History saved to SaveMathlog.json\n");
                     continue; 
                 }
 
                 if (strInput.Equals("savexml", StringComparison.OrdinalIgnoreCase))
                 { 
-                    xmlRepo.Save(calc.Memory, XmlPath); 
+                    xmlRepo.Save(XmlPath); 
                     Console.WriteLine("History saved to SaveMathlog.xml\n");
                     continue; 
                 }
 
                 if (strInput.Equals("savesql", StringComparison.OrdinalIgnoreCase))
-                { sqlRepo.Save(calc.Memory, null!); 
+                { sqlRepo.Save(null!); 
                     Console.WriteLine("History saved to SQL Database\n");
                     continue; 
                 }
@@ -77,7 +78,7 @@ namespace Program {
                 { 
                     jsonRepo.Load(JsonPath);
                     calc.Memory.Clear();
-                    calc.Memory.AddRange(jsonRepo.Load(JsonPath));
+                    calc.Memory.AddRange(jsonRepo.Memory);
                     ShowCalculationHistory(calc);
                     Console.WriteLine("\nHistory loaded from SaveMathlog.json\n");
                     continue;
@@ -86,7 +87,7 @@ namespace Program {
                 if(strInput.Equals("loadxml", StringComparison.OrdinalIgnoreCase)) 
                 { 
                     calc.Memory.Clear();
-                    calc.Memory.AddRange(xmlRepo.Load(XmlPath));
+                    calc.Memory.AddRange(xmlRepo.Memory);
                     ShowCalculationHistory(calc);
                     Console.WriteLine("\nHistory loaded from SaveMathlog.xml\n");
                     continue;
@@ -95,7 +96,7 @@ namespace Program {
                 if(strInput.Equals("loadsql", StringComparison.OrdinalIgnoreCase)) 
                 { 
                     calc.Memory.Clear();
-                    calc.Memory.AddRange(sqlRepo.Load(null!));
+                    calc.Memory.AddRange(sqlRepo.Memory);
                     ShowCalculationHistory(calc);
                     Console.WriteLine("\nHistory loaded from SQL Database\n");
                     continue;

@@ -2,7 +2,8 @@
 {
     public interface IRepository
     {
-        public void Save(List<MathLogItem> logs, string filePath);
-        public List<MathLogItem> Load(string filePath);
+        public List<MathLogItem> Memory { get; }
+        public void Save(string filePath);
+        public void Load(string filePath);
     }
 }

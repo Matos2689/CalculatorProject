@@ -30,7 +30,7 @@ namespace CalculatorTests
 
             // Act
             string filePath = Path.Combine(_directory, "ShouldSaveWritesJsonHistoryFile.json");
-            sut.Save(logs, filePath);
+            sut.Save(filePath);
             Console.WriteLine($"File saved at: {filePath}");
 
             // Assert
@@ -159,11 +159,11 @@ namespace CalculatorTests
             string filePath = $"{_directory}ShouldLoadJsonFile.json";
 
             // Act
-            jsonFile.Save(new List<MathLogItem>(), filePath);
+            jsonFile.Save(filePath);
 
             // Assert
             File.Exists(filePath).Should().BeTrue();
-            var logs = jsonFile.Load(filePath);
+            var logs = jsonFile.Memory;
             logs.Should().NotBeNull();
             logs.Should().BeEmpty();
         }
@@ -176,7 +176,7 @@ namespace CalculatorTests
             var filePath = $"{_directory}ShouldReturnEmptyListWhenJsonFileIsMissing.json";
 
             // Act
-            var result = manager.Load(filePath);
+            var result = manager.Memory;
 
             // Assert
             result.Should().BeEmpty();
@@ -191,7 +191,7 @@ namespace CalculatorTests
             File.WriteAllText(filePath, "null");
 
             // Act
-            var result = manager.Load(filePath);
+            var result = manager.Memory;
 
             // Assert
             result.Should().BeEmpty();
@@ -205,8 +205,7 @@ namespace CalculatorTests
             string filePath = $"{_directory}ShouldReadJsonFileContent.json";
 
             // Act
-            manager.Save(new List<MathLogItem>(), filePath);
-            manager.Read(filePath);
+            manager.Save(filePath);
 
             // Assert
             File.Exists(filePath).Should().BeTrue();
@@ -232,11 +231,11 @@ namespace CalculatorTests
             var filePath = $"{_directory}ShoulDeserializeJsonFileContent.json";
 
             var manager = new JsonRepositoryManager();
-            manager.Save(logs, filePath);
+            manager.Save(filePath);
             logs.Clear();
 
             // Act
-            var loadedLogs = manager.Load(filePath);
+            var loadedLogs = manager.Memory;
 
             // Assert
             loadedLogs.Should().HaveCount(3);
@@ -271,7 +270,7 @@ namespace CalculatorTests
             IRepository repo = new XmlRepositoryManager();
 
             // Act
-            repo.Save(logs, filePath);
+            repo.Save(filePath);
 
             // Assert
             File.Exists(filePath).Should().BeTrue();
@@ -285,7 +284,7 @@ namespace CalculatorTests
             var filePath = $"{_directory}ShouldLoadReturnEmptyListWhenXmlFileIsMissing.xml";
 
             // Act
-            var result = manager.Load(filePath);
+            var result = manager.Memory;
 
             // Assert
             result.Should().BeEmpty();
@@ -311,10 +310,10 @@ namespace CalculatorTests
 
             IRepository repo = new XmlRepositoryManager();
 
-            repo.Save(logs, filePath); // Save xml
+            repo.Save(filePath); // Save xml
 
             // Act
-            var loadedLogs = repo.Load(filePath); // Load xml
+            var loadedLogs = repo.Memory; // Load xml
 
             // Assert
             loadedLogs.Should().HaveCount(3);

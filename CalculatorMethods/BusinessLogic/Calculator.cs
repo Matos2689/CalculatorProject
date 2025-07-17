@@ -17,7 +17,6 @@ namespace CalculatorProject.BusinessLogic
             _repository = repository;
         }
 
-        // todo: don't return object, but a more specific type. 
         public MathLogItem Calculate(string input)
         {
             var mathLog = new MathLogItem(input);
@@ -32,7 +31,7 @@ namespace CalculatorProject.BusinessLogic
         }
 
         // If the input is numeric based, it will calculate the result without units.
-        public double CalculateWithoutUnits(string input)
+        private double CalculateWithoutUnits(string input)
         {
             //I receive any expression
             var parts = SplitBasedOnOperands(input).ToList();
@@ -121,7 +120,7 @@ namespace CalculatorProject.BusinessLogic
             return parts.FindIndex(p => p == "*" || p == "/");
         }
 
-        public static IEnumerable<string> SplitBasedOnOperands(string input)
+        private static IEnumerable<string> SplitBasedOnOperands(string input)
         {
             var result = Regex.Split(input, @"(\+|\-|\*|/)")
                 .Where(p => !string.IsNullOrWhiteSpace(p));
@@ -138,7 +137,7 @@ namespace CalculatorProject.BusinessLogic
         private double Divide(double[] input) => input.Aggregate((a, b) => a / b);
 
         // If CalculateWithUnits is called, it will parse the input string
-        public IQuantity CalculateWithUnits(string input)
+        private IQuantity CalculateWithUnits(string input)
         {
             var parts = SplitBasedOnOperands(input)
                               .Select(t => t.Replace(" ", ""))

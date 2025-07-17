@@ -227,7 +227,7 @@ namespace CalculatorApp
             var jsonRepo = new JsonRepositoryManager();
             try
             {
-                jsonRepo.Save(_calculator.Memory, JsonPath);
+                jsonRepo.Save(JsonPath);
                 MessageBox.Show("History saved to SaveMathlog.json");
             }
             catch (Exception ex)
@@ -242,7 +242,7 @@ namespace CalculatorApp
 
             try
             {
-                xmlRepo.Save(_calculator.Memory, XmlPath);
+                xmlRepo.Save(XmlPath);
                 MessageBox.Show("History saved to SaveMathlog.xml");
             }
             catch (Exception ex)
@@ -256,7 +256,7 @@ namespace CalculatorApp
             var sqlRepo = new SQLRepositoryManager(ConnStr);
             try
             {
-                sqlRepo.Save(_calculator.Memory, null!);
+                sqlRepo.Save(null!);
                 MessageBox.Show("History saved to SQL database.");
             }
             catch (Exception ex)
