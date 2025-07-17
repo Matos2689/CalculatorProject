@@ -19,7 +19,7 @@ namespace Program {
         
         static void Main(string[] args) {
 
-            var sqlRepo = new SQLRepositoryManager(ConnStr);
+            var sqlRepo = new SQLRepositoryManager();
             var _calculator = new Calculator(sqlRepo);      
 
             var jsonRepo = new JsonRepositoryManager();

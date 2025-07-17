@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
 using CalculatorProject.Contracts;
-using CalculatorProject.Persistance;
+using CalculatorProject.Persistance.Database;
+using Microsoft.Data.SqlClient;
 
 namespace CalculatorProject.Persistance
 {
     public class SQLRepositoryManager : IRepository
     {
+        private readonly DatabaseConnection _databaseConnection;
         public List<MathLogItem> Memory { get; } = new List<MathLogItem>();
-        private readonly string _connStr;
-        public SQLRepositoryManager(string connStr) => _connStr = connStr;
+        public SQLRepositoryManager()
+        {
+            _databaseConnection = new DatabaseConnection();
+        }
 
         public void Save(string _)
         {
             var entities = Memory.Select(l => l.ToEntity());
 
-            using var conn = new SqlConnection(_connStr);
+            using var conn = new SqlConnection();
             conn.Open();
 
             // Prepare the command SQL to insert data
@@ -29,14 +30,14 @@ namespace CalculatorProject.Persistance
 
             // Add parameters to the command
             var pExpress = cmd.Parameters.Add("@Expression", SqlDbType.NVarChar, 255);
-            var pValue   = cmd.Parameters.Add("@ResultValue", SqlDbType.Float);
-            var pUnit    = cmd.Parameters.Add("@ResultUnit", SqlDbType.NVarChar, 100);
+            var pValue = cmd.Parameters.Add("@ResultValue", SqlDbType.Float);
+            var pUnit = cmd.Parameters.Add("@ResultUnit", SqlDbType.NVarChar, 100);
 
             foreach (var entity in entities)
             {
                 pExpress.Value = entity.Expression;
-                pValue.Value   = entity.ResultValue;
-                pUnit.Value    = (object?)entity.ResultUnit ?? DBNull.Value;
+                pValue.Value = entity.ResultValue;
+                pUnit.Value = (object?)entity.ResultUnit ?? DBNull.Value;
 
                 // Execute the command for each entity
                 cmd.ExecuteNonQuery();
@@ -48,7 +49,7 @@ namespace CalculatorProject.Persistance
             var result = new List<MathLogItem>();
 
             // Open the connection to the database
-            using var conn = new SqlConnection(_connStr);
+            using var conn = new SqlConnection();
             conn.Open();
 
             // Prepare the command SQL to select data

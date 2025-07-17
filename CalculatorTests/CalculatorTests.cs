@@ -13,13 +13,7 @@ public class CalculatorTests
     private IRepository _repository;
     public CalculatorTests()
     {
-        var connectionString = 
-            "Server=.;" +
-            "Database=SQL_Calculator_DB;" +
-            "Trusted_Connection=True;" +
-            "Encrypt=False;";
-
-        _repository = new SQLRepositoryManager(connectionString);
+        _repository = new SQLRepositoryManager();
     }
 
     [TestMethod]

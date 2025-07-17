@@ -23,7 +23,7 @@ namespace CalculatorApp
         private const string ConnStr =
             "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
         public SQLRepositoryManager SqlRepository { get; } =
-            new(ConnStr);
+            new();
 
         public Form1()
         {
@@ -254,7 +254,7 @@ namespace CalculatorApp
 
         private void ButtonSaveSQL_Click(object sender, EventArgs e)
         {
-            var sqlRepo = new SQLRepositoryManager(ConnStr);
+            var sqlRepo = new SQLRepositoryManager();
             try
             {
                 sqlRepo.Save(null!);
