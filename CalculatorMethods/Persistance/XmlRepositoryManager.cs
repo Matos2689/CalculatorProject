@@ -25,7 +25,7 @@ namespace CalculatorProject.Persistance
             using (var writer = XmlWriter.Create(filePath))
             {
                 serializer.Serialize(writer, entities);
-            }
+            };
         }
 
         public void Load(string filePath)

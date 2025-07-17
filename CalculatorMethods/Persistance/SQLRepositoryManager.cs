@@ -9,7 +9,7 @@ namespace CalculatorProject.Persistance
 {
     public class SQLRepositoryManager : IRepository
     {
-        public List<MathLogItem> Memory { get; }
+        public List<MathLogItem> Memory { get; } = new List<MathLogItem>();
         private readonly string _connStr;
         public SQLRepositoryManager(string connStr) => _connStr = connStr;
 

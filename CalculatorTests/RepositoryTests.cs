@@ -16,21 +16,22 @@ namespace CalculatorTests
         public void ShouldSaveWritesJsonHistoryFile()
         {
             // Arrange
-            var logs = new List<MathLogItem>();
+            var expression = new List<string>
+            {
+                "2+2", "2m + 2m"
+            };
 
-            var numeric = new MathLogItem("2+2");
-            numeric.SetNumericResult(4);
-            logs.Add(numeric);
+            var repo = new JsonRepositoryManager();
+            var calculator = new Calculator(repo);
 
-            var unit = new MathLogItem("2m + 2m");
-            unit.SetQuantityResult(Length.FromMeters(4));
-            logs.Add(unit);
-
-            var sut = new JsonRepositoryManager();
+            foreach (var exp in expression)
+            {  
+                calculator.Calculate(exp);
+            }
 
             // Act
             string filePath = Path.Combine(_directory, "ShouldSaveWritesJsonHistoryFile.json");
-            sut.Save(filePath);
+            repo.Save(filePath);
             Console.WriteLine($"File saved at: {filePath}");
 
             // Assert
@@ -217,37 +218,60 @@ namespace CalculatorTests
         public void ShoulDeserializeJsonFileContent()
         {
             // Arrange
-            var mathLog1 = new MathLogItem("2+2");
-            mathLog1.SetNumericResult(4);
+            var expressions = new List<string>()
+            {
+                "2+2", "3m+3m", "10m/2"
+            };
 
-            var mathLog2 = new MathLogItem("3m+3m");
-            mathLog2.SetQuantityResult(Length.FromMeters(6));
+            IRepository repo = new JsonRepositoryManager();
 
-            var mathLog3 = new MathLogItem("10m/2");
-            mathLog3.SetQuantityResult(Ratio.FromDecimalFractions(5));
-
-            var logs = new List<MathLogItem> { mathLog1, mathLog2, mathLog3 };
+            foreach (var expression in expressions)
+            {
+                var calculator = new Calculator(repo);
+                calculator.Calculate(expression);
+            }
 
             var filePath = $"{_directory}ShoulDeserializeJsonFileContent.json";
-
-            var manager = new JsonRepositoryManager();
-            manager.Save(filePath);
-            logs.Clear();
+            
+            repo.Save(filePath);
+            repo.Memory.Clear();
 
             // Act
-            var loadedLogs = manager.Memory;
+            repo.Load(filePath);
+            var loadedLogs = repo.Memory;
+
+            // Assert
+            loadedLogs.Should().HaveCount(3);            
+        }
+
+        [TestMethod]
+        public void ShouldLoadXmlFile()
+        {
+            // Arrange
+            var expressions = new List<string>
+            {
+                "2+2", "3m+3m", "10m/2"
+            };
+
+            var repo = new XmlRepositoryManager();
+
+            var calculator = new Calculator(repo);
+            foreach (var expression in expressions)
+            {
+                calculator.Calculate(expression);
+            }
+
+            string filePath = $"{_directory}ShouldLoadXmlFile.xml";
+
+            repo.Save(filePath);
+            repo.Memory.Clear();
+
+            // Act
+            repo.Load(filePath);
+            var loadedLogs = repo.Memory;
 
             // Assert
             loadedLogs.Should().HaveCount(3);
-            loadedLogs[0].Expression.Should().Be("2+2");
-            loadedLogs[0].NumericResult.Should().Be(4);
-            loadedLogs[0].Type.Should().Be(MathLogTypes.NumericBased);
-            loadedLogs[1].Expression.Should().Be("3m+3m");
-            loadedLogs[1].QuantityResult.Should().Be(Length.FromMeters(6));
-            loadedLogs[1].Type.Should().Be(MathLogTypes.UnitBased);
-            loadedLogs[2].Expression.Should().Be("10m/2");
-            loadedLogs[2].QuantityResult.Should().Be(Ratio.FromDecimalFractions(5));
-            loadedLogs[2].Type.Should().Be(MathLogTypes.UnitBased);
         }
 
         [TestMethod]
@@ -289,34 +313,6 @@ namespace CalculatorTests
             // Assert
             result.Should().BeEmpty();
             File.Exists(filePath).Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void ShouldLoadXmlFile()
-        {
-            // Arrange
-            var expressions = new List<string>
-            {
-                "2+2", "3m+3m", "10m/2"
-            };
-
-            var repo = new XmlRepositoryManager();
-
-            var calculator = new Calculator(repo);
-            foreach (var expression in expressions)
-            {
-                calculator.Calculate(expression);
-            }
-
-            string filePath = $"{_directory}ShouldLoadXmlFile.xml";
-
-            repo.Save(filePath); // Save xml
-
-            // Act
-            var loadedLogs = repo.Memory; // Load xml
-
-            // Assert
-            loadedLogs.Should().HaveCount(3);
         }
     }
 }

@@ -13,7 +13,12 @@ public class CalculatorTests
     private IRepository _repository;
     public CalculatorTests()
     {
-        var connectionString = "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
+        var connectionString = 
+            "Server=.;" +
+            "Database=SQL_Calculator_DB;" +
+            "Trusted_Connection=True;" +
+            "Encrypt=False;";
+
         _repository = new SQLRepositoryManager(connectionString);
     }
 
@@ -23,6 +28,7 @@ public class CalculatorTests
     public void ShouldAddNumbersBasedOnString(string input, double expectedResult)
     {
         // Arrange
+        
         var calculator = new Calculator(_repository);
 
         // Act
