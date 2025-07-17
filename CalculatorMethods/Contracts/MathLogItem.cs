@@ -10,8 +10,8 @@ namespace CalculatorMethods.Contracts {
 
         public string Expression { get; private set; }
         public double NumericResult { get; private set; }
-        public IQuantity QuantityResult { get; private set; }
-        public MathLogTypes Type { get; private set; }
+        public IQuantity? QuantityResult { get; private set; }
+        public MathLogTypes? Type { get; private set; }
 
         public MathLogItem(string expression) { 
 
