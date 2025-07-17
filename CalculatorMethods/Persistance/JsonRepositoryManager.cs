@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Json;
-using CalculatorMethods.Contracts;
+using CalculatorProject.Contracts;
 using UnitsNet;
 
-namespace CalculatorMethods.Persistance
+namespace CalculatorProject.Persistance
 {
     public class JsonRepositoryManager : IRepository
     {

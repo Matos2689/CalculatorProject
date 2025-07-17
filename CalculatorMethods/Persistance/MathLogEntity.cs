@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CalculatorMethods.Persistance
+namespace CalculatorProject.Persistance
 {
     public class MathLogEntity
     {

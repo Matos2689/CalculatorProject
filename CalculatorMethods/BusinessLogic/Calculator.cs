@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
-using CalculatorMethods.Contracts;
+using CalculatorProject.Contracts;
 using UnitsNet;
 
-namespace CalculatorMethods.BusinessLogic
+namespace CalculatorProject.BusinessLogic
 {
     public class Calculator
     {

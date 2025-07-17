@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
-using CalculatorMethods.Contracts;
-using CalculatorMethods.Persistance;
+using CalculatorProject.Contracts;
+using CalculatorProject.Persistance;
 
-namespace CalculatorMethods.Persistance
+namespace CalculatorProject.Persistance
 {
     public class AdoNetRepositoryManager : IRepository
     {

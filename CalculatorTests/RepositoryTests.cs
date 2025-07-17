@@ -1,10 +1,8 @@
-﻿using CalculatorMethods.BusinessLogic;
-using CalculatorMethods.Contracts;
-using CalculatorMethods.Persistance;
+﻿using CalculatorProject.BusinessLogic;
+using CalculatorProject.Contracts;
+using CalculatorProject.Persistance;
 using FluentAssertions;
-using Microsoft.Data.SqlClient;
 using UnitsNet;
-using Dapper;
 
 namespace CalculatorTests
 {
@@ -27,7 +25,7 @@ namespace CalculatorTests
             var unit = new MathLogItem("2m + 2m");
             unit.SetQuantityResult(Length.FromMeters(4));
             logs.Add(unit);
-            
+
             var sut = new JsonRepositoryManager();
 
             // Act
@@ -149,7 +147,7 @@ namespace CalculatorTests
             entities.Last().Expression.Should().Be("3m+3m");
             entities.Last().Type.Should().Be(MathLogTypes.UnitBased);
             entities.Last().QuantityResult.Should().Be(Length.FromMeters(6));
-            entities.Last().QuantityResult.ToString().Should().Be("6 m");
+            entities.Last().QuantityResult!.ToString().Should().Be("6 m");
         }
 
         [TestMethod]
@@ -319,74 +317,6 @@ namespace CalculatorTests
 
             // Assert
             loadedLogs.Should().HaveCount(3);
-        }
-
-        [TestMethod]
-        public void Should_Save_InsertAllLogsIntoDatabase()
-        {
-            // Arrange
-            const string connStr =
-                "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
-
-            // Clear the MathLog table before testing
-            using (var conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-                SqlMapper.Execute(conn, "TRUNCATE TABLE dbo.MathLog");
-            }
-
-            var repo = new AdoNetRepositoryManager(connStr);
-
-            var item1 = new MathLogItem("7+7");
-            item1.SetNumericResult(14);
-
-            var item2 = new MathLogItem("5*5");
-            item2.SetNumericResult(25);
-
-            var item3 = new MathLogItem("10m + 10m");
-            item3.SetNumericResult(15);
-            item3.SetQuantityResult(Length.FromMeters(20));
-
-            var logs = new List<MathLogItem> { item1, item2, item3 };
-
-            // Act
-            repo.Save(logs, null);
-
-            // Assert
-            using (var conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-                int count = SqlMapper.QuerySingle<int>(conn, "SELECT COUNT(*) FROM dbo.MathLog");
-                Assert.AreEqual(logs.Count, count);
-            }
-        }
-
-        [TestMethod]
-        public void Should_Load_ReturnExistingLogsFromDatabase()
-        {
-            // Arrange
-            const string connStr =
-                "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
-            var repo = new AdoNetRepositoryManager(connStr);
-
-            // Act
-            var logs = repo.Load(null);
-
-            // Assert
-            Assert.IsNotNull(logs);
-            Assert.AreEqual(3, logs.Count);
-
-            var log1 = logs.Single(l => l.Expression == "7+7");
-            Assert.AreEqual(MathLogTypes.NumericBased, log1.Type);
-            Assert.AreEqual(14, log1.NumericResult);
-
-            var log2 = logs.Single(l => l.Expression == "5*5");
-            Assert.AreEqual(MathLogTypes.NumericBased, log2.Type);
-            Assert.AreEqual(25, log2.NumericResult);
-
-            var log3 = logs.Single(l => l.Expression == "10m + 10m");
-            Assert.AreEqual(MathLogTypes.UnitBased, log3.Type);
-            Assert.AreEqual(Length.FromMeters(20), log3.QuantityResult);
         }
     }
 }

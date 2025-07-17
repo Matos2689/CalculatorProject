@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.36105.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorTests", "CalculatorTests\CalculatorTests.csproj", "{81352773-01BA-4D64-9A7A-6F3643280952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorMethods", "CalculatorMethods\CalculatorMethods.csproj", "{C0FD6B31-FD5B-4EF7-9FD8-0B95E4CC4715}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorProject", "CalculatorMethods\CalculatorProject.csproj", "{C0FD6B31-FD5B-4EF7-9FD8-0B95E4CC4715}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.csproj", "{508D063C-1777-4009-A02A-202197923C94}"
 EndProject

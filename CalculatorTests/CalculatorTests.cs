@@ -1,6 +1,4 @@
-﻿using CalculatorMethods.BusinessLogic;
-using CalculatorMethods.Contracts;
-using CalculatorMethods.Persistance;
+﻿using CalculatorProject.BusinessLogic;
 using FluentAssertions;
 using UnitsNet;
 
@@ -15,14 +13,14 @@ public class CalculatorTests
     public void ShouldAddNumbersBasedOnString(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        var calculator = new Calculator();
 
         // Act
-        _calculator.Calculate(input);
+        calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().NumericResult.Should().Be(expectedResult);
+        calculator.MathLog.First().Expression.Should().Be(input);
+        calculator.MathLog.First().NumericResult.Should().Be(expectedResult);
     }
 
     [TestMethod]
@@ -398,12 +396,12 @@ public class CalculatorTests
 
         // Assert
         result.NumericResult.Should().Be(expectedResul);
-    }    
+    }
 }
 
 
 
 
-    
+
 
 

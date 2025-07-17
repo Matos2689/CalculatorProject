@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using CalculatorWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using CalculatorMethods.BusinessLogic;
+using CalculatorProject.BusinessLogic;
 
 namespace CalculatorWebAPI.Controllers
 {

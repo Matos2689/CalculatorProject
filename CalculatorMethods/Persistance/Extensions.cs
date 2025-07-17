@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
-using CalculatorMethods.Contracts;
+using CalculatorProject.Contracts;
 using UnitsNet;
 
-namespace CalculatorMethods.Persistance
+namespace CalculatorProject.Persistance
 {
     public static class Extensions
     {

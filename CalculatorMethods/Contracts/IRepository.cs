@@ -1,4 +1,4 @@
-﻿namespace CalculatorMethods.Contracts
+﻿namespace CalculatorProject.Contracts
 {
     public interface IRepository
     {

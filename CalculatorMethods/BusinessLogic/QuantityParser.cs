@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CalculatorMethods.Contracts;
+using CalculatorProject.Contracts;
 using UnitsNet;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace CalculatorMethods.BusinessLogic
+namespace CalculatorProject.BusinessLogic
 {
     public class QuantityParser
     {

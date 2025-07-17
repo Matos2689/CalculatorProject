@@ -1,7 +1,7 @@
-﻿using CalculatorMethods.Contracts;
+﻿using CalculatorProject.Contracts;
 using System.Xml.Serialization;
 
-namespace CalculatorMethods.Persistance
+namespace CalculatorProject.Persistance
 {
     public class XmlRepositoryManager : IRepository
     {

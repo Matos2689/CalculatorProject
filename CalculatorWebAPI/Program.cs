@@ -1,4 +1,4 @@
-using CalculatorMethods.BusinessLogic;
+using CalculatorProject.BusinessLogic;
 
 namespace CalculatorWebAPI
 {

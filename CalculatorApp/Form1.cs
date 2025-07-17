@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using CalculatorMethods.BusinessLogic;
-using CalculatorMethods.Contracts;
-using CalculatorMethods.Persistance;
+using CalculatorProject.BusinessLogic;
+using CalculatorProject.Contracts;
+using CalculatorProject.Persistance;
 using UnitsNet;
 
 namespace CalculatorApp
