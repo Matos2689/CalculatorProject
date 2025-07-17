@@ -1,4 +1,5 @@
 ﻿using CalculatorProject.Contracts;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace CalculatorProject.Persistance
@@ -15,17 +16,18 @@ namespace CalculatorProject.Persistance
                 Directory.CreateDirectory(directory);
             }
 
-            var entities = Memory.Select(logs => logs.ToEntity()).ToList();
+            var entities = Memory.Select(item => item.ToEntity()).ToList();
 
             // Create an XmlSerializer for the MathLogEntity type
             var serializer = new XmlSerializer (typeof(List<MathLogEntity>));
 
             // Serialize the list of entities to XML and save it to a file
-            using (var stream = File.Create(filePath))
+            using (var writer = XmlWriter.Create(filePath))
             {
-                serializer.Serialize(stream, entities);
+                serializer.Serialize(writer, entities);
             }
         }
+
         public void Load(string filePath)
         {
             if (!File.Exists(filePath))

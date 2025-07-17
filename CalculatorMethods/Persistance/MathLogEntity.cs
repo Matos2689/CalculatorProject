@@ -8,7 +8,6 @@ namespace CalculatorProject.Persistance
         public double ResultValue { get; set; }
         public string? ResultUnit { get; set; }
 
-        /// Parameterless constructor for deserialization xml
         public MathLogEntity() { }
 
         [JsonConstructor]

@@ -114,7 +114,8 @@ namespace Program {
                 try
                 {
                     // Calculate and show
-                    var log = calc.Calculate(strInput);
+                    calc.Calculate(strInput);
+                    var log = calc.Memory.Last();
 
                     if (log.Type == MathLogTypes.NumericBased)
                     {

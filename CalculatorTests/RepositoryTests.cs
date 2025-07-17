@@ -295,20 +295,20 @@ namespace CalculatorTests
         public void ShouldLoadXmlFile()
         {
             // Arrange
-            var mathLog1 = new MathLogItem("2+2");
-            mathLog1.SetNumericResult(4);
+            var expressions = new List<string>
+            {
+                "2+2", "3m+3m", "10m/2"
+            };
 
-            var mathLog2 = new MathLogItem("3m+3m");
-            mathLog2.SetQuantityResult(Length.FromMeters(6));
+            var repo = new XmlRepositoryManager();
 
-            var mathLog3 = new MathLogItem("10m/2");
-            mathLog3.SetQuantityResult(Ratio.FromDecimalFractions(5));
-
-            var logs = new List<MathLogItem> { mathLog1, mathLog2, mathLog3 };
+            var calculator = new Calculator(repo);
+            foreach (var expression in expressions)
+            {
+                calculator.Calculate(expression);
+            }
 
             string filePath = $"{_directory}ShouldLoadXmlFile.xml";
-
-            IRepository repo = new XmlRepositoryManager();
 
             repo.Save(filePath); // Save xml
 

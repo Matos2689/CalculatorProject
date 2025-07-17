@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using CalculatorProject.Contracts;
+using CalculatorProject.Persistance;
 using UnitsNet;
 
 namespace CalculatorProject.BusinessLogic
@@ -17,7 +18,7 @@ namespace CalculatorProject.BusinessLogic
             _repository = repository;
         }
 
-        public MathLogItem Calculate(string input)
+        public void Calculate(string input)
         {
             var mathLog = new MathLogItem(input);
 
@@ -27,7 +28,7 @@ namespace CalculatorProject.BusinessLogic
             )();
 
             Memory.Add(mathLog);
-            return mathLog;
+            _repository.Memory.Add(mathLog);
         }
 
         // If the input is numeric based, it will calculate the result without units.

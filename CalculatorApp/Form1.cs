@@ -88,7 +88,8 @@ namespace CalculatorApp
 
             try
             {
-                var logItem = _calculator.Calculate(expression);
+                _calculator.Calculate(expression);
+                var logItem = _calculator.Memory.Last();
                 textBoxExpression.Clear();
 
                 if (logItem.Type == MathLogTypes.NumericBased)
