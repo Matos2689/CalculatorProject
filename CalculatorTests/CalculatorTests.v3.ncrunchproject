@@ -3,5 +3,13 @@
     <HiddenComponentWarnings>
       <Value>LongTestTimesWithoutParallelExecution</Value>
     </HiddenComponentWarnings>
+    <IgnoredTests>
+      <NamedTestSelector>
+        <TestName>CalculatorTests.RepositoryTests.Should_Load_ReturnExistingLogsFromDatabase</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>CalculatorTests.RepositoryTests.Should_Save_InsertAllLogsIntoDatabase</TestName>
+      </NamedTestSelector>
+    </IgnoredTests>
   </Settings>
 </ProjectConfiguration>

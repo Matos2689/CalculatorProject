@@ -18,7 +18,7 @@ namespace CalculatorMethods.Persistance
 
             using var conn = new SqlConnection(_connStr);
             conn.Open();
-
+            // Copia e manda
             // Prepare the command SQL to insert data
             using var cmd = conn.CreateCommand();
             cmd.CommandText = @"

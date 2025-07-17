@@ -271,10 +271,10 @@ namespace CalculatorApp
             var tb = textBoxExpression;
             if (tb.TextLength == 0) return;
 
-            // remove o último char
+            // remove last char
             tb.Text = tb.Text.Substring(0, tb.TextLength - 1);
 
-            // reposiciona o caret no fim
+            // replace with caret at the end
             tb.SelectionStart = tb.Text.Length;
             tb.SelectionLength = 0;
             tb.Focus();
