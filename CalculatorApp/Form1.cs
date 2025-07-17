@@ -17,16 +17,20 @@ namespace CalculatorApp
         private static readonly string XmlPath =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.xml");
 
-        // Connection string to SQL
+        private readonly IRepository _repository;
+        private readonly Calculator _calculator;
+
         private const string ConnStr =
             "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
-
-        private readonly Calculator _calculator = new();
+        public SQLRepositoryManager SqlRepository { get; } =
+            new(ConnStr);
 
         public Form1()
         {
             InitializeComponent();
             textBoxExpression.Text = "";
+            _repository = SqlRepository;
+            _calculator = new Calculator(_repository);
         }
 
         private void ButtonExit_Click(object sender, EventArgs e)
@@ -223,7 +227,7 @@ namespace CalculatorApp
             var jsonRepo = new JsonRepositoryManager();
             try
             {
-                jsonRepo.Save(_calculator.MathLog, JsonPath);
+                jsonRepo.Save(_calculator.Memory, JsonPath);
                 MessageBox.Show("History saved to SaveMathlog.json");
             }
             catch (Exception ex)
@@ -238,7 +242,7 @@ namespace CalculatorApp
 
             try
             {
-                xmlRepo.Save(_calculator.MathLog, XmlPath);
+                xmlRepo.Save(_calculator.Memory, XmlPath);
                 MessageBox.Show("History saved to SaveMathlog.xml");
             }
             catch (Exception ex)
@@ -249,10 +253,10 @@ namespace CalculatorApp
 
         private void ButtonSaveSQL_Click(object sender, EventArgs e)
         {
-            var sqlRepo = new AdoNetRepositoryManager(ConnStr);
+            var sqlRepo = new SQLRepositoryManager(ConnStr);
             try
             {
-                sqlRepo.Save(_calculator.MathLog, null!);
+                sqlRepo.Save(_calculator.Memory, null!);
                 MessageBox.Show("History saved to SQL database.");
             }
             catch (Exception ex)

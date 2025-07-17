@@ -15,25 +15,25 @@ namespace Program {
         // Connection string to SQL
         private const string ConnStr =
             "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
-
+        
         static void Main(string[] args) {
 
-            var calculator = new Calculator();
+            var sqlRepo = new SQLRepositoryManager(ConnStr);
+            var _calculator = new Calculator(sqlRepo);      
 
             var jsonRepo = new JsonRepositoryManager();
             var xmlRepo = new XmlRepositoryManager();
-            var sqlRepo = new AdoNetRepositoryManager(ConnStr);
 
             var dataDir = Path.GetDirectoryName(JsonPath);
             if (!Directory.Exists(dataDir)) Directory.CreateDirectory(dataDir);
 
-            ConsoleExecution(calculator, jsonRepo, xmlRepo, sqlRepo);
+            ConsoleExecution(_calculator, jsonRepo, xmlRepo, sqlRepo);
         }
         private static void ConsoleExecution(
             Calculator calc, 
             JsonRepositoryManager jsonRepo,
             XmlRepositoryManager xmlRepo,
-            AdoNetRepositoryManager sqlRepo
+            SQLRepositoryManager sqlRepo
             )
         {            
 
@@ -55,20 +55,20 @@ namespace Program {
                 // Special Commands...
                 if (strInput.Equals("savejson", StringComparison.OrdinalIgnoreCase)) 
                 { 
-                    jsonRepo.Save(calc.MathLog, JsonPath); 
+                    jsonRepo.Save(calc.Memory, JsonPath); 
                     Console.WriteLine("History saved to SaveMathlog.json\n");
                     continue; 
                 }
 
                 if (strInput.Equals("savexml", StringComparison.OrdinalIgnoreCase))
                 { 
-                    xmlRepo.Save(calc.MathLog, XmlPath); 
+                    xmlRepo.Save(calc.Memory, XmlPath); 
                     Console.WriteLine("History saved to SaveMathlog.xml\n");
                     continue; 
                 }
 
                 if (strInput.Equals("savesql", StringComparison.OrdinalIgnoreCase))
-                { sqlRepo.Save(calc.MathLog, null!); 
+                { sqlRepo.Save(calc.Memory, null!); 
                     Console.WriteLine("History saved to SQL Database\n");
                     continue; 
                 }
@@ -76,8 +76,8 @@ namespace Program {
                 if (strInput.Equals("loadjson", StringComparison.OrdinalIgnoreCase)) 
                 { 
                     jsonRepo.Load(JsonPath);
-                    calc.MathLog.Clear();
-                    calc.MathLog.AddRange(jsonRepo.Load(JsonPath));
+                    calc.Memory.Clear();
+                    calc.Memory.AddRange(jsonRepo.Load(JsonPath));
                     ShowCalculationHistory(calc);
                     Console.WriteLine("\nHistory loaded from SaveMathlog.json\n");
                     continue;
@@ -85,8 +85,8 @@ namespace Program {
 
                 if(strInput.Equals("loadxml", StringComparison.OrdinalIgnoreCase)) 
                 { 
-                    calc.MathLog.Clear();
-                    calc.MathLog.AddRange(xmlRepo.Load(XmlPath));
+                    calc.Memory.Clear();
+                    calc.Memory.AddRange(xmlRepo.Load(XmlPath));
                     ShowCalculationHistory(calc);
                     Console.WriteLine("\nHistory loaded from SaveMathlog.xml\n");
                     continue;
@@ -94,8 +94,8 @@ namespace Program {
 
                 if(strInput.Equals("loadsql", StringComparison.OrdinalIgnoreCase)) 
                 { 
-                    calc.MathLog.Clear();
-                    calc.MathLog.AddRange(sqlRepo.Load(null!));
+                    calc.Memory.Clear();
+                    calc.Memory.AddRange(sqlRepo.Load(null!));
                     ShowCalculationHistory(calc);
                     Console.WriteLine("\nHistory loaded from SQL Database\n");
                     continue;
@@ -104,7 +104,7 @@ namespace Program {
                 if (strInput.Equals("clear", StringComparison.OrdinalIgnoreCase))
                 {
                     Console.Clear();
-                    calc.MathLog.Clear();
+                    calc.Memory.Clear();
                     ShowCalculationHistory(calc);
                     Console.WriteLine("\nHistory cleared\n");
                     continue;
@@ -140,7 +140,7 @@ namespace Program {
         private static void ShowCalculationHistory(Calculator calc)
         {
             Console.WriteLine("\noperations:");
-            foreach (var log in calc.MathLog)
+            foreach (var log in calc.Memory)
             {
 
                 switch (log.Type)

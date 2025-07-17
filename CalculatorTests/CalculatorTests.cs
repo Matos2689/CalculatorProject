@@ -1,4 +1,7 @@
-﻿using CalculatorProject.BusinessLogic;
+﻿using System.Net.Http.Headers;
+using CalculatorProject.BusinessLogic;
+using CalculatorProject.Contracts;
+using CalculatorProject.Persistance;
 using FluentAssertions;
 using UnitsNet;
 
@@ -7,20 +10,27 @@ namespace CalculatorTests;
 [TestClass]
 public class CalculatorTests
 {
+    private IRepository _repository;
+    public CalculatorTests()
+    {
+        var connectionString = "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
+        _repository = new SQLRepositoryManager(connectionString);
+    }
+
     [TestMethod]
     [DataRow("2+2+2+2", 8)]
     [DataRow("50 + 50", 100)]
     public void ShouldAddNumbersBasedOnString(string input, double expectedResult)
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
 
         // Act
         calculator.Calculate(input);
 
         // Assert
-        calculator.MathLog.First().Expression.Should().Be(input);
-        calculator.MathLog.First().NumericResult.Should().Be(expectedResult);
+        calculator.Memory.First().Expression.Should().Be(input);
+        calculator.Memory.First().NumericResult.Should().Be(expectedResult);
     }
 
     [TestMethod]
@@ -30,14 +40,14 @@ public class CalculatorTests
     public void ShouldSubtractNumbersBasedOnStrings(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator calculator = new Calculator(_repository);
 
         // Act
-        _calculator.Calculate(input);
+        calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().NumericResult.Should()
+        calculator.Memory.First().Expression.Should().Be(input);
+        calculator.Memory.First().NumericResult.Should()
             .Be(expectedResult);
     }
 
@@ -48,14 +58,14 @@ public class CalculatorTests
     public void ShouldMultiplyNumbersBasedOnStrings(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().NumericResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().NumericResult.Should()
             .Be(expectedResult);
     }
 
@@ -66,14 +76,14 @@ public class CalculatorTests
     public void ShouldDivideNumbersBasedOnStrings(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().NumericResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().NumericResult.Should()
             .Be(expectedResult);
     }
 
@@ -99,14 +109,14 @@ public class CalculatorTests
     public void ShouldDoCalculationsWithAnyOperator(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().NumericResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().NumericResult.Should()
             .Be(expectedResult);
     }
 
@@ -122,14 +132,14 @@ public class CalculatorTests
     public void ShouldDoAddNumbersWithUnits(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().QuantityResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().QuantityResult.Should()
             .Be(Length.FromMeters(expectedResult));
     }
 
@@ -143,14 +153,14 @@ public class CalculatorTests
     public void ShouldDoSubtractNumbersWithUnits(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().QuantityResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().QuantityResult.Should()
             .Be(Length.FromMeters(expectedResult));
     }
 
@@ -162,14 +172,14 @@ public class CalculatorTests
     public void ShouldDoMultiplyNumbersWithUnits(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().QuantityResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().QuantityResult.Should()
             .Be(Area.FromSquareMeters(expectedResult));
     }
 
@@ -181,14 +191,14 @@ public class CalculatorTests
     public void ShouldDivideNumbersWithUnits(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().QuantityResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().QuantityResult.Should()
             .Be(Ratio.FromDecimalFractions(expectedResult));
     }
 
@@ -200,14 +210,14 @@ public class CalculatorTests
     public void ShouldReturnKilometers(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().QuantityResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().QuantityResult.Should()
             .Be(Length.FromKilometers(expectedResult));
     }
 
@@ -216,7 +226,7 @@ public class CalculatorTests
     public void ShouldReturnMilimeters(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         var value = Length.FromMeters(20);
         var unit = value.Unit;
@@ -226,8 +236,8 @@ public class CalculatorTests
         _calculator.Calculate(input);
 
         // Assert
-        _calculator.MathLog.First().Expression.Should().Be(input);
-        _calculator.MathLog.First().QuantityResult.Should()
+        _calculator.Memory.First().Expression.Should().Be(input);
+        _calculator.Memory.First().QuantityResult.Should()
             .Be(Length.FromMillimeters(expectedResult));
     }
 
@@ -235,7 +245,7 @@ public class CalculatorTests
     public void ShouldThrowExceptionForInvalidOperator()
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         string input = "5m = 5";
 
@@ -253,7 +263,7 @@ public class CalculatorTests
     public void ShouldThrowExceptionForInvalidFormat(string input)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         Action act = () => _calculator.Calculate(input);
@@ -271,13 +281,13 @@ public class CalculatorTests
     public void ShouldCalculateIQuantityAndDoubleCombined(string input, double expectedResult)
     {
         // Arrange
-        Calculator _calculator = new Calculator();
+        Calculator _calculator = new Calculator(_repository);
 
         // Act
         _calculator.Calculate(input);
 
         // Assert
-        var log = _calculator.MathLog.First();
+        var log = _calculator.Memory.First();
         log.Expression.Should().Be(input);
         var qty = log.QuantityResult;
 
@@ -295,11 +305,11 @@ public class CalculatorTests
     public void ShouldCalculateDifferentUnits(string input, double expectedResult)
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
         calculator.Calculate(input);
 
         // Act
-        var result = calculator.MathLog.First();
+        var result = calculator.Memory.First();
 
         // Assert
         result.QuantityResult.Should().Be(Length.FromMeters(expectedResult));
@@ -310,11 +320,11 @@ public class CalculatorTests
     public void ShouldAddThreeUnitValues(string input, double expectedResult)
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
         calculator.Calculate(input);
 
         // Act
-        var result = calculator.MathLog.First();
+        var result = calculator.Memory.First();
 
         // Assert
         result.QuantityResult.Should().Be(Length.FromMeters(expectedResult));
@@ -325,11 +335,11 @@ public class CalculatorTests
     public void ShouldMultiplyThreeUnitValues(string input, double expectedResult)
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
         calculator.Calculate(input);
 
         // Act
-        var result = calculator.MathLog.First();
+        var result = calculator.Memory.First();
 
         // Assert
         result.QuantityResult.Should().Be(Volume.FromCubicMeters(expectedResult));
@@ -339,13 +349,13 @@ public class CalculatorTests
     public void ShouldAddLitersAndMilliliters()
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
 
         string input = "1 + 1l";
 
         // Act
         calculator.Calculate(input);
-        var result = calculator.MathLog.First();
+        var result = calculator.Memory.First();
 
         // Assert
         result.QuantityResult.Should().Be(Volume.FromLiters(2));
@@ -356,11 +366,11 @@ public class CalculatorTests
     public void ShouldCalculateUnitsMass(string input, double expectedResult)
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
 
         // Act
         calculator.Calculate(input);
-        var result = calculator.MathLog.First();
+        var result = calculator.Memory.First();
 
         // Assert
         result.QuantityResult.Should().Be(Mass.FromKilograms(2));
@@ -370,12 +380,12 @@ public class CalculatorTests
     public void ShouldMakeTreatmentOfPontuation()
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
         string input = "1,5m + 2,5m";
 
         // Act
         calculator.Calculate(input);
-        var result = calculator.MathLog.First();
+        var result = calculator.Memory.First();
 
         // Assert
         result.QuantityResult.Should().Be(Length.FromMeters(4));
@@ -388,11 +398,11 @@ public class CalculatorTests
     public void ShouldCalculatePercentage(string input, double expectedResul)
     {
         // Arrange
-        var calculator = new Calculator();
+        var calculator = new Calculator(_repository);
 
         // Act
         calculator.Calculate(input);
-        var result = calculator.MathLog.First();
+        var result = calculator.Memory.First();
 
         // Assert
         result.NumericResult.Should().Be(expectedResul);

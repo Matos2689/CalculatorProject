@@ -7,10 +7,10 @@ using CalculatorProject.Persistance;
 
 namespace CalculatorProject.Persistance
 {
-    public class AdoNetRepositoryManager : IRepository
+    public class SQLRepositoryManager : IRepository
     {
         private readonly string _connStr;
-        public AdoNetRepositoryManager(string connStr) => _connStr = connStr;
+        public SQLRepositoryManager(string connStr) => _connStr = connStr;
 
         public void Save(List<MathLogItem> logs, string _)
         {

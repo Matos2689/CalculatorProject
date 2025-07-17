@@ -9,21 +9,26 @@ namespace CalculatorProject.BusinessLogic
 {
     public class Calculator
     {
-        public List<MathLogItem> MathLog { get; private set; } = [];
-        public QuantityParser QuantityParser = new();
-        public NumericParser NumericParser = new();
+        private IRepository _repository;
+        public List<MathLogItem> Memory { get; set; } = [];
+        public QuantityParser _quantityParser = new();
+        public NumericParser _numericParser = new();
 
+        public Calculator(IRepository repository)
+        {
+            _repository = repository;
+        }
         // todo: don't return object, but a more specific type. 
         public MathLogItem Calculate(string input)
         {
             var mathLog = new MathLogItem(input);
 
             (input.Any(char.IsLetter)
-                ? new Action(() => mathLog.SetQuantityResult(QuantityParser.CalculateWithUnits(input)))
-                : new Action(() => mathLog.SetNumericResult(NumericParser.CalculateWithoutUnits(input)))
+                ? new Action(() => mathLog.SetQuantityResult(_quantityParser.CalculateWithUnits(input)))
+                : new Action(() => mathLog.SetNumericResult(_numericParser.CalculateWithoutUnits(input)))
             )();
 
-            MathLog.Add(mathLog);
+            Memory.Add(mathLog);
             return mathLog;
         }
     }

@@ -52,9 +52,10 @@ namespace CalculatorTests
         {
             // Arrange
             var input = "2+2";
-            var calculator = new Calculator();
+            var repositoryJson = new JsonRepositoryManager();
+            var calculator = new Calculator(repositoryJson);
             calculator.Calculate(input);
-            var mathLog = calculator.MathLog.First();
+            var mathLog = calculator.Memory.First();
 
             // Act
             var mathLogEntity = mathLog.ToEntity();
