@@ -18,8 +18,7 @@ namespace CalculatorProject.Persistance
         {
             var entities = Memory.Select(l => l.ToEntity());
 
-            using var conn = new SqlConnection();
-            conn.Open();
+            using var conn = _databaseConnection.Connect();
 
             // Prepare the command SQL to insert data
             using var cmd = conn.CreateCommand();

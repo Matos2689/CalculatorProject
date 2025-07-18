@@ -16,8 +16,8 @@ namespace CalculatorWebAPI
             builder.Services.AddSwaggerGen();
 
             // Register the repositories and business logic
-            builder.Services.AddSingleton<IRepository, SQLRepositoryManager>();
-            builder.Services.AddSingleton<Calculator>();
+            builder.Services.AddScoped<IRepository, SQLRepositoryManager>();
+            builder.Services.AddScoped<Calculator>();
 
             var app = builder.Build();
 

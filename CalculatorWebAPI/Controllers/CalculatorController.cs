@@ -10,10 +10,12 @@ namespace CalculatorWebAPI.Controllers
     public class CalculatorController : ControllerBase
     {
         private readonly Calculator _calculator;
+        private readonly IRepository _repository;
 
-        public CalculatorController(Calculator calculator)
+        public CalculatorController(Calculator calculator, IRepository repository)
         {
             _calculator = calculator;
+            _repository = repository;
         }
 
         [HttpPost("calculate")]
@@ -21,8 +23,9 @@ namespace CalculatorWebAPI.Controllers
         {
             try
             {
-                _calculator.Calculate(request.Expression!);
+                _calculator.Calculate(request.Expression!);                
                 var result = _calculator.Memory.Last();
+                _repository.Save(string.Empty);
                 return Ok(new CalculationResponse(result));
             }
             catch (Exception ex)
