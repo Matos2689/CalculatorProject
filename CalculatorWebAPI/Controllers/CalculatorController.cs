@@ -38,8 +38,7 @@ namespace CalculatorWebAPI.Controllers
             {
                 Expression = item.Expression,
                 NumericResult = item.Type == MathLogTypes.NumericBased ? item.NumericResult : (double?)item.QuantityResult?.Value,
-                UnitResult = item.Type == MathLogTypes.UnitBased ? item.QuantityResult?.Unit.ToString() : null,
-                Type = item.Type?.ToString() ?? "Unknown"
+                UnitResult = item.Type == MathLogTypes.UnitBased ? item.QuantityResult?.Unit.ToString() : null
             }).ToList();
 
             return Ok(history);
