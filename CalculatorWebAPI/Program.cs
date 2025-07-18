@@ -23,7 +23,14 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.WebHost.UseUrls("http://0.0.0.0:5191", "https://localhost:7132");
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5191); // HTTP
+    options.ListenAnyIP(7132, listenOptions =>
+    {
+        listenOptions.UseHttps(); // HTTPS
+    });
+});
 
 var app = builder.Build();
 
