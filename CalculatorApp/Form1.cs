@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 using CalculatorProject.BusinessLogic;
 using CalculatorProject.Contracts;
 using CalculatorProject.Persistance;
-using UnitsNet;
 
 namespace CalculatorApp
 {
@@ -19,7 +14,7 @@ namespace CalculatorApp
 
         private readonly IRepository _repository;
         private readonly Calculator _calculator;
-        
+
         public SQLRepositoryManager SqlRepository { get; } = new();
 
         public Form1()

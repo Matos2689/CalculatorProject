@@ -7,11 +7,9 @@ namespace CalculatorWebAPI.Models
         public string Expression { get; set; }
         public string? NumericResult { get; set; }
         public string? QuantityResult { get; set; }
-        public string Type { get; set; }
         public CalculationResult(MathLogItem item)
         {
             Expression = item.Expression;
-            Type = item.Type.ToString();
 
             if (item.Type == MathLogTypes.NumericBased)
             {
