@@ -1,30 +1,117 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #calculator {
+            max-width: 420px;
+            margin: 30px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .btn-unit {
+            background-color: #cce5ff;
+        }
+
+        .btn-action {
+            background-color: #ffeeba;
+        }
+
+        #result {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+        }
+    </style>
 </head>
 <body>
-    <h1>Calculator</h1>
+    <div id="calculator" class="container">
+        <h3 class="text-center">Web Calculator</h3>
 
-    <input type="text" id="expression" placeholder="Type a expression" />
-    <button onclick="calculate()">calculate</button>
+        <input type="text" id="expression" class="form-control mb-3" placeholder="Type expression" readonly />
 
-    <pre id="result"></pre>
+        <div class="row g-2">
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('7')">7</button></div>
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('8')">8</button></div>
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('9')">9</button></div>
+            <div class="col-3"><button class="btn btn-danger w-100" onclick="clearInput()">C</button></div>
+
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('4')">4</button></div>
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('5')">5</button></div>
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('6')">6</button></div>
+            <div class="col-3"><button class="btn btn-primary w-100" onclick="append('+')">+</button></div>
+
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('1')">1</button></div>
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('2')">2</button></div>
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('3')">3</button></div>
+            <div class="col-3"><button class="btn btn-primary w-100" onclick="append('-')">-</button></div>
+
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('0')">0</button></div>
+            <div class="col-3"><button class="btn btn-secondary w-100" onclick="append('.')">.</button></div>
+            <div class="col-3"><button class="btn btn-success w-100" onclick="calculate()">=</button></div>
+            <div class="col-3"><button class="btn btn-primary w-100" onclick="append('*')">*</button></div>
+
+            <div class="col-3"><button class="btn btn-primary w-100" onclick="append('/')">/</button></div>
+            <div class="col-3"><button class="btn btn-primary w-100" onclick="append('%')">%</button></div>
+            <div class="col-3"><button class="btn btn-outline-dark w-100" onclick="backspace()">&#x232b;</button></div>
+            <div class="col-3"></div>
+
+            <!-- Units -->
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('m')">m</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('cm')">cm</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('mm')">mm</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('km')">km</button></div>
+
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('g')">g</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('kg')">kg</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('mg')">mg</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('cg')">cg</button></div>
+
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('l')">l</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('ml')">ml</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('cl')">cl</button></div>
+            <div class="col-3"><button class="btn btn-unit w-100" onclick="append('kl')">kl</button></div>
+        </div>
+
+        <hr />
+        <pre id="result"></pre>
+    </div>
 
     <script>
-    async function calculate() {
-      const input = document.getElementById('expression').value;
+        function append(char) {
+            const input = document.getElementById('expression');
+            input.value += char;
+        }
 
-      const response = await fetch('/api/calculator/calculate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ expression: input })
-      });
+        function clearInput() {
+            document.getElementById('expression').value = '';
+            document.getElementById('result').textContent = '';
+        }
 
-      const json = await response.json();
-      document.getElementById('result').textContent = JSON.stringify(json, null, 2);
-    }
+        function backspace() {
+            const input = document.getElementById('expression');
+            input.value = input.value.slice(0, -1);
+        }
+
+        async function calculate() {
+            const input = document.getElementById('expression').value;
+
+            const response = await fetch('/api/calculator/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ expression: input })
+            });
+
+            const json = await response.json();
+            document.getElementById('result').textContent = JSON.stringify(json, null, 2);
+        }
     </script>
 </body>
 </html>
