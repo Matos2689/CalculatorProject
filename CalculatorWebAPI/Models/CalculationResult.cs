@@ -17,7 +17,7 @@ namespace CalculatorWebAPI.Models
             }
             else if (item.Type == MathLogTypes.UnitBased && item.QuantityResult is not null)
             {
-                QuantityResult = $"{item.QuantityResult.Value}{item.QuantityResult.Abreviation()}";
+                QuantityResult = item.QuantityResult.ToString();
             }
         }
     }
