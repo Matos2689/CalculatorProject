@@ -11,7 +11,7 @@ namespace CalculatorProject.BusinessLogic
     public class Calculator
     {
         private IRepository _repository;
-        public List<MathLogItem> Memory { get; set; } = [];
+        public List<MathLogItem> Memory { get; set; } = new List<MathLogItem>();
         
         public Calculator(IRepository repository)
         {

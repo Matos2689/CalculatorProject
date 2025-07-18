@@ -11,11 +11,7 @@ namespace Program {
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.json");
 
         private static readonly string XmlPath =
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.xml");
-
-        // Connection string to SQL
-        private const string ConnStr =
-            "Server=.;Database=SQL_Calculator_DB;Trusted_Connection=True;Encrypt=False;";
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.xml");       
         
         static void Main(string[] args) {
 
