@@ -36,6 +36,7 @@ var app = builder.Build();
 
 app.UseCors("AllowAll");
 app.UseStaticFiles();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
