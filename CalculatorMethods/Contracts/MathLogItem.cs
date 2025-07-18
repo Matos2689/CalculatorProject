@@ -11,11 +11,12 @@ namespace CalculatorProject.Contracts {
         public string Expression { get; private set; }
         public double NumericResult { get; private set; }
         public IQuantity? QuantityResult { get; private set; }
-        public MathLogTypes? Type { get; private set; }
+        public MathLogTypes Type { get; private set; } = MathLogTypes.NotInitialized;
 
         public MathLogItem(string expression) { 
 
             Expression = expression;
+            Type = MathLogTypes.NotInitialized;
         }
 
         public void SetNumericResult(double numericResult) {
