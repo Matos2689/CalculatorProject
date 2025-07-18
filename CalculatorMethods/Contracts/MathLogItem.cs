@@ -1,11 +1,7 @@
 ﻿using UnitsNet;
 
 namespace CalculatorProject.Contracts {
-    public enum MathLogTypes {
-        NotInitialized = 0,
-        NumericBased = 1,
-        UnitBased = 2
-    }
+    
     public class MathLogItem {
 
         public string Expression { get; private set; }
