@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Calculator Web</title>
+</head>
+<body>
+    <h1>Calculator</h1>
+
+    <input type="text" id="expression" placeholder="Type a expression" />
+    <button onclick="calculate()">calculate</button>
+
+    <pre id="result"></pre>
+
+    <script>
+    async function calculate() {
+      const input = document.getElementById('expression').value;
+
+      const response = await fetch('/api/calculator/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ expression: input })
+      });
+
+      const json = await response.json();
+      document.getElementById('result').textContent = JSON.stringify(json, null, 2);
+    }
+    </script>
+</body>
+</html>
