@@ -79,9 +79,6 @@
             <div class="col-3"><button class="btn btn-unit w-100" onclick="append('cl')">cl</button></div>
             <div class="col-3"><button class="btn btn-unit w-100" onclick="append('kl')">kl</button></div>
         </div>
-
-        <hr />
-        <pre id="result"></pre>
     </div>
 
     <script>
@@ -101,16 +98,25 @@
         }
 
         async function calculate() {
-            const input = document.getElementById('expression').value;
+            const input = document.getElementById('expression');
+            const expression = input.value;
 
             const response = await fetch('/api/calculator/calculate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ expression: input })
+                body: JSON.stringify({ expression: expression })
             });
 
             const json = await response.json();
-            document.getElementById('result').textContent = JSON.stringify(json, null, 2);
+
+            let result = "";
+            if (json.type === "NumericBased") {
+                result = json.numericResult;
+            } else if (json.type === "UnitBased") {
+                result = json.quantityResult;
+            }
+
+            input.value = result;
         }
     </script>
 </body>
