@@ -5,6 +5,5 @@
         public string? Expression { get; set; }
         public double? NumericResult { get; set; }
         public string? UnitResult { get; set; }
-        public string? Type { get; set; }
     }
 }
