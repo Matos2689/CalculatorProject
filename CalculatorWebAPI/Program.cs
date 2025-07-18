@@ -23,6 +23,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.WebHost.UseUrls("http://0.0.0.0:5191", "https://localhost:7132");
+
 var app = builder.Build();
 
 app.UseCors("AllowAll");
