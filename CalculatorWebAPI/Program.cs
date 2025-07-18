@@ -32,7 +32,10 @@ namespace CalculatorWebAPI
 
             app.UseAuthorization();
 
-            app.MapGet("/", () => Results.Redirect("/swagger"));
+            //app.MapGet("/", () => Results.Redirect("/swagger"));
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.MapControllers();
 

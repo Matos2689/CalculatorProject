@@ -22,33 +22,12 @@ namespace CalculatorWebAPI.Controllers
             try
             {
                 _calculator.Calculate(request.Expression!);
-                var last = _calculator.Memory.Last();
-
-                if (last.Type == MathLogTypes.NumericBased)
-                {
-                    return Ok(new CalculationResponse
-                    {
-                        Expression = last.Expression,
-                        NumericResult = last.NumericResult
-                    });
-                }
-                else
-                {
-                    return Ok(new CalculationResponse
-                    {
-                        Expression = last.Expression,
-                        NumericResult = (double?)last.QuantityResult.Value,
-                        UnitResult = last.QuantityResult.Unit.ToString()
-                    });
-                }
+                var result = _calculator.Memory.Last();
+                return Ok(new CalculationResponse(result));
             }
             catch (Exception ex)
             {
-                return BadRequest(new CalculationResponse
-                {
-                    Expression = request.Expression,
-                    //Error = ex.Message
-                });
+                return BadRequest($"Error calculating expression: {ex.Message}");
             }
         }
 
