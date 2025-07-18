@@ -1,9 +1,6 @@
-﻿using System;
+﻿using CalculatorProject.Contracts;
 using System.Globalization;
-using System.IO;
 using System.Text.RegularExpressions;
-using CalculatorProject.Contracts;
-using CalculatorProject.Persistance;
 using UnitsNet;
 
 namespace CalculatorProject.BusinessLogic
@@ -12,7 +9,7 @@ namespace CalculatorProject.BusinessLogic
     {
         private IRepository _repository;
         public List<MathLogItem> Memory { get; set; } = [];
-        
+
         public Calculator(IRepository repository)
         {
             _repository = repository;
