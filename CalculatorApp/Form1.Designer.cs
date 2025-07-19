@@ -69,6 +69,7 @@
             // 
             // ButtomAdd
             // 
+            ButtomAdd.BackColor = SystemColors.ButtonHighlight;
             ButtomAdd.Cursor = Cursors.Hand;
             ButtomAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtomAdd.Location = new Point(428, 413);
@@ -76,40 +77,43 @@
             ButtomAdd.Size = new Size(94, 29);
             ButtomAdd.TabIndex = 1;
             ButtomAdd.Text = "+";
-            ButtomAdd.UseVisualStyleBackColor = true;
+            ButtomAdd.UseVisualStyleBackColor = false;
             ButtomAdd.Click += ButtomAdd_Click;
             // 
             // ButtomSubtract
             // 
+            ButtomSubtract.BackColor = SystemColors.ButtonHighlight;
             ButtomSubtract.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtomSubtract.Location = new Point(428, 363);
             ButtomSubtract.Name = "ButtomSubtract";
             ButtomSubtract.Size = new Size(94, 29);
             ButtomSubtract.TabIndex = 2;
             ButtomSubtract.Text = "-";
-            ButtomSubtract.UseVisualStyleBackColor = true;
+            ButtomSubtract.UseVisualStyleBackColor = false;
             ButtomSubtract.Click += ButtomSubtract_Click;
             // 
             // ButtonMultiply
             // 
+            ButtonMultiply.BackColor = SystemColors.ButtonHighlight;
             ButtonMultiply.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtonMultiply.Location = new Point(428, 312);
             ButtonMultiply.Name = "ButtonMultiply";
             ButtonMultiply.Size = new Size(94, 29);
             ButtonMultiply.TabIndex = 3;
             ButtonMultiply.Text = "x";
-            ButtonMultiply.UseVisualStyleBackColor = true;
+            ButtonMultiply.UseVisualStyleBackColor = false;
             ButtonMultiply.Click += ButtonMultiply_Click;
             // 
             // ButtonDivide
             // 
+            ButtonDivide.BackColor = SystemColors.ButtonHighlight;
             ButtonDivide.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtonDivide.Location = new Point(428, 263);
             ButtonDivide.Name = "ButtonDivide";
             ButtonDivide.Size = new Size(94, 29);
             ButtonDivide.TabIndex = 4;
             ButtonDivide.Text = "/";
-            ButtonDivide.UseVisualStyleBackColor = true;
+            ButtonDivide.UseVisualStyleBackColor = false;
             ButtonDivide.Click += ButtonDivide_Click;
             // 
             // ButtonClear
@@ -138,18 +142,20 @@
             // 
             // ButtonNumber1
             // 
+            ButtonNumber1.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber1.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonNumber1.Location = new Point(71, 365);
             ButtonNumber1.Name = "ButtonNumber1";
             ButtonNumber1.Size = new Size(94, 29);
             ButtonNumber1.TabIndex = 7;
             ButtonNumber1.Text = "1";
-            ButtonNumber1.UseVisualStyleBackColor = true;
+            ButtonNumber1.UseVisualStyleBackColor = false;
             ButtonNumber1.Click += ButtonNumber1_Click;
             // 
             // textBoxExpression
             // 
             textBoxExpression.BackColor = SystemColors.InactiveCaptionText;
+            textBoxExpression.BorderStyle = BorderStyle.FixedSingle;
             textBoxExpression.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             textBoxExpression.ForeColor = Color.FromArgb(255, 255, 128);
             textBoxExpression.Location = new Point(71, 58);
@@ -160,112 +166,122 @@
             // 
             // ButtonNumber2
             // 
+            ButtonNumber2.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber2.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonNumber2.Location = new Point(188, 363);
             ButtonNumber2.Name = "ButtonNumber2";
             ButtonNumber2.Size = new Size(94, 29);
             ButtonNumber2.TabIndex = 10;
             ButtonNumber2.Text = "2";
-            ButtonNumber2.UseVisualStyleBackColor = true;
+            ButtonNumber2.UseVisualStyleBackColor = false;
             ButtonNumber2.Click += ButtonNumber2_Click;
             // 
             // ButtonNumber4
             // 
+            ButtonNumber4.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber4.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonNumber4.Location = new Point(71, 313);
             ButtonNumber4.Name = "ButtonNumber4";
             ButtonNumber4.Size = new Size(94, 29);
             ButtonNumber4.TabIndex = 12;
             ButtonNumber4.Text = "4";
-            ButtonNumber4.UseVisualStyleBackColor = true;
+            ButtonNumber4.UseVisualStyleBackColor = false;
             ButtonNumber4.Click += ButtonNumber4_Click;
             // 
             // ButtonNumber3
             // 
+            ButtonNumber3.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtonNumber3.Location = new Point(305, 362);
             ButtonNumber3.Name = "ButtonNumber3";
             ButtonNumber3.Size = new Size(94, 29);
             ButtonNumber3.TabIndex = 20;
             ButtonNumber3.Text = "3";
-            ButtonNumber3.UseVisualStyleBackColor = true;
+            ButtonNumber3.UseVisualStyleBackColor = false;
             ButtonNumber3.Click += ButtonNumber3_Click;
             // 
             // ButtonNumber5
             // 
+            ButtonNumber5.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber5.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonNumber5.Location = new Point(188, 313);
             ButtonNumber5.Name = "ButtonNumber5";
             ButtonNumber5.Size = new Size(94, 29);
             ButtonNumber5.TabIndex = 21;
             ButtonNumber5.Text = "5";
-            ButtonNumber5.UseVisualStyleBackColor = true;
+            ButtonNumber5.UseVisualStyleBackColor = false;
             ButtonNumber5.Click += ButtonNumber5_Click;
             // 
             // ButtonNumber6
             // 
+            ButtonNumber6.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtonNumber6.Location = new Point(305, 313);
             ButtonNumber6.Name = "ButtonNumber6";
             ButtonNumber6.Size = new Size(94, 29);
             ButtonNumber6.TabIndex = 22;
             ButtonNumber6.Text = "6";
-            ButtonNumber6.UseVisualStyleBackColor = true;
+            ButtonNumber6.UseVisualStyleBackColor = false;
             ButtonNumber6.Click += ButtonNumber6_Click;
             // 
             // ButtonNumber7
             // 
+            ButtonNumber7.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber7.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonNumber7.Location = new Point(71, 264);
             ButtonNumber7.Name = "ButtonNumber7";
             ButtonNumber7.Size = new Size(94, 29);
             ButtonNumber7.TabIndex = 23;
             ButtonNumber7.Text = "7";
-            ButtonNumber7.UseVisualStyleBackColor = true;
+            ButtonNumber7.UseVisualStyleBackColor = false;
             ButtonNumber7.Click += ButtonNumber7_Click;
             // 
             // ButtonNumber8
             // 
+            ButtonNumber8.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber8.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonNumber8.Location = new Point(188, 264);
             ButtonNumber8.Name = "ButtonNumber8";
             ButtonNumber8.Size = new Size(94, 29);
             ButtonNumber8.TabIndex = 24;
             ButtonNumber8.Text = "8";
-            ButtonNumber8.UseVisualStyleBackColor = true;
+            ButtonNumber8.UseVisualStyleBackColor = false;
             ButtonNumber8.Click += ButtonNumber8_Click;
             // 
             // ButtonNumber9
             // 
+            ButtonNumber9.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber9.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtonNumber9.Location = new Point(305, 263);
             ButtonNumber9.Name = "ButtonNumber9";
             ButtonNumber9.Size = new Size(94, 29);
             ButtonNumber9.TabIndex = 25;
             ButtonNumber9.Text = "9";
-            ButtonNumber9.UseVisualStyleBackColor = true;
+            ButtonNumber9.UseVisualStyleBackColor = false;
             ButtonNumber9.Click += ButtonNumber9_Click;
             // 
             // ButtonNumber0
             // 
+            ButtonNumber0.BackColor = SystemColors.ButtonHighlight;
             ButtonNumber0.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonNumber0.Location = new Point(188, 414);
             ButtonNumber0.Name = "ButtonNumber0";
             ButtonNumber0.Size = new Size(94, 29);
             ButtonNumber0.TabIndex = 26;
             ButtonNumber0.Text = "0";
-            ButtonNumber0.UseVisualStyleBackColor = true;
+            ButtonNumber0.UseVisualStyleBackColor = false;
             ButtonNumber0.Click += ButtonNumber0_Click;
             // 
             // ButtonPoint
             // 
+            ButtonPoint.BackColor = SystemColors.ButtonHighlight;
             ButtonPoint.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Bold);
             ButtonPoint.Location = new Point(305, 413);
             ButtonPoint.Name = "ButtonPoint";
             ButtonPoint.Size = new Size(94, 29);
             ButtonPoint.TabIndex = 27;
             ButtonPoint.Text = ".";
-            ButtonPoint.UseVisualStyleBackColor = true;
+            ButtonPoint.UseVisualStyleBackColor = false;
             ButtonPoint.Click += ButtonPoint_Click;
             // 
             // ButtonMeter
@@ -462,13 +478,14 @@
             // 
             // ButtonPercentage
             // 
+            ButtonPercentage.BackColor = SystemColors.ButtonHighlight;
             ButtonPercentage.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             ButtonPercentage.Location = new Point(71, 414);
             ButtonPercentage.Name = "ButtonPercentage";
             ButtonPercentage.Size = new Size(94, 29);
             ButtonPercentage.TabIndex = 44;
             ButtonPercentage.Text = "%";
-            ButtonPercentage.UseVisualStyleBackColor = true;
+            ButtonPercentage.UseVisualStyleBackColor = false;
             ButtonPercentage.Click += ButtonPercentage_Click;
             // 
             // ButtonBackSpaces
@@ -485,11 +502,11 @@
             // 
             // ButtonClearDatabase
             // 
-            ButtonClearDatabase.BackColor = Color.Silver;
+            ButtonClearDatabase.BackColor = Color.YellowGreen;
             ButtonClearDatabase.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             ButtonClearDatabase.Location = new Point(452, 168);
             ButtonClearDatabase.Name = "ButtonClearDatabase";
-            ButtonClearDatabase.Size = new Size(138, 29);
+            ButtonClearDatabase.Size = new Size(119, 29);
             ButtonClearDatabase.TabIndex = 46;
             ButtonClearDatabase.Text = "Clear database";
             ButtonClearDatabase.UseVisualStyleBackColor = false;
