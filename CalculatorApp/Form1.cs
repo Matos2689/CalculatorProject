@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using CalculatorProject.BusinessLogic;
 using CalculatorProject.Contracts;
 using CalculatorProject.Persistance;
+using CalculatorProject.Persistance.Database;
 using UnitsNet;
 
 namespace CalculatorApp
@@ -18,8 +20,9 @@ namespace CalculatorApp
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "SaveMathlog.xml");
 
         private readonly IRepository _repository;
-        private readonly Calculator _calculator;
-        
+        private readonly Calculator _calculator;      
+        private readonly DatabaseConnection _databaseConnection = new();
+
         public SQLRepositoryManager SqlRepository { get; } = new();
 
         public Form1()
@@ -251,10 +254,9 @@ namespace CalculatorApp
 
         private void ButtonSaveSQL_Click(object sender, EventArgs e)
         {
-            var sqlRepo = new SQLRepositoryManager();
             try
             {
-                sqlRepo.Save(null!);
+                _repository.Save(null!);
                 MessageBox.Show("History saved to SQL database.");
             }
             catch (Exception ex)
@@ -280,6 +282,19 @@ namespace CalculatorApp
             tb.SelectionStart = tb.Text.Length;
             tb.SelectionLength = 0;
             tb.Focus();
+        }
+
+        private void ButtonClearDatabase_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to clear the database?", "Clear Database", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                return;
+            }
+            using var conn = _databaseConnection.Connect();
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = "DELETE FROM dbo.MathLog";
+            cmd.CommandType = CommandType.Text;
+            cmd.ExecuteNonQuery();
         }
     }
 }

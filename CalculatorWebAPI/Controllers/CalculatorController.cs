@@ -25,7 +25,7 @@ namespace CalculatorWebAPI.Controllers
             {
                 _calculator.Calculate(request.Expression!);                
                 var result = _calculator.Memory.Last();
-                _repository.Save(string.Empty);
+                _repository.Save(result.ToString()!);
                 return Ok(new CalculationResponse(result));
             }
             catch (Exception ex)
@@ -35,14 +35,9 @@ namespace CalculatorWebAPI.Controllers
         }
 
         [HttpGet("history")]
-        public ActionResult<IEnumerable<CalculationHistoryItem>> GetHistory()
+        public ActionResult<IEnumerable<CalculationResponse>> GetHistory()
         {
-            var history = _calculator.Memory.Select(item => new CalculationHistoryItem
-            {
-                Expression = item.Expression,
-                NumericResult = item.Type == MathLogTypes.NumericBased ? item.NumericResult : (double?)item.QuantityResult?.Value,
-                UnitResult = item.Type == MathLogTypes.UnitBased ? item.QuantityResult?.Unit.ToString() : null
-            }).ToList();
+            var history = _calculator.Memory.Select(log => new CalculationResponse(log)).ToList();
 
             return Ok(history);
         }

@@ -64,6 +64,7 @@
             ButtonSaveSQL = new Button();
             ButtonPercentage = new Button();
             ButtonBackSpaces = new Button();
+            ButtonClearDatabase = new Button();
             SuspendLayout();
             // 
             // ButtomAdd
@@ -482,11 +483,24 @@
             ButtonBackSpaces.UseVisualStyleBackColor = false;
             ButtonBackSpaces.Click += ButtonBackSpaces_Click;
             // 
+            // ButtonClearDatabase
+            // 
+            ButtonClearDatabase.BackColor = Color.Silver;
+            ButtonClearDatabase.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            ButtonClearDatabase.Location = new Point(452, 168);
+            ButtonClearDatabase.Name = "ButtonClearDatabase";
+            ButtonClearDatabase.Size = new Size(138, 29);
+            ButtonClearDatabase.TabIndex = 46;
+            ButtonClearDatabase.Text = "Clear database";
+            ButtonClearDatabase.UseVisualStyleBackColor = false;
+            ButtonClearDatabase.Click += ButtonClearDatabase_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(602, 514);
+            Controls.Add(ButtonClearDatabase);
             Controls.Add(ButtonBackSpaces);
             Controls.Add(ButtonPercentage);
             Controls.Add(ButtonSaveSQL);
@@ -569,5 +583,6 @@
         private Button ButtonSaveSQL;
         private Button ButtonPercentage;
         private Button ButtonBackSpaces;
+        private Button ButtonClearDatabase;
     }
 }
