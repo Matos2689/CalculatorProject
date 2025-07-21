@@ -130,7 +130,7 @@ h1 {
     }
 
     .btn[onclick="backspace()"] {
-        background: #666a73;;
+        background: #666a73;
         color: #fff;
         font-weight: bold;
     }
