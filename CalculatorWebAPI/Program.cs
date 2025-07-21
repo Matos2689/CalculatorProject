@@ -28,8 +28,8 @@ namespace CalculatorWebAPI
                 app.UseSwaggerUI();
             }
 
+            // Middlewares
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
             //app.MapGet("/", () => Results.Redirect("/swagger"));
