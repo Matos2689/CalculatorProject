@@ -23,9 +23,10 @@ namespace CalculatorWebAPI.Controllers
         {
             try
             {
-                _calculator.Calculate(request.Expression!);                
+                _calculator.Calculate(request.Expression.Replace(" ", ""));                
                 var result = _calculator.Memory.Last();
                 _repository.Save(result.ToString()!);
+
                 return Ok(new CalculationResponse(result));
             }
             catch (Exception ex)
