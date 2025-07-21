@@ -3,209 +3,64 @@
 <head>
     <meta charset="UTF-8" />
     <title>Minha Calculadora Web</title>
-    <style>
-        :root {
-            --bg: #fff;
-            --panel: #fafafa;
-            --btn: #f2f2f2;
-            --btn-hover: #e2e2e2;
-            --txt: #222;
-            --border: #bbb;
-        }
-
-        body.dark {
-            --bg: #19191d;
-            --panel: #24242a;
-            --btn: #363646;
-            --btn-hover: #49495e;
-            --txt: #f2f2f2;
-            --border: #555;
-        }
-
-        body {
-            font-family: Arial;
-            background: var(--bg);
-            color: var(--txt);
-            margin: 0;
-            padding: 0;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 32px;
-        }
-
-        #theme-toggle {
-            display: block;
-            margin: 12px auto 0 auto;
-            background: none;
-            border: 1px solid var(--border);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            color: var(--txt);
-            background: var(--btn);
-            transition: background 0.2s;
-        }
-
-        #main-row {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 65vh;
-            gap: 36px;
-            margin-top: 36px;
-        }
-
-        #calc {
-            background: var(--panel);
-            padding: 24px 24px 16px 24px;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-            min-width: 260px;
-        }
-
-        #display {
-            width: 100%;
-            height: 40px;
-            font-size: 20px;
-            margin-bottom: 12px;
-            padding: 4px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            box-sizing: border-box;
-            color: var(--txt);
-        }
-
-        #buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 50px);
-            grid-gap: 8px;
-        }
-
-        .btn {
-            height: 42px;
-            font-size: 18px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: var(--btn);
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-            color: var(--txt);
-        }
-
-            .btn:hover {
-                background: var(--btn-hover);
-            }
-
-        #result {
-            margin-top: 18px;
-            font-size: 20px;
-            min-height: 24px;
-            color: var(--txt);
-            text-align: center;
-        }
-
-        #history-panel {
-            background: var(--panel);
-            border-radius: 14px;
-            padding: 18px 16px 10px 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-            width: 330px;
-            max-width: 95vw;
-            min-height: 200px;
-            margin-top: 0;
-            margin-left: 0;
-        }
-
-            #history-panel h2 {
-                margin-top: 0;
-                margin-bottom: 10px;
-                font-size: 20px;
-                text-align: center;
-            }
-
-        #history-list {
-            max-height: 360px;
-            overflow-y: auto;
-            font-size: 16px;
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-            #history-list li {
-                border-bottom: 1px solid var(--border);
-                padding: 5px 2px;
-                color: var(--txt);
-            }
-
-        #clear-history {
-            display: block;
-            margin: 12px auto 0 auto;
-            background: none;
-            border: 1px solid var(--border);
-            padding: 4px 14px;
-            border-radius: 10px;
-            font-size: 15px;
-            cursor: pointer;
-            color: var(--txt);
-            background: var(--btn);
-            transition: background 0.2s;
-        }
-
-            #clear-history:hover, #theme-toggle:hover {
-                background: var(--btn-hover);
-            }
-
-        @media (max-width: 900px) {
-            #main-row {
-                flex-direction: column;
-                align-items: center;
-                gap: 0;
-            }
-
-            #history-panel {
-                margin-top: 24px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Calculadora WebAPI</h1>
+    <h1>My Calculator WebAPI</h1>
     <button id="theme-toggle" onclick="toggleTheme()">🌙 Modo escuro</button>
     <div id="main-row">
         <div id="calc">
             <input type="text" id="display" readonly />
+
+            <!-- unit buttons (3 lines, 4 columns) -->
+            <div id="unit-buttons">
+                <button class="btn unit" onclick="press('m')">m</button>
+                <button class="btn unit" onclick="press('mm')">mm</button>
+                <button class="btn unit" onclick="press('cm')">cm</button>
+                <button class="btn unit" onclick="press('km')">km</button>
+                <button class="btn unit" onclick="press('l')">l</button>
+                <button class="btn unit" onclick="press('ml')">ml</button>
+                <button class="btn unit" onclick="press('cl')">cl</button>
+                <button class="btn unit" onclick="press('kl')">kl</button>
+                <button class="btn unit" onclick="press('g')">g</button>
+                <button class="btn unit" onclick="press('mg')">mg</button>
+                <button class="btn unit" onclick="press('cg')">cg</button>
+                <button class="btn unit" onclick="press('kg')">kg</button>
+            </div>
+
+            <!-- keyboard calculator -->
             <div id="buttons">
+                <!-- first line -->
                 <button class="btn" onclick="press('7')">7</button>
                 <button class="btn" onclick="press('8')">8</button>
                 <button class="btn" onclick="press('9')">9</button>
-                <button class="btn" onclick="press('+')">+</button>
+                <button class="btn" onclick="press('/')">/</button>
 
+                <!-- Second line -->
                 <button class="btn" onclick="press('4')">4</button>
                 <button class="btn" onclick="press('5')">5</button>
                 <button class="btn" onclick="press('6')">6</button>
-                <button class="btn" onclick="press('-')">-</button>
+                <button class="btn" onclick="press('*')">*</button>
 
+                <!-- Third line -->
                 <button class="btn" onclick="press('1')">1</button>
                 <button class="btn" onclick="press('2')">2</button>
                 <button class="btn" onclick="press('3')">3</button>
-                <button class="btn" onclick="press('*')">*</button>
+                <button class="btn" onclick="press('-')">-</button>
 
-                <button class="btn" onclick="press('0')">0</button>
+                <!-- fourth line -->
                 <button class="btn" onclick="press('.')">.</button>
-                <button class="btn" onclick="press('m')">m</button>
-                <button class="btn" onclick="press('/')">/</button>
+                <button class="btn" onclick="press('0')">0</button>
+                <button class="btn" onclick="press('%')">%</button>
+                <button class="btn" onclick="press('+')">+</button>
 
+                <!-- fifth line: empty, [>x<], C, = -->
+                <span></span>
+                <button class="btn backspace-btn" style="grid-column: 2" onclick="backspace()">&gt;x&lt;</button>
                 <button class="btn" onclick="clearDisplay()">C</button>
-                <button class="btn" onclick="press('c')">cm</button>
-                <button class="btn" onclick="press('²')">²</button>
                 <button class="btn" onclick="calc()">=</button>
             </div>
+
         </div>
         <div id="history-panel">
             <h2>Histórico</h2>
@@ -213,108 +68,6 @@
             <button id="clear-history" onclick="clearHistory()">Limpar histórico</button>
         </div>
     </div>
-
-    <script>
-        // -------- Dark/Light Mode --------
-        function toggleTheme() {
-            document.body.classList.toggle("dark");
-            let btn = document.getElementById('theme-toggle');
-            if (document.body.classList.contains("dark")) {
-                btn.innerText = "☀️ Light Mode";
-            } else {
-                btn.innerText = "🌙 Dark Mode";
-            }
-        }
-
-        // -------- Calculator --------
-        let lastWasResult = false;
-        let history = [];
-
-        function press(val) {
-            const display = document.getElementById('display');
-            if (lastWasResult) {
-                if (['+', '-', '*', '/'].includes(val)) {
-                    display.value += val;
-                } else {
-                    display.value = val;
-                }
-                lastWasResult = false;
-            } else {
-                display.value += val;
-            }
-        }
-        function clearDisplay() {
-            document.getElementById('display').value = '';
-            lastWasResult = false;
-        }
-
-        async function calc() {
-            const display = document.getElementById('display');
-            const expression = display.value;
-            if (!expression) return;
-            const resp = await fetch('/api/calculator/calculate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ expression })
-            });
-            const data = await resp.json();
-            let showResult = "";
-            if (data.error) {
-                showResult = "Erro!";
-                lastWasResult = true;
-            } else if (data.unitResult) {
-                showResult = `${data.unitResult}`;
-                lastWasResult = true;
-                addToHistory(expression, showResult);
-            } else {
-                showResult = `${data.numericResult}`;
-                lastWasResult = true;
-                addToHistory(expression, showResult);
-            }
-            display.value = showResult;
-        }
-
-        // -------- Memory --------
-        function addToHistory(expr, res) {
-            history.unshift({ expr, res });
-            if (history.length > 20) history = history.slice(0, 20);
-            renderHistory();
-        }
-        function renderHistory() {
-            const list = document.getElementById('history-list');
-            list.innerHTML = '';
-            if (history.length === 0) {
-                list.innerHTML = '<li style="text-align:center;color:#888">Histórico vazio</li>';
-            } else {
-                history.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = `${item.expr} = ${item.res}`;
-                    list.appendChild(li);
-                });
-            }
-        }
-        function clearHistory() {
-            history = [];
-            renderHistory();
-        }
-
-        // -------- Physical Keyboard --------
-        document.addEventListener('keydown', function (e) {
-            if ((e.key >= '0' && e.key <= '9') || ['+', '-', '*', '/', '.', 'm', 'c'].includes(e.key)) {
-                press(e.key);
-            } else if (e.key === 'Enter' || e.key === '=') {
-                calc();
-            } else if (e.key === 'Backspace') {
-                let display = document.getElementById('display');
-                if (lastWasResult) {
-                    clearDisplay();
-                } else {
-                    display.value = display.value.slice(0, -1);
-                }
-            }
-        });
-
-        renderHistory();
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

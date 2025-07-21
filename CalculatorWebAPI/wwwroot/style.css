@@ -1,0 +1,219 @@
+﻿:root {
+    --bg: #fff;
+    --panel: #fafafa;
+    --btn: #f2f2f2;
+    --btn-hover: #e2e2e2;
+    --txt: #222;
+    --border: #bbb;
+    --accent: #3686ff;
+    --danger: #d33232;
+}
+
+body.dark {
+    --bg: #19191d;
+    --panel: #24242a;
+    --btn: #363646;
+    --btn-hover: #49495e;
+    --txt: #f2f2f2;
+    --border: #555;
+    --accent: #3686ff;
+    --danger: #ff6161;
+}
+
+body {
+    font-family: Arial;
+    background: var(--bg);
+    color: var(--txt);
+    margin: 0;
+    padding: 0;
+    transition: background 0.3s, color 0.3s;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 32px;
+}
+
+#theme-toggle {
+    display: block;
+    margin: 12px auto 0 auto;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--txt);
+    background: var(--btn);
+    transition: background 0.2s;
+}
+
+#main-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 65vh;
+    gap: 36px;
+    margin-top: 36px;
+}
+
+#calc {
+    background: var(--panel);
+    padding: 24px 24px 12px 24px;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10); /* pode aumentar pra 0.15 se quiser mais forte */
+    border: 2px solid #bbb; /* destaque! escolha a cor que preferir */
+    box-sizing: border-box;
+}
+
+
+#display {
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    margin-bottom: 12px;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    box-sizing: border-box;
+    color: var(--txt);
+}
+
+/* Botões de unidade - grid 4 colunas x 3 linhas */
+#unit-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-bottom: 14px;
+}
+
+    #unit-buttons .btn.unit {
+        font-size: 14px;
+        padding: 6px 0;
+        min-width: 0;
+        min-height: 0;
+        border-radius: 5px;
+    }
+
+#buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 50px);
+    grid-gap: 8px;
+    justify-content: center; /* <-- centraliza horizontalmente */
+}
+
+.btn {
+    height: 42px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--btn);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    color: var(--txt);
+}
+
+    /* Highlight of the button "=" */
+    #buttons .btn:last-child,
+    #buttons .btn[onclick="calc()"] {
+        background: var(--accent);
+        color: #fff;
+        font-weight: bold;
+    }
+
+    /* Highlight of the button C */
+    .btn[onclick="clearDisplay()"] {
+        background: var(--danger);
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .btn[onclick="backspace()"] {
+        background: #666a73;;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    /* Highlight of the button % */
+    /*.btn[onclick="press('%')"] {
+        background: #ffe89d;
+        color: #9d7c07;
+        font-weight: bold;
+    }*/
+
+    .btn:hover {
+        background: var(--btn-hover);
+    }
+
+#result {
+    margin-top: 18px;
+    font-size: 20px;
+    min-height: 24px;
+    color: var(--txt);
+    text-align: center;
+}
+
+#history-panel {
+    background: var(--panel);
+    border-radius: 14px;
+    padding: 18px 16px 10px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    width: 330px;
+    max-width: 95vw;
+    min-height: 200px;
+    margin-top: 0;
+    margin-left: 0;
+}
+
+    #history-panel h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+#history-list {
+    max-height: 360px;
+    overflow-y: auto;
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+    #history-list li {
+        border-bottom: 1px solid var(--border);
+        padding: 5px 2px;
+        color: var(--txt);
+    }
+
+#clear-history {
+    display: block;
+    margin: 12px auto 0 auto;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    color: var(--txt);
+    background: var(--btn);
+    transition: background 0.2s;
+}
+
+    #clear-history:hover, #theme-toggle:hover {
+        background: var(--btn-hover);
+    }
+
+@media (max-width: 900px) {
+    #main-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+
+    #history-panel {
+        margin-top: 24px;
+    }
+}
