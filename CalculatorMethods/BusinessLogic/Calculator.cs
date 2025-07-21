@@ -227,15 +227,26 @@ namespace CalculatorProject.BusinessLogic
                 var numberPart = new string(txt.TakeWhile(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
                 var unitPart = new string(txt.SkipWhile(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
 
-                // if empty unitPart, use default unit
-                if (string.IsNullOrEmpty(unitPart))
-                    unitPart = defaultUnit;
+                if (input.Contains("+") || input.Contains("-"))
+                {
+                    // if empty unitPart, use default unit
+                    if (string.IsNullOrEmpty(unitPart))
+                        unitPart = defaultUnit;
+                }               
 
                 var txtForParser = numberPart + unitPart;
+                object parsed;
+                if (string.IsNullOrEmpty(unitPart)) 
+                { 
+                     parsed = double.Parse(txtForParser);
+                     results.Add(parsed);
+                        continue;
+                }
+
                 txtForParser = txtForParser.Replace(",", ".");
 
                 // calls the correct parser
-                object parsed = unitPart switch
+                 parsed = unitPart switch
                 {
                     _ when lengthUnits.Contains(unitPart) => ParseLengthWithDefaultUnit(txtForParser),
                     _ when volumeUnits.Contains(unitPart) => ParseVolumeWithDefaultUnit(txtForParser),

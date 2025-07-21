@@ -7,6 +7,9 @@
       <NamedTestSelector>
         <TestName>CalculatorTests.RepositoryTests.Should_Save_InsertAllLogsIntoDatabase</TestName>
       </NamedTestSelector>
+      <FixtureTestSelector>
+        <FixtureName>CalculatorTests.RepositoryTests</FixtureName>
+      </FixtureTestSelector>
     </IgnoredTests>
   </Settings>
 </ProjectConfiguration>

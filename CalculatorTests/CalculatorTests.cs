@@ -407,6 +407,26 @@ public class CalculatorTests
         // Assert
         result.NumericResult.Should().Be(expectedResul);
     }
+
+    [TestMethod]
+    public void ShouldMultiplyValuesWithUnitsAndDoubleNumbers()
+    {
+        // Arrange
+        var calculate = new Calculator(_repository);
+        string input = "2*2kg";
+        string input2 = "3km + 2000";
+
+        // Act
+        calculate.Calculate(input);
+        calculate.Calculate(input2);
+
+        var result = calculate.Memory.First();
+        var result2 = calculate.Memory.Last();
+
+        // Assert
+        result.QuantityResult.Should().Be(Mass.FromKilograms(4));
+        result2.QuantityResult.Should().Be(Length.FromKilometers(5));
+    }
 }
 
 
