@@ -61,8 +61,8 @@ h1 {
     background: var(--panel);
     padding: 24px 24px 12px 24px;
     border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10); /* pode aumentar pra 0.15 se quiser mais forte */
-    border: 2px solid #bbb; /* destaque! escolha a cor que preferir */
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10); /* you can increase it to 0.15 if you want it stronger */
+    border: 2px solid #bbb; /* highlight! choose the color you prefer */
     box-sizing: border-box;
 }
 
@@ -80,7 +80,7 @@ h1 {
     color: var(--txt);
 }
 
-/* Botões de unidade - grid 4 colunas x 3 linhas */
+/* Unit buttons - grid 4 columns x 3 rows */
 #unit-buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -100,7 +100,7 @@ h1 {
     display: grid;
     grid-template-columns: repeat(4, 50px);
     grid-gap: 8px;
-    justify-content: center; /* <-- centraliza horizontalmente */
+    justify-content: center; /* <-- centers horizontally */
 }
 
 .btn {
