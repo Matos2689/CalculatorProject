@@ -67,7 +67,7 @@ function renderHistory() {
     const list = document.getElementById('history-list');
     list.innerHTML = '';
     if (history.length === 0) {
-        list.innerHTML = '<li style="text-align:center;color:#888">Histórico vazio</li>';
+        list.innerHTML = '<li style="text-align:center;color:#888">Empty History</li>';
     } else {
         history.forEach(item => {
             const li = document.createElement('li');
